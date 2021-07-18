@@ -6,8 +6,71 @@
         xmlns:local="clr-namespace:EquipmentList"
         mc:Ignorable="d"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Equipment List" MinHeight="600" MinWidth="800" Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" WindowStartupLocation="CenterScreen" Icon="\Images\archive.ico">
     <Grid>
-        
+        <Menu x:Name="menu" Grid.Row="0" FontSize="14">
+            <MenuItem Header="Database">
+                <MenuItem Header="Connect">
+
+                </MenuItem>
+                <MenuItem Header="Database">
+
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Equipment">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/archive.png" Height="20"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Employee">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/user_group.png" Height="20"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Bulding">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/home.png" Height="20"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Exit">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/block_black.png" Height="20"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Copy">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/copy.png" Height="20"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Past">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/paste.png" Height="20"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Delete">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/recycle_bin.png" Height="20"></Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="View">
+
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About author" >
+                    <MenuItem.Icon>
+                        <Image Source="\Images\info_blue.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="About Equipment List">
+                    <MenuItem.Icon>
+                        <Image Source="\Images\archive.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>

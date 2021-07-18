@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>archive.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.6\lib\net46\CommonServiceLocator.dll</HintPath>
@@ -120,6 +123,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\block_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\archive.png" />
+    <Resource Include="Images\button_black_stop.png" />
+    <Resource Include="Images\button_blue_play.png" />
+    <Resource Include="Images\database_active.png" />
+    <Resource Include="Images\database_inactive.png" />
+    <Resource Include="Images\exchange.png" />
+    <Resource Include="Images\home.png" />
+    <Resource Include="Images\recycle_bin.png" />
+    <Resource Include="Images\user_group.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\copy.png" />
+    <Resource Include="Images\info_blue.png" />
+    <Resource Include="Images\paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\archive.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="archive.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
