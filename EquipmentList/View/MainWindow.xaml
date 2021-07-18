@@ -4,10 +4,30 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EquipmentList"
+        xmlns:v="clr-namespace:EquipmentList.View"
+        xmlns:vm="clr-namespace:EquipmentList.ViewModel"
         mc:Ignorable="d"
-        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="Equipment List" MinHeight="600" MinWidth="800" Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" WindowStartupLocation="CenterScreen" Icon="\Images\archive.ico">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:BuildingViewModel}">
+            <v:Building />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:EmployeeViewModel}">
+            <v:Employee />
+        </DataTemplate>
+    </Window.Resources>
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
         <Menu x:Name="menu" Grid.Row="0" FontSize="14">
             <MenuItem Header="Database">
                 <MenuItem Header="Connect">
@@ -72,5 +92,8 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
+        <ScrollViewer Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ContentControl Content="{Binding ViewModel}"></ContentControl>
+        </ScrollViewer>
     </Grid>
 </Window>
