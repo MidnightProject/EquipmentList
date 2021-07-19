@@ -6,10 +6,13 @@
         xmlns:local="clr-namespace:EquipmentList"
         xmlns:v="clr-namespace:EquipmentList.View"
         xmlns:vm="clr-namespace:EquipmentList.ViewModel"
+        xmlns:converters="clr-namespace:EquipmentList.Converters"
         mc:Ignorable="d"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="Equipment List" MinHeight="600" MinWidth="800" Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" WindowStartupLocation="CenterScreen" Icon="\Images\archive.ico">
     <Window.Resources>
+        <converters:ViewToEnableConverter x:Key="viewConverter" />
+        
         <DataTemplate DataType="{x:Type vm:BuildingViewModel}">
             <v:Building />
         </DataTemplate>
@@ -37,20 +40,38 @@
 
                 </MenuItem>
                 <Separator />
-                <MenuItem Header="Equipment">
+                <MenuItem Header="Equipment"
+                          Command="{Binding ViewCommand}" CommandParameter="EquipmentView">
                     <MenuItem.Icon>
                         <Image Source="/Images/archive.png" Height="20"></Image>
                     </MenuItem.Icon>
+                    <MenuItem.IsEnabled>
+                        <MultiBinding Converter="{StaticResource viewConverter}" ConverterParameter="EquipmentView">
+                            <Binding Path="View"/>
+                        </MultiBinding>
+                    </MenuItem.IsEnabled>
                 </MenuItem>
-                <MenuItem Header="Employee">
+                <MenuItem Header="Employee"
+                          Command="{Binding ViewCommand}" CommandParameter="EmployeeView">
                     <MenuItem.Icon>
                         <Image Source="/Images/user_group.png" Height="20"></Image>
                     </MenuItem.Icon>
+                    <MenuItem.IsEnabled>
+                        <MultiBinding Converter="{StaticResource viewConverter}" ConverterParameter="EmployeeView">
+                            <Binding Path="View"/>
+                        </MultiBinding>
+                    </MenuItem.IsEnabled>
                 </MenuItem>
-                <MenuItem Header="Bulding">
+                <MenuItem Header="Building"
+                          Command="{Binding ViewCommand}" CommandParameter="BuildingView">
                     <MenuItem.Icon>
                         <Image Source="/Images/home.png" Height="20"></Image>
                     </MenuItem.Icon>
+                    <MenuItem.IsEnabled>
+                        <MultiBinding Converter="{StaticResource viewConverter}" ConverterParameter="BuildingView">
+                            <Binding Path="View"/>
+                        </MultiBinding>
+                    </MenuItem.IsEnabled>
                 </MenuItem>
                 <Separator />
                 <MenuItem Header="Exit">
