@@ -82,12 +82,12 @@
             <MenuItem Header="Help">
                 <MenuItem Header="About author" >
                     <MenuItem.Icon>
-                        <Image Source="\Images\info_blue.png"/>
+                        <Image Source="\Images\info_blue.png" Height="20"></Image>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="About Equipment List">
                     <MenuItem.Icon>
-                        <Image Source="\Images\archive.png"/>
+                        <Image Source="\Images\archive.png" Height="20"></Image>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
