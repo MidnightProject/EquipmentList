@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using static EquipmentList.Model.Views;
@@ -57,7 +58,6 @@ namespace EquipmentList.ViewModel
                 return viewCommand = new RelayCommand<string>((pararameters) => ChangeView(pararameters));
             }
         }
-
         private void ChangeView(string pararameters)
         {
             switch (pararameters)
@@ -74,10 +74,26 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private Visibility databseToolBar;
+        public Visibility DatabseToolBar
+        {
+            get
+            {
+                return databseToolBar;
+            }
+
+            set
+            {
+                databseToolBar = value;
+                RaisePropertyChanged("DatabseToolBar");
+            }
+        }
+
         public MainViewModel()
         {
-            
-            
+            DatabseToolBar = Visibility.Visible;
+
+
         }
     }
 }

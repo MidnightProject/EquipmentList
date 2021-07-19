@@ -9,9 +9,10 @@
         xmlns:converters="clr-namespace:EquipmentList.Converters"
         mc:Ignorable="d"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
-        Title="Equipment List" MinHeight="600" MinWidth="800" Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" WindowStartupLocation="CenterScreen" Icon="\Images\archive.ico">
+        Title="Equipment List" MinHeight="600" MinWidth="800" Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" WindowStartupLocation="CenterScreen" Icon="/Images/archive.ico">
     <Window.Resources>
         <converters:ViewToEnableConverter x:Key="viewConverter" />
+        <converters:VisibilityToIsCheckedConverter x:Key="checkedConverter" />
         
         <DataTemplate DataType="{x:Type vm:BuildingViewModel}">
             <v:Building />
@@ -98,21 +99,58 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="View">
-
+                <MenuItem Header="Database" IsCheckable="True" IsChecked="{Binding DatabseToolBar, Converter={StaticResource checkedConverter}}"></MenuItem>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="About author" >
                     <MenuItem.Icon>
-                        <Image Source="\Images\info_blue.png" Height="20"></Image>
+                        <Image Source="/Images/info_blue.png" Height="20"></Image>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="About Equipment List">
                     <MenuItem.Icon>
-                        <Image Source="\Images\archive.png" Height="20"></Image>
+                        <Image Source="/Images/archive.png" Height="20"></Image>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
         </Menu>
+
+        <ToolBarTray Grid.Row="1" Grid.Column="0" DockPanel.Dock="Left" Orientation="Horizontal" Visibility="{Binding DatabseToolBar}">
+            <ToolBar Band="1" BandIndex="0">
+                <Button ToolBar.OverflowMode="Never" Height="48" >
+                </Button>
+                <Button Height="48" >
+                </Button>
+                <Button Height="48" 
+                        Command="{Binding ViewCommand}" CommandParameter="EquipmentView">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource viewConverter}" ConverterParameter="EquipmentView">
+                            <Binding Path="View"/>
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                    <Image Source="/Images/archive.png" ToolTip="Equipment View"></Image>
+                </Button>
+                <Button Height="48" 
+                        Command="{Binding ViewCommand}" CommandParameter="EmployeeView">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource viewConverter}" ConverterParameter="EmployeeView">
+                            <Binding Path="View"/>
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                    <Image Source="/Images/user_group.png" ToolTip="Employee View"></Image>
+                </Button>
+                <Button Height="48" 
+                        Command="{Binding ViewCommand}" CommandParameter="BuildingView">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource viewConverter}" ConverterParameter="BuildingView">
+                            <Binding Path="View"/>
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                    <Image Source="/Images/home.png" ToolTip="Building View"></Image>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+
         <ScrollViewer Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <ContentControl Content="{Binding ViewModel}"></ContentControl>
         </ScrollViewer>
