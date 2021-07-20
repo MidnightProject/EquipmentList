@@ -1,5 +1,8 @@
 using System;
+using System.Data;
+using System.IO;
 using System.Windows;
+using FirebirdSql.Data.FirebirdClient;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using static EquipmentList.Model.Views;
@@ -44,7 +47,9 @@ namespace EquipmentList.ViewModel
                         ViewModel = new EmployeeViewModel();
                         break;
                     case DefinedViews.BuildingView:
-                        ViewModel = new BuildingViewModel();
+                        buildingTable = new DataTable();
+                        buildingAdapter.Fill(buildingTable);
+                        ViewModel = new BuildingViewModel(buildingTable);
                         break;
                 }
             }
@@ -89,11 +94,33 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private FbDataAdapter buildingAdapter;
+        private FbDataAdapter employeeAdapter;
+        private DataTable buildingTable;
+
         public MainViewModel()
         {
             DatabseToolBar = Visibility.Visible;
 
+            
 
+            string databaseName = Path.Combine(Environment.CurrentDirectory, @"DB\", "EQUIPMENT.FDB");
+
+            FbConnectionStringBuilder stringConnection = new FbConnectionStringBuilder()
+            {
+                UserID = "SYSDBA",
+                Password = "masterkey",
+                Database = databaseName,
+                DataSource = "localhost",
+                Port = 3050,
+            };
+            
+
+            FbConnection connection = new FbConnection(stringConnection.ToString());
+            connection.Open();
+
+            buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
+            employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEE", connection);
         }
     }
 }
