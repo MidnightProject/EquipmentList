@@ -4,9 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EquipmentList.View"
+             xmlns:converters="clr-namespace:EquipmentList.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:ViewToEnableConverter x:Key="enableViewConverter" />
+        
+    </UserControl.Resources>
     <Grid>
-        <Label>TEST EMPLOYEE</Label>
+        <DataGrid ItemsSource="{Binding EmployeeTable}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding NAME}" />
+                <DataGridTextColumn Header="Phone" Binding="{Binding PHONE}" />
+                <DataGridTextColumn Header="Email" Binding="{Binding EMAIL}" />
+                <DataGridTextColumn Header="Building" Binding="{Binding BUILDING}" />
+                <DataGridTextColumn Header="Room" Binding="{Binding ROOM}" />
+            </DataGrid.Columns>
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource enableViewConverter}">
+                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable.Rows[0][NAME]"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=DataGrid}, Path=DataContext.EmployeeTable.Rows[0][NAME]}" Margin="10"/>
+                    </StackPanel>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
     </Grid>
 </UserControl>

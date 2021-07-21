@@ -44,7 +44,9 @@ namespace EquipmentList.ViewModel
                     case DefinedViews.EquipmentView:
                         break;
                     case DefinedViews.EmployeeView:
-                        ViewModel = new EmployeeViewModel();
+                        employeeTable = new DataTable();
+                        employeeAdapter.Fill(employeeTable);
+                        ViewModel = new EmployeeViewModel(employeeTable);
                         break;
                     case DefinedViews.BuildingView:
                         buildingTable = new DataTable();
@@ -112,6 +114,7 @@ namespace EquipmentList.ViewModel
         private FbDataAdapter buildingAdapter;
         private FbDataAdapter employeeAdapter;
         private DataTable buildingTable;
+        private DataTable employeeTable;
 
         public MainViewModel()
         {
