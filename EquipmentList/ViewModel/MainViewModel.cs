@@ -94,6 +94,21 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private Visibility editToolBar;
+        public Visibility EditToolBar
+        {
+            get
+            {
+                return editToolBar;
+            }
+
+            set
+            {
+                editToolBar = value;
+                RaisePropertyChanged("EditToolBar");
+            }
+        }
+
         private FbDataAdapter buildingAdapter;
         private FbDataAdapter employeeAdapter;
         private DataTable buildingTable;
@@ -101,7 +116,7 @@ namespace EquipmentList.ViewModel
         public MainViewModel()
         {
             DatabseToolBar = Visibility.Visible;
-
+            EditToolBar = Visibility.Visible;
             
 
             string databaseName = Path.Combine(Environment.CurrentDirectory, @"DB\", "EQUIPMENT.FDB");

@@ -83,6 +83,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\ViewToEnableConverter.cs" />
+    <Compile Include="Converters\ViewToTextConverter.cs" />
     <Compile Include="Converters\VisibilityToIsCheckedConverter.cs" />
     <Compile Include="Model\Views.cs" />
     <Compile Include="ViewModel\BuildingViewModel.cs" />
@@ -130,6 +131,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\pencil.png" />
+    <Resource Include="Images\sub_blue_add.png" />
+    <Resource Include="Images\sub_blue_remove.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -157,7 +161,6 @@
     <Resource Include="Images\database_inactive.png" />
     <Resource Include="Images\exchange.png" />
     <Resource Include="Images\home.png" />
-    <Resource Include="Images\recycle_bin.png" />
     <Resource Include="Images\user_group.png" />
   </ItemGroup>
   <ItemGroup>
