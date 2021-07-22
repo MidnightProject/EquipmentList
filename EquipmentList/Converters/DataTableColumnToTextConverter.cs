@@ -16,7 +16,7 @@ namespace EquipmentList.Converters
             }
 
             int row = (int)values[1];
-            return ((DataTable)values[0]).Rows[row]["COUNTRY"].ToString();
+            return ((DataTable)values[0]).Rows[row][(string)parameter].ToString();
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
