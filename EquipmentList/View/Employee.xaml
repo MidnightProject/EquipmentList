@@ -8,11 +8,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <converters:ViewToEnableConverter x:Key="enableViewConverter" />
+        <converters:DataTableColumnToTextConverter x:Key="columnTextConverter" />
         
     </UserControl.Resources>
     <Grid>
-        <DataGrid ItemsSource="{Binding EmployeeTable}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
+        <DataGrid ItemsSource="{Binding EmployeeTable}" SelectedIndex="{Binding SelectedIndex}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding NAME}" />
                 <DataGridTextColumn Header="Phone" Binding="{Binding PHONE}" />
@@ -22,15 +22,16 @@
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <TextBlock>
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Building:" FontWeight="Bold" />
+                        <TextBlock Margin="10,10">
                             <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource enableViewConverter}">
-                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable.Rows[0][NAME]"/>
+                                <MultiBinding Converter="{StaticResource columnTextConverter}">
+                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable"/>
+                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
-                        <TextBlock Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=DataGrid}, Path=DataContext.EmployeeTable.Rows[0][NAME]}" Margin="10"/>
                     </StackPanel>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>

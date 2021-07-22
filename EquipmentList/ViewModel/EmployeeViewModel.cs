@@ -20,9 +20,25 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private int selectedIndex;
+        public int SelectedIndex
+        {
+            get
+            {
+                return selectedIndex;
+            }
+
+            set
+            {
+                selectedIndex = value;
+                RaisePropertyChanged("SelectedIndex");
+            }
+        }
+
         public EmployeeViewModel(DataTable dt)
         {
             EmployeeTable = dt;
+            SelectedIndex = -1;
         }
     }
 }

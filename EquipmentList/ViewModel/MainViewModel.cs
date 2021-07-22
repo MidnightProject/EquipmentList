@@ -46,7 +46,7 @@ namespace EquipmentList.ViewModel
                     case DefinedViews.EmployeeView:
                         employeeTable = new DataTable();
                         employeeAdapter.Fill(employeeTable);
-                        ViewModel = new EmployeeViewModel(employeeTable);
+                        ViewModel = new EmployeeViewModel(employeeExtendedTable);
                         break;
                     case DefinedViews.BuildingView:
                         buildingTable = new DataTable();
@@ -112,9 +112,13 @@ namespace EquipmentList.ViewModel
         }
 
         private FbDataAdapter buildingAdapter;
-        private FbDataAdapter employeeAdapter;
         private DataTable buildingTable;
+
+        private FbDataAdapter employeeAdapter;
         private DataTable employeeTable;
+
+        private FbDataAdapter employeeExtendedAdapter;
+        private DataTable employeeExtendedTable;
 
         public MainViewModel()
         {
@@ -138,7 +142,19 @@ namespace EquipmentList.ViewModel
             connection.Open();
 
             buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
+            employeeExtendedTable = new DataTable();
             employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEE", connection);
+
+            try
+            {
+                employeeExtendedAdapter = new FbDataAdapter("SELECT EMPLOYEE.NAME, EMPLOYEE.PHONE, EMPLOYEE.EMAIL, EMPLOYEE.BUILDING, BUILDING.COUNTRY, PERMISSIONS.ADD_USER FROM EMPLOYEE LEFT JOIN BUILDING ON EMPLOYEE.BUILDING = BUILDING.NAME LEFT JOIN PERMISSIONS ON EMPLOYEE.ID = PERMISSIONS.ID", connection);
+                employeeExtendedAdapter.Fill(employeeExtendedTable);
+            }
+            catch (Exception e)
+            {
+
+            }
+          
         }
     }
 }
