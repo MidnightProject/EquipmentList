@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <DataGrid ItemsSource="{Binding BuildingTable}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedIndex}">
+        <DataGrid ItemsSource="{Binding BuildingTable}" AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedIndex}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding NAME}" />
                 <DataGridTextColumn Header="Country" Binding="{Binding COUNTRY}" />

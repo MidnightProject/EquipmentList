@@ -39,6 +39,7 @@ namespace EquipmentList.ViewModel
         public BuildingViewModel(DataTable dt)
         {
             BuildingTable = dt;
+            SelectedIndex = -1;
         }
     }
 }

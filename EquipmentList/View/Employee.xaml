@@ -9,6 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:DataTableColumnToTextConverter x:Key="columnTextConverter" />
+        <converters:DataTableColumnToCheckConverter x:Key="columnCheckConverter" />
 
         <Style x:Key="EmptyTextBlock" TargetType="TextBlock">
             <Style.Triggers>
@@ -21,55 +22,144 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
+    
     <Grid>
-        <DataGrid ItemsSource="{Binding EmployeeTable}" SelectedIndex="{Binding SelectedIndex}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
+        <DataGrid ItemsSource="{Binding EmployeeTable}" AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" SelectedIndex="{Binding SelectedIndex}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding NAME}" />
+                <DataGridTextColumn Header="Job title" Binding="{Binding JOB}" />
                 <DataGridTextColumn Header="Phone" Binding="{Binding PHONE}" />
                 <DataGridTextColumn Header="Email" Binding="{Binding EMAIL}" />
                 <DataGridTextColumn Header="Building" Binding="{Binding BUILDING}" />
                 <DataGridTextColumn Header="Room" Binding="{Binding ROOM}" />
+                <DataGridTextColumn Header="Status" Binding="{Binding ACTIVE}" />
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
-                    <StackPanel Margin="10" >
-                        <TextBlock Text="Building:" FontWeight="Bold" />
-                        <TextBlock Margin="10,5,0,5" Style="{StaticResource EmptyTextBlock}">
-                            <TextBlock.Text>
+                    <Border BorderThickness="0" Background="White" >
+                        <StackPanel Margin="10" >
+                            <TextBlock Text="Building:" FontWeight="Bold" />
+                            <TextBlock Margin="10,5,0,5" Style="{StaticResource EmptyTextBlock}">
+                                <TextBlock.Text>
                                     <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ADDRESS">
                                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable"/>
                                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
-                        <WrapPanel Margin="10,5,0,5">
-                            <TextBlock Style="{StaticResource EmptyTextBlock}">
+                            <WrapPanel Margin="10,5,0,5">
+                                <TextBlock Style="{StaticResource EmptyTextBlock}">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="POSTCODE">
+                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable"/>
+                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="5,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="CITY">
+                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable"/>
+                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </WrapPanel>
+                            <TextBlock Margin="10,5,0,5" Style="{StaticResource EmptyTextBlock}">
                                 <TextBlock.Text>
-                                    <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="POSTCODE">
+                                    <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="COUNTRY">
                                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable"/>
                                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
-                            <TextBlock Text=" "></TextBlock>
-                            <TextBlock Style="{StaticResource EmptyTextBlock}">
-                                <TextBlock.Text>
-                                    <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="CITY">
-                                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable"/>
-                                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </WrapPanel>
-                        <TextBlock Margin="10,5,0,5" Style="{StaticResource EmptyTextBlock}">
-                            <TextBlock.Text>
-                                <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="COUNTRY">
-                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable"/>
-                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </StackPanel>
+                            <TextBlock Text="Permissions:" FontWeight="Bold" />
+                            <GroupBox Header="USER" Margin="10,5,0,5">
+                                <WrapPanel Margin="0,5,0,0">
+                                    <WrapPanel.Resources>
+                                        <Style TargetType="{x:Type CheckBox}">
+                                            <Setter Property="Margin" Value="10,0" />
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </Style>
+                                    </WrapPanel.Resources>
+
+                                    <CheckBox>
+                                        <CheckBox.IsChecked>
+                                            <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="ADD_USER">
+                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable"/>
+                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                            </MultiBinding>
+                                        </CheckBox.IsChecked>
+                                        <TextBlock Text="ADD" />
+                                    </CheckBox>
+                                    <CheckBox>
+                                        <CheckBox.IsChecked>
+                                            <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="DELETE_USER">
+                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable"/>
+                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                            </MultiBinding>
+                                        </CheckBox.IsChecked>
+                                        <TextBlock Text="REMOVE" />
+                                    </CheckBox>
+                                    <CheckBox>
+                                        <CheckBox.IsChecked>
+                                            <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="EDIT_USER">
+                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.EmployeeTable"/>
+                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                            </MultiBinding>
+                                        </CheckBox.IsChecked>
+                                        <TextBlock Text="EDIT" />
+                                    </CheckBox>
+                                </WrapPanel>
+                            </GroupBox>
+                            <GroupBox Header="OWN EQUIPMENT" Margin="10,5,0,5">
+                                <WrapPanel Margin="0,5,0,0">
+                                    <WrapPanel.Resources>
+                                        <Style TargetType="{x:Type CheckBox}">
+                                            <Setter Property="Margin" Value="10,0" />
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </Style>
+                                    </WrapPanel.Resources>
+                                    
+                                    <CheckBox>
+                                        <TextBlock Text="ADD" />
+                                    </CheckBox>
+                                    <CheckBox>
+                                        <TextBlock Text="REMOVE" />
+                                    </CheckBox>
+                                    <CheckBox>
+                                        <TextBlock Text="EDIT" />
+                                    </CheckBox>
+                                    <CheckBox IsChecked="True">
+                                        <TextBlock Text="VIEW" />
+                                    </CheckBox>
+                                </WrapPanel>
+                            </GroupBox>
+                            <GroupBox Header="OTHER EQUIPMENT" Margin="10,5,0,5">
+                                <WrapPanel Margin="0,5,0,0">
+                                    <WrapPanel.Resources>
+                                        <Style TargetType="{x:Type CheckBox}">
+                                            <Setter Property="Margin" Value="10,0" />
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </Style>
+                                    </WrapPanel.Resources>
+
+                                    <CheckBox>
+                                        <TextBlock Text="ADD" />
+                                    </CheckBox>
+                                    <CheckBox>
+                                        <TextBlock Text="REMOVE" />
+                                    </CheckBox>
+                                    <CheckBox>
+                                        <TextBlock Text="EDIT" />
+                                    </CheckBox>
+                                    <CheckBox>
+                                        <TextBlock Text="VIEW" />
+                                    </CheckBox>
+                                </WrapPanel>
+                            </GroupBox>
+                        </StackPanel>
+                    </Border>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
         </DataGrid>

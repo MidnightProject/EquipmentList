@@ -82,6 +82,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\DataTableColumnToCheckConverter.cs" />
     <Compile Include="Converters\DataTableColumnToTextConverter.cs" />
     <Compile Include="Converters\ViewToEnableConverter.cs" />
     <Compile Include="Converters\ViewToTextConverter.cs" />
