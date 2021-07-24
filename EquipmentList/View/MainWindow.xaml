@@ -213,6 +213,7 @@
                         Command="{Binding EditCommand}">
                     <Image Source="/Images/pencil.png" ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Edit }"></Image>
                 </Button>
+                <ComboBox ItemsSource="{Binding Group}" SelectedIndex="{Binding GroupIndex}" MinWidth="100" IsEditable="False" FontSize="16" Height="48"/>
                 <Separator />
                 <Button Height="48" 
                         Command="{Binding CopyCommand}">

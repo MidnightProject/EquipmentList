@@ -55,6 +55,9 @@ namespace EquipmentList.ViewModel
                         ViewModel = new BuildingViewModel(buildingTable);
                         break;
                 }
+
+                RaisePropertyChanged("Group");
+                RaisePropertyChanged("GroupIndex");
             }
         }
 
@@ -112,6 +115,56 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private static String[] groupEmployee = new String[] {  String.Empty,
+                                                                "Name",
+                                                                "Job title",
+                                                                "Building",
+                                                                "Status", };
+        public String[] Group
+        {
+            get
+            {
+                switch (View)
+                {
+                    case DefinedViews.EmployeeView:
+                        return groupEmployee;
+                    default:
+                        return new string[] { };
+                }
+            }
+        }
+
+        private int groupEmployeeIndex;
+        public int GroupIndex
+        {
+            get
+            {
+                switch (View)
+                {
+                    case DefinedViews.EmployeeView:
+                        return groupEmployeeIndex;
+                    default:
+                        return 0;
+                }
+            }
+
+            set
+            {
+                switch (View)
+                {
+                    case DefinedViews.EmployeeView:
+                        if (groupEmployeeIndex != value)
+                        {
+                            groupEmployeeIndex = value;
+                            ViewModel = new EmployeeViewModel(employeeExtendedTable.GropuDataTable(groupEmployee[groupEmployeeIndex]));
+                        }
+                        break;
+                }
+
+                RaisePropertyChanged("GroupIndex");
+            }
+        }
+
         private FbDataAdapter buildingAdapter;
         private DataTable buildingTable;
 
@@ -160,12 +213,48 @@ namespace EquipmentList.ViewModel
 
                 employeeExtendedAdapter = new FbDataAdapter(sb.ToString(), connection);
                 employeeExtendedAdapter.Fill(employeeExtendedTable);
+                employeeExtendedTable.Columns.Add("GROUP", typeof(String));
             }
             catch (Exception e)
             {
 
             }
           
+        }
+    }
+
+    static class ExtensionMethodClass
+    {
+        public static DataTable GropuDataTable(this DataTable dt, string header)
+        {
+            switch (header)
+            {
+                case "Name":
+                    header = "NAME";
+                    break;
+                case "Job title":
+                    header = "JOB";
+                    break;
+                case "Building":
+                    header = "BUILDING";
+                    break;
+                case "Status":
+                    header = "ACTIVE";
+                    break;
+            }
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (String.IsNullOrEmpty(header))
+                {
+                    row["GROUP"] = String.Empty;
+                }
+                else
+                {
+                    row["GROUP"] = row[header].ToString();
+                }
+            }
+            return dt;
         }
     }
 }
