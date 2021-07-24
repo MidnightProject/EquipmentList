@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Text;
 using System.Windows;
 using FirebirdSql.Data.FirebirdClient;
 using GalaSoft.MvvmLight;
@@ -132,6 +133,8 @@ namespace EquipmentList.ViewModel
             {
                 UserID = "SYSDBA",
                 Password = "masterkey",
+                //UserID = "Admin",
+                //Password = "0f8fad5b-d9cb-469f-a165-70867728950e",
                 Database = databaseName,
                 DataSource = "localhost",
                 Port = 3050,
@@ -145,9 +148,17 @@ namespace EquipmentList.ViewModel
             employeeExtendedTable = new DataTable();
             employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEE", connection);
 
+            
             try
             {
-                employeeExtendedAdapter = new FbDataAdapter("SELECT EMPLOYEE.NAME, EMPLOYEE.JOB, EMPLOYEE.PHONE, EMPLOYEE.EMAIL, EMPLOYEE.BUILDING, BUILDING.COUNTRY, BUILDING.CITY, BUILDING.ADDRESS, BUILDING.POSTCODE, PERMISSIONS.ACTIVE, PERMISSIONS.ADD_USER, PERMISSIONS.EDIT_USER, PERMISSIONS.DELETE_USER, PERMISSIONS.ADD_OWN_EQUIPMENT FROM EMPLOYEE LEFT JOIN BUILDING ON EMPLOYEE.BUILDING = BUILDING.NAME LEFT JOIN PERMISSIONS ON EMPLOYEE.ID = PERMISSIONS.ID", connection);
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT ");
+                sb.Append("EMPLOYEE.NAME, EMPLOYEE.JOB, EMPLOYEE.PHONE, EMPLOYEE.EMAIL, EMPLOYEE.BUILDING, ");
+                sb.Append("BUILDING.COUNTRY, BUILDING.CITY, BUILDING.ADDRESS, BUILDING.POSTCODE, ");
+                sb.Append("PERMISSIONS.ACTIVE, PERMISSIONS.ADD_USER, PERMISSIONS.EDIT_USER, PERMISSIONS.DELETE_USER, PERMISSIONS.ADD_OWN_EQUIPMENT, PERMISSIONS.DELETE_OWN_EQUIPMENT, PERMISSIONS.ADD_OTHER_EQUIPMENT, PERMISSIONS.DELETE_OTHER_EQUIPMENT, PERMISSIONS.VIEW_OTHER_EQUIPMENT, PERMISSIONS.EDIT_OTHER_EQUIPMENT, PERMISSIONS.PRINT_USER, PERMISSIONS.PRINT_OTHER_EQUIPMENT ");
+                sb.Append("FROM EMPLOYEE LEFT JOIN BUILDING ON EMPLOYEE.BUILDING = BUILDING.NAME LEFT JOIN PERMISSIONS ON EMPLOYEE.ID = PERMISSIONS.ID ");
+
+                employeeExtendedAdapter = new FbDataAdapter(sb.ToString(), connection);
                 employeeExtendedAdapter.Fill(employeeExtendedTable);
             }
             catch (Exception e)
