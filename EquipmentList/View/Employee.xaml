@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
              xmlns:s="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:EquipmentList.View"
              xmlns:converters="clr-namespace:EquipmentList.Converters"
@@ -12,12 +13,36 @@
         <converters:DataTableColumnToTextConverter x:Key="columnTextConverter" />
         <converters:DataTableColumnToCheckConverter x:Key="columnCheckConverter" />
 
-        <CollectionViewSource x:Key="GroupEmployeeTable" Source="{Binding EmployeeTable}" IsLiveGroupingRequested="True">
+        <CollectionViewSource x:Key="GroupBuildings" Source="{Binding EmployeeTable}" IsLiveGroupingRequested="True">
             <CollectionViewSource.LiveSortingProperties>
                 <s:String>BUILDING</s:String>
             </CollectionViewSource.LiveSortingProperties>
             <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="GROUP"/>
+                <PropertyGroupDescription PropertyName="BUILDING"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="GroupNames" Source="{Binding EmployeeTable}" IsLiveGroupingRequested="True">
+            <CollectionViewSource.LiveSortingProperties>
+                <s:String>NAME</s:String>
+            </CollectionViewSource.LiveSortingProperties>
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="NAME"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="GroupJobs" Source="{Binding EmployeeTable}" IsLiveGroupingRequested="True">
+            <CollectionViewSource.LiveSortingProperties>
+                <s:String>JOB</s:String>
+            </CollectionViewSource.LiveSortingProperties>
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="JOB"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="GroupActives" Source="{Binding EmployeeTable}" IsLiveGroupingRequested="True">
+            <CollectionViewSource.LiveSortingProperties>
+                <s:String>ACTIVE</s:String>
+            </CollectionViewSource.LiveSortingProperties>
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="ACTIVE"/>
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
 
@@ -49,7 +74,26 @@
 
     <Grid>
         <StackPanel>
-            <DataGrid ItemsSource="{Binding Source={StaticResource GroupEmployeeTable}}" AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" SelectedIndex="{Binding SelectedIndex}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid dgx:DataGridFilter.IsAutoFilterEnabled="True" AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" SelectedIndex="{Binding SelectedIndex}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
+                <DataGrid.Style>
+                    <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                        <Setter Property="ItemsSource" Value="{Binding EmployeeTable}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Group}" Value="NAME">
+                                <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupNames}}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Group}" Value="JOB">
+                                <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupJobs}}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Group}" Value="BUILDING">
+                                <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupBuildings}}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Group}" Value="ACTIVE">
+                                <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupActives}}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Style>
                 <DataGrid.GroupStyle>
                     <GroupStyle ContainerStyle="{StaticResource GroupHeaderStyle}">
                         <GroupStyle.Panel>

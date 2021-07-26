@@ -48,6 +48,8 @@ namespace EquipmentList.ViewModel
                         employeeTable = new DataTable();
                         employeeAdapter.Fill(employeeTable);
                         ViewModel = new EmployeeViewModel(employeeExtendedTable);
+                        ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
+                        ((EmployeeViewModel)ViewModel).SelectedIndex = -1;
                         break;
                     case DefinedViews.BuildingView:
                         buildingTable = new DataTable();
@@ -156,7 +158,8 @@ namespace EquipmentList.ViewModel
                         if (groupEmployeeIndex != value)
                         {
                             groupEmployeeIndex = value;
-                            ViewModel = new EmployeeViewModel(employeeExtendedTable.GropuDataTable(groupEmployee[groupEmployeeIndex]));
+                            ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
+                            ((EmployeeViewModel)ViewModel).SelectedIndex = -1;
                         }
                         break;
                 }
@@ -206,55 +209,19 @@ namespace EquipmentList.ViewModel
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("SELECT ");
-                sb.Append("EMPLOYEE.NAME, EMPLOYEE.JOB, EMPLOYEE.PHONE, EMPLOYEE.EMAIL, EMPLOYEE.BUILDING, ");
+                sb.Append("EMPLOYEE.NAME, EMPLOYEE.JOB, EMPLOYEE.PHONE, EMPLOYEE.EMAIL, EMPLOYEE.BUILDING, EMPLOYEE.ROOM, ");
                 sb.Append("BUILDING.COUNTRY, BUILDING.CITY, BUILDING.ADDRESS, BUILDING.POSTCODE, ");
                 sb.Append("PERMISSIONS.ACTIVE, PERMISSIONS.ADD_USER, PERMISSIONS.EDIT_USER, PERMISSIONS.DELETE_USER, PERMISSIONS.ADD_OWN_EQUIPMENT, PERMISSIONS.DELETE_OWN_EQUIPMENT, PERMISSIONS.ADD_OTHER_EQUIPMENT, PERMISSIONS.DELETE_OTHER_EQUIPMENT, PERMISSIONS.VIEW_OTHER_EQUIPMENT, PERMISSIONS.EDIT_OTHER_EQUIPMENT, PERMISSIONS.PRINT_USER, PERMISSIONS.PRINT_OTHER_EQUIPMENT ");
                 sb.Append("FROM EMPLOYEE LEFT JOIN BUILDING ON EMPLOYEE.BUILDING = BUILDING.NAME LEFT JOIN PERMISSIONS ON EMPLOYEE.ID = PERMISSIONS.ID ");
 
                 employeeExtendedAdapter = new FbDataAdapter(sb.ToString(), connection);
                 employeeExtendedAdapter.Fill(employeeExtendedTable);
-                employeeExtendedTable.Columns.Add("GROUP", typeof(String));
             }
             catch (Exception e)
             {
 
             }
           
-        }
-    }
-
-    static class ExtensionMethodClass
-    {
-        public static DataTable GropuDataTable(this DataTable dt, string header)
-        {
-            switch (header)
-            {
-                case "Name":
-                    header = "NAME";
-                    break;
-                case "Job title":
-                    header = "JOB";
-                    break;
-                case "Building":
-                    header = "BUILDING";
-                    break;
-                case "Status":
-                    header = "ACTIVE";
-                    break;
-            }
-
-            foreach (DataRow row in dt.Rows)
-            {
-                if (String.IsNullOrEmpty(header))
-                {
-                    row["GROUP"] = String.Empty;
-                }
-                else
-                {
-                    row["GROUP"] = row[header].ToString();
-                }
-            }
-            return dt;
         }
     }
 }
