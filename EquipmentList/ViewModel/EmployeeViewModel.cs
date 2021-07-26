@@ -33,8 +33,11 @@ namespace EquipmentList.ViewModel
 
             set
             {
-                selectedIndex = value;
-                RaisePropertyChanged("SelectedIndex");
+                if (selectedIndex != value)
+                {
+                    selectedIndex = value;
+                    RaisePropertyChanged("SelectedIndex");
+                }
             }
         }
 
@@ -93,8 +96,9 @@ namespace EquipmentList.ViewModel
                     BUILDING = row["BUILDING"].ToString(),
                     ACTIVE = active
                 });
-            }
 
+                selectedIndex = -1;
+            }
         }
     }
 }

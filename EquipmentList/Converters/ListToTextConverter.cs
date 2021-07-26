@@ -13,7 +13,7 @@ namespace EquipmentList.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values == null)
+            if (values == null || values[0] == DependencyProperty.UnsetValue)
             {
                 return String.Empty;
             }

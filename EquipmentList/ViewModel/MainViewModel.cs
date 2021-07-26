@@ -50,16 +50,7 @@ namespace EquipmentList.ViewModel
                         employeeExtendedAdapter.Fill(employeeExtendedTable);
                         ViewModel = null;
                         ViewModel = new EmployeeViewModel(employeeExtendedTable);
-                        try
-                        {
-                            ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
-                        }
-                        catch (Exception e)
-                        {
-                            groupEmployeeIndex = 0;
-                            ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
-                            RaisePropertyChanged("GroupIndex");
-                        }
+                        ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
                         ((EmployeeViewModel)ViewModel).SelectedIndex = -1;
                         break;
                     case DefinedViews.BuildingView:
@@ -164,6 +155,11 @@ namespace EquipmentList.ViewModel
 
             set
             {
+                if (value == -1)
+                {
+                    return;
+                }
+
                 switch (View)
                 {
                     case DefinedViews.EmployeeView:

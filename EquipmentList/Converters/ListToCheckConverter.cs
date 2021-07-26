@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace EquipmentList.Converters
@@ -10,7 +11,7 @@ namespace EquipmentList.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values == null)
+            if (values == null || values[0] == DependencyProperty.UnsetValue)
             {
                 return false;
             }
