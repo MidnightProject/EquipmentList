@@ -60,6 +60,7 @@
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -79,6 +80,15 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="TomsToolbox.Essentials, Version=2.5.5.0, Culture=neutral, PublicKeyToken=60b39f873a8e3fc2, processorArchitecture=MSIL">
+      <HintPath>..\packages\TomsToolbox.Essentials.2.5.5\lib\net45\TomsToolbox.Essentials.dll</HintPath>
+    </Reference>
+    <Reference Include="TomsToolbox.ObservableCollections, Version=2.5.5.0, Culture=neutral, PublicKeyToken=60b39f873a8e3fc2, processorArchitecture=MSIL">
+      <HintPath>..\packages\TomsToolbox.ObservableCollections.2.5.5\lib\net45\TomsToolbox.ObservableCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="TomsToolbox.Wpf, Version=2.5.5.0, Culture=neutral, PublicKeyToken=60b39f873a8e3fc2, processorArchitecture=MSIL">
+      <HintPath>..\packages\TomsToolbox.Wpf.2.5.5\lib\net45\TomsToolbox.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -88,11 +98,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\DataTableColumnToCheckConverter.cs" />
-    <Compile Include="Converters\DataTableColumnToTextConverter.cs" />
+    <Compile Include="Converters\ListToCheckConverter.cs" />
+    <Compile Include="Converters\ListToTextConverter.cs" />
     <Compile Include="Converters\ViewToEnableConverter.cs" />
     <Compile Include="Converters\ViewToTextConverter.cs" />
     <Compile Include="Converters\VisibilityToIsCheckedConverter.cs" />
+    <Compile Include="Model\DataEmployee.cs.cs" />
     <Compile Include="Model\Views.cs" />
     <Compile Include="ViewModel\BuildingViewModel.cs" />
     <Compile Include="ViewModel\EmployeeViewModel.cs" />

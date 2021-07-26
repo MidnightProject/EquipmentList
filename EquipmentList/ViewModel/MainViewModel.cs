@@ -43,17 +43,29 @@ namespace EquipmentList.ViewModel
                 switch (value)
                 {
                     case DefinedViews.EquipmentView:
+                        ViewModel = null;
                         break;
                     case DefinedViews.EmployeeView:
-                        employeeTable = new DataTable();
-                        employeeAdapter.Fill(employeeTable);
+                        employeeExtendedTable = new DataTable();
+                        employeeExtendedAdapter.Fill(employeeExtendedTable);
+                        ViewModel = null;
                         ViewModel = new EmployeeViewModel(employeeExtendedTable);
-                        ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
+                        try
+                        {
+                            ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
+                        }
+                        catch (Exception e)
+                        {
+                            groupEmployeeIndex = 0;
+                            ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
+                            RaisePropertyChanged("GroupIndex");
+                        }
                         ((EmployeeViewModel)ViewModel).SelectedIndex = -1;
                         break;
                     case DefinedViews.BuildingView:
                         buildingTable = new DataTable();
                         buildingAdapter.Fill(buildingTable);
+                        ViewModel = null;
                         ViewModel = new BuildingViewModel(buildingTable);
                         break;
                 }

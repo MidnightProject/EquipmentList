@@ -10,8 +10,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <converters:DataTableColumnToTextConverter x:Key="columnTextConverter" />
-        <converters:DataTableColumnToCheckConverter x:Key="columnCheckConverter" />
+        <converters:ListToTextConverter x:Key="columnTextConverter" />
+        <converters:ListToCheckConverter x:Key="columnCheckConverter" />
 
         <CollectionViewSource x:Key="GroupBuildings" Source="{Binding EmployeeTable}" IsLiveGroupingRequested="True">
             <CollectionViewSource.LiveSortingProperties>
@@ -46,6 +46,29 @@
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
 
+        <ControlTemplate x:Key="ComboboxFilter">
+            <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
+                <Grid Margin="10,0,0,0">
+                    <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
+                    <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
+                </Grid>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger SourceName="ComboBox" Property="Text" Value="">
+                    <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                </Trigger>
+                <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
+                    <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                </Trigger>
+                <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                </Trigger>
+                <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
+                    <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
         <Style x:Key="EmptyTextBlock" TargetType="TextBlock">
             <Style.Triggers>
                 <Trigger Property="Text" Value="{x:Null}">
@@ -62,7 +85,7 @@
                     <ControlTemplate TargetType="GroupItem">
                         <Expander IsExpanded="True" Background="{DynamicResource {x:Static SystemColors.GradientActiveCaptionBrushKey}}" Foreground="Black">
                             <Expander.Header>
-                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
                             </Expander.Header>
                             <ItemsPresenter Margin="0,10,0,10"/>
                         </Expander>
@@ -74,7 +97,7 @@
 
     <Grid>
         <StackPanel>
-            <DataGrid dgx:DataGridFilter.IsAutoFilterEnabled="True" AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" SelectedIndex="{Binding SelectedIndex}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid Name="DataGrid" dgx:DataGridFilter.IsAutoFilterEnabled="True" AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" SelectedIndex="{Binding SelectedIndex}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" RowDetailsVisibilityMode="VisibleWhenSelected">
                 <DataGrid.Style>
                     <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                         <Setter Property="ItemsSource" Value="{Binding EmployeeTable}"/>
@@ -105,13 +128,13 @@
                 </DataGrid.GroupStyle>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding NAME}" />
-                    <DataGridTextColumn Header="Job title" Binding="{Binding JOB}" />
-                    <DataGridTextColumn Header="Phone" Binding="{Binding PHONE}" />
-                    <DataGridTextColumn Header="Email" Binding="{Binding EMAIL}" />
-                    <DataGridTextColumn Header="Building" Binding="{Binding BUILDING}" />
-                    <DataGridTextColumn Header="Room" Binding="{Binding ROOM}" />
-                    <DataGridTextColumn Header="Status" Binding="{Binding ACTIVE}" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding NAME}" dgx:DataGridFilterColumn.IsFilterVisible="True"/>
+                    <DataGridTextColumn Header="Job title" Binding="{Binding JOB}" dgx:DataGridFilterColumn.IsFilterVisible="True" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                    <DataGridTextColumn Header="Phone" Binding="{Binding PHONE}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding EMAIL}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
+                    <DataGridTextColumn Header="Building" Binding="{Binding BUILDING}" dgx:DataGridFilterColumn.IsFilterVisible="True" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                    <DataGridTextColumn Header="Room" Binding="{Binding ROOM}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding ACTIVE}" dgx:DataGridFilterColumn.IsFilterVisible="True" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 </DataGrid.Columns>
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
@@ -300,6 +323,5 @@
                 </DataGrid.RowDetailsTemplate>
             </DataGrid>
         </StackPanel>
-        
     </Grid>
 </UserControl>

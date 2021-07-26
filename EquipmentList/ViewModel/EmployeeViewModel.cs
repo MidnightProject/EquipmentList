@@ -1,13 +1,15 @@
-﻿using GalaSoft.MvvmLight;
+﻿using EquipmentList.Model;
+using GalaSoft.MvvmLight;
 using System;
+using System.Collections.ObjectModel;
 using System.Data;
 
 namespace EquipmentList.ViewModel
 {
     public class EmployeeViewModel : ViewModelBase
     {
-        private DataTable employeeTable;
-        public DataTable EmployeeTable
+        private Collection<DataEmployee> employeeTable;
+        public Collection<DataEmployee> EmployeeTable
         {
             get
             {
@@ -71,8 +73,28 @@ namespace EquipmentList.ViewModel
 
         public EmployeeViewModel(DataTable dt)
         {
-            EmployeeTable = dt;
-            
+            EmployeeTable = new Collection<DataEmployee>();
+            foreach (DataRow row in dt.Rows)
+            {
+                Boolean active;
+                if (String.IsNullOrEmpty(row["ACTIVE"].ToString()))
+                {
+                    active = false;
+                }
+                else
+                {
+                    active = (Boolean)row["ACTIVE"];
+                }
+
+                EmployeeTable.Add(new DataEmployee()
+                {
+                    NAME = row["NAME"].ToString(),
+                    ADDRESS = row["ADDRESS"].ToString(),
+                    BUILDING = row["BUILDING"].ToString(),
+                    ACTIVE = active
+                });
+            }
+
         }
     }
 }

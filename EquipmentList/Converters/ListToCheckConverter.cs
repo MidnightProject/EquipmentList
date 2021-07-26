@@ -1,29 +1,32 @@
-﻿using System;
-using System.Data;
+﻿using EquipmentList.Model;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace EquipmentList.Converters
 {
-    public class DataTableColumnToCheckConverter : IMultiValueConverter
+    public class ListToCheckConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values == null || values[0] == DependencyProperty.UnsetValue)
+            if (values == null)
             {
                 return false;
             }
 
             int row = (int)values[1];
-            var value = ((DataTable)values[0]).Rows[row][(string)parameter];
+            var list = (IList<DataEmployee>)values[0];
 
-            if (String.IsNullOrEmpty(value.ToString()))
+            Boolean value = false;
+            switch (parameter.ToString())
             {
-                return false;
+                case "ACTIVE":
+                    value = list[row].ACTIVE;
+                    break;
             }
 
-            return (Boolean)value;
+            return value;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
