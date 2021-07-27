@@ -25,7 +25,7 @@ namespace EquipmentList.Converters
             switch (parameter.ToString())
             {
                 case "ADDRESSS":
-                    value = list[row].ADDRESS;
+                    value = list[row].Address;
                     break;
             }
 

@@ -8,18 +8,18 @@ namespace EquipmentList.ViewModel
 {
     public class EmployeeViewModel : ViewModelBase
     {
-        private Collection<DataEmployee> employeeTable;
-        public Collection<DataEmployee> EmployeeTable
+        private Collection<DataEmployee> dataEmployees;
+        public Collection<DataEmployee> DataEmployees
         {
             get
             {
-                return employeeTable;
+                return dataEmployees;
             }
 
             set
             {
-                employeeTable = value;
-                RaisePropertyChanged("EmployeeTable");
+                dataEmployees = value;
+                RaisePropertyChanged("DataEmployees");
             }
         }
 
@@ -76,29 +76,48 @@ namespace EquipmentList.ViewModel
 
         public EmployeeViewModel(DataTable dt)
         {
-            EmployeeTable = new Collection<DataEmployee>();
+            DataEmployees = new Collection<DataEmployee>();
             foreach (DataRow row in dt.Rows)
             {
-                Boolean active;
-                if (String.IsNullOrEmpty(row["ACTIVE"].ToString()))
+                DataEmployees.Add(new DataEmployee()
                 {
-                    active = false;
-                }
-                else
-                {
-                    active = (Boolean)row["ACTIVE"];
-                }
-
-                EmployeeTable.Add(new DataEmployee()
-                {
-                    NAME = row["NAME"].ToString(),
-                    ADDRESS = row["ADDRESS"].ToString(),
-                    BUILDING = row["BUILDING"].ToString(),
-                    ACTIVE = active
+                    Name = row["NAME"].ToString(),
+                    Job = row["JOB"].ToString(),
+                    Phone = row["PHONE"].ToString(),
+                    Email = row["Email"].ToString(),
+                    Building = row["BUILDING"].ToString(),
+                    Country = row["COUNTRY"].ToString(),
+                    City = row["CITY"].ToString(),
+                    Postcode = row["POSTCODE"].ToString(),
+                    Address = row["ADDRESS"].ToString(),
+                    Active = row["ACTIVE"].ToBoolean(),
+                    AddUser = row["ADD_USER"].ToBoolean(),
+                    EditUser = row["EDIT_USER"].ToBoolean(),
+                    DeleteUser = row["DELETE_USER"].ToBoolean(),
+                    PrintUser = row["PRINT_USER"].ToBoolean(),
+                    AddOwnEquipment = row["ADD_OWN_EQUIPMENT"].ToBoolean(),
+                    DeleteOwnEquipment = row["DELETE_OWN_EQUIPMENT"].ToBoolean(),
+                    AddOtherEquipment = row["ADD_OTHER_EQUIPMENT"].ToBoolean(),
+                    DeleteOtherEquipment = row["DELETE_OTHER_EQUIPMENT"].ToBoolean(),
+                    EditOtherEquipment = row["EDIT_OTHER_EQUIPMENT"].ToBoolean(),
+                    ViewOtherEquipment = row["VIEW_OTHER_EQUIPMENT"].ToBoolean(),
+                    PrintOtherEquipment = row["PRINT_OTHER_EQUIPMENT"].ToBoolean(),
                 });
-
-                selectedIndex = -1;
             }
+        }
+    }
+
+
+    public static class DataTableExtensions
+    {
+        public static Boolean ToBoolean(this object val)
+        {
+            if (String.IsNullOrEmpty(val.ToString()))
+            {
+                return false;
+            }
+
+            return (Boolean)val;
         }
     }
 }

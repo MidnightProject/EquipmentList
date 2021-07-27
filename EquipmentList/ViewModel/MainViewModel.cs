@@ -50,8 +50,6 @@ namespace EquipmentList.ViewModel
                         employeeExtendedAdapter.Fill(employeeExtendedTable);
                         ViewModel = null;
                         ViewModel = new EmployeeViewModel(employeeExtendedTable);
-                        ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
-                        ((EmployeeViewModel)ViewModel).SelectedIndex = -1;
                         break;
                     case DefinedViews.BuildingView:
                         buildingTable = new DataTable();
@@ -61,8 +59,8 @@ namespace EquipmentList.ViewModel
                         break;
                 }
 
-                RaisePropertyChanged("Group");
-                RaisePropertyChanged("GroupIndex");
+                RaisePropertyChanged("Group");              
+                GroupIndex = GroupIndex;
             }
         }
 
@@ -163,12 +161,9 @@ namespace EquipmentList.ViewModel
                 switch (View)
                 {
                     case DefinedViews.EmployeeView:
-                        if (groupEmployeeIndex != value)
-                        {
-                            groupEmployeeIndex = value;
-                            ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
-                            ((EmployeeViewModel)ViewModel).SelectedIndex = -1;
-                        }
+                        groupEmployeeIndex = value;
+                        ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
+                        ((EmployeeViewModel)ViewModel).SelectedIndex = -1;
                         break;
                 }
 
@@ -179,8 +174,8 @@ namespace EquipmentList.ViewModel
         private FbDataAdapter buildingAdapter;
         private DataTable buildingTable;
 
-        private FbDataAdapter employeeAdapter;
-        private DataTable employeeTable;
+        //private FbDataAdapter employeeAdapter;
+        //private DataTable employeeTable;
 
         private FbDataAdapter employeeExtendedAdapter;
         private DataTable employeeExtendedTable;
@@ -210,7 +205,7 @@ namespace EquipmentList.ViewModel
 
             buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
             employeeExtendedTable = new DataTable();
-            employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEE", connection);
+            //employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEE", connection);
 
             
             try
