@@ -14,21 +14,60 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/GroupHeaderStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <CollectionViewSource x:Key="GroupCountries" Source="{Binding DataBuildings}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>Country</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Country"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="GroupCities" Source="{Binding DataBuildings}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>City</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="City"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
         </ResourceDictionary>
     </UserControl.Resources>
     
     <Grid>
-        <DataGrid ItemsSource="{Binding BuildingTable}" 
+        <DataGrid Name="DataGrid"
                   AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" 
                   IsReadOnly="True" SelectionMode="Single" 
                   AutoGenerateColumns="False" 
                   SelectedIndex="{Binding SelectedIndex}">
+            <DataGrid.Style>
+                <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                    <Setter Property="ItemsSource" Value="{Binding DataBuildings}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Group}" Value="COUNTRY">
+                            <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupCountries}}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Group}" Value="CITY">
+                            <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupCities}}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Style>
+            <DataGrid.GroupStyle>
+                <GroupStyle ContainerStyle="{StaticResource GroupHeaderStyle}">
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <DataGridRowsPresenter />
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding NAME}" />
-                <DataGridTextColumn Header="Country" Binding="{Binding COUNTRY}" />
-                <DataGridTextColumn Header="City" Binding="{Binding CITY}" />
-                <DataGridTextColumn Header="Address" Binding="{Binding ADDRESS}" />
-                <DataGridTextColumn Header="Postcode" Binding="{Binding POSTCODE}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Country" Binding="{Binding Country}" />
+                <DataGridTextColumn Header="City" Binding="{Binding City}" />
+                <DataGridTextColumn Header="Address" Binding="{Binding Address}" />
+                <DataGridTextColumn Header="Postcode" Binding="{Binding Postcode}" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

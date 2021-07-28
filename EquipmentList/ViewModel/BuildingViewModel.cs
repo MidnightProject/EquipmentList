@@ -1,23 +1,26 @@
-﻿using FirebirdSql.Data.FirebirdClient;
+﻿using EquipmentList.Model;
+using FirebirdSql.Data.FirebirdClient;
 using GalaSoft.MvvmLight;
+using System;
+using System.Collections.ObjectModel;
 using System.Data;
 
 namespace EquipmentList.ViewModel
 {
     public class BuildingViewModel : ViewModelBase
     {
-        private DataTable buildingTable;
-        public DataTable BuildingTable
+        private Collection<DataBuilding> dataBuildings;
+        public Collection<DataBuilding> DataBuildings
         {
             get
             {
-                return buildingTable;
+                return dataBuildings;
             }
 
             set
             {
-                buildingTable = value;
-                RaisePropertyChanged("BuildingTable");
+                dataBuildings = value;
+                RaisePropertyChanged("DataBuildings");
             }
         }
 
@@ -36,10 +39,47 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private string group;
+        public string Group
+        {
+            get
+            {
+                return group;
+            }
+
+            set
+            {
+                switch (value)
+                {
+                    case "Country":
+                        group = "COUNTRY";
+                        break;
+                    case "City":
+                        group = "CITY";
+                        break;
+                    default:
+                        group = String.Empty;
+                        break;
+                }
+
+                RaisePropertyChanged("Group");
+            }
+        }
+
         public BuildingViewModel(DataTable dt)
         {
-            BuildingTable = dt;
-            SelectedIndex = -1;
+            DataBuildings = new Collection<DataBuilding>();
+            foreach (DataRow row in dt.Rows)
+            {
+                DataBuildings.Add(new DataBuilding()
+                {
+                    Name = row["NAME"].ToString(),
+                    Country = row["COUNTRY"].ToString(),
+                    City = row["CITY"].ToString(),
+                    Postcode = row["POSTCODE"].ToString(),
+                    Address = row["ADDRESS"].ToString(),
+                });
+            }
         }
     }
 }
