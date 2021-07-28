@@ -50,6 +50,7 @@ namespace EquipmentList.ViewModel
                         employeeExtendedAdapter.Fill(employeeExtendedTable);
                         ViewModel = null;
                         ViewModel = new EmployeeViewModel(employeeExtendedTable);
+                        ((EmployeeViewModel)ViewModel).ColumnStatusFilter = "Enabled";
                         break;
                     case DefinedViews.BuildingView:
                         buildingTable = new DataTable();
@@ -61,6 +62,7 @@ namespace EquipmentList.ViewModel
 
                 RaisePropertyChanged("Group");              
                 GroupIndex = GroupIndex;
+                HiddenUserSystem = HiddenUserSystem;
             }
         }
 
@@ -118,6 +120,28 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private Boolean hiddenUserSystem;
+        public Boolean HiddenUserSystem
+        {
+            get
+            {
+                return hiddenUserSystem;
+            }
+
+            set
+            {
+                hiddenUserSystem = value;
+                RaisePropertyChanged("HiddenUserSystem");
+
+                switch (View)
+                {
+                    case DefinedViews.EmployeeView:
+                        ((EmployeeViewModel)ViewModel).HiddenSystemUser = value;
+                        break;
+                }
+            }
+        }
+
         private static String[] groupEmployee = new String[] {  String.Empty,
                                                                 "Name",
                                                                 "Job title",
@@ -164,6 +188,7 @@ namespace EquipmentList.ViewModel
                         groupEmployeeIndex = value;
                         ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
                         ((EmployeeViewModel)ViewModel).SelectedIndex = -1;
+                        //((EmployeeViewModel)ViewModel).ColumnStatusFilter = "Enabled";
                         break;
                 }
 

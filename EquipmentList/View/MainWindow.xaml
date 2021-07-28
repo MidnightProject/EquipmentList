@@ -11,10 +11,10 @@
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="Equipment List" MinHeight="600" MinWidth="800" Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" WindowStartupLocation="CenterScreen" Icon="/Images/archive.ico">
     <Window.Resources>
-        <converters:ViewToEnableConverter x:Key="enableViewConverter" />
-        <converters:ViewToTextConverter x:Key="textViewConverter" />
-        <converters:VisibilityToIsCheckedConverter x:Key="checkedConverter" />
-        
+        <converters:ViewToEnableConverter x:Key="enableViewConverter"/>
+        <converters:ViewToTextConverter x:Key="textViewConverter"/>
+        <converters:VisibilityToIsCheckedConverter x:Key="checkedConverter"/>
+
         <DataTemplate DataType="{x:Type vm:BuildingViewModel}">
             <v:Building />
         </DataTemplate>
@@ -133,6 +133,7 @@
                     <MenuItem Header="Database" IsCheckable="True" IsChecked="{Binding DatabseToolBar, Converter={StaticResource checkedConverter}}"></MenuItem>
                     <MenuItem Header="Edit" IsCheckable="True" IsChecked="{Binding EditToolBar, Converter={StaticResource checkedConverter}}"></MenuItem>
                 </MenuItem>
+                <MenuItem Header="Hidden System User" IsCheckable="True" IsChecked="{Binding HiddenUserSystem}"></MenuItem>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="About author" >

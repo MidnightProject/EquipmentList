@@ -10,8 +10,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <converters:ListToTextConverter x:Key="columnTextConverter" />
-        <converters:ListToCheckConverter x:Key="columnCheckConverter" />
+        <converters:ListToTextConverter x:Key="columnTextConverter"/>
+        <converters:ListToCheckConverter x:Key="columnCheckConverter"/>
+        <converters:SystemUserToRowVisibility x:Key="hiddenRowConverter"/>
 
         <CollectionViewSource x:Key="GroupBuildings" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
             <CollectionViewSource.LiveSortingProperties>
@@ -48,7 +49,7 @@
 
         <ControlTemplate x:Key="ComboboxFilter">
             <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
-                <Grid Margin="10,0,0,0">
+                <Grid>
                     <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
                     <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
                 </Grid>
@@ -132,15 +133,27 @@
                         </GroupStyle.Panel>
                     </GroupStyle>
                 </DataGrid.GroupStyle>
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Visibility">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource hiddenRowConverter}">
+                                    <Binding Path="Name"/>
+                                    <Binding Path="DataContext.HiddenSystemUser" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}"/>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" dgx:DataGridFilterColumn.IsFilterVisible="True"/>
-                    <DataGridTextColumn Header="Job title" Binding="{Binding Job}" dgx:DataGridFilterColumn.IsFilterVisible="True" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                    <DataGridTextColumn x:Name="columnName" Header="Name" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Job title" Binding="{Binding Job}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                     <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
-                    <DataGridTextColumn Header="Building" Binding="{Binding Building}" dgx:DataGridFilterColumn.IsFilterVisible="True" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                    <DataGridTextColumn Header="Building" Binding="{Binding Building}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                     <DataGridTextColumn Header="Room" Binding="{Binding Room}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
-                    <DataGridTextColumn Header="Status" Binding="{Binding Active}" dgx:DataGridFilterColumn.IsFilterVisible="True" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                    <DataGridTextColumn x:Name="columnStatus" Header="Status" Binding="{Binding Status}" dgx:DataGridFilterColumn.Filter="{Binding ColumnStatusFilter}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 </DataGrid.Columns>
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
@@ -150,8 +163,8 @@
                                 <TextBlock Margin="10,5,0,5" Style="{StaticResource EmptyTextBlock}">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ADDRESS">
-                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                            <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
@@ -159,16 +172,16 @@
                                     <TextBlock Style="{StaticResource EmptyTextBlock}">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="POSTCODE">
-                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
                                     <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="5,0,0,0">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="CITY">
-                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
@@ -176,8 +189,8 @@
                                 <TextBlock Margin="10,5,0,5" Style="{StaticResource EmptyTextBlock}">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="COUNTRY">
-                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                            <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
@@ -194,8 +207,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="ADD_USER">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="ADD" />
@@ -203,8 +216,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="DELETE_USER">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="REMOVE" />
@@ -212,8 +225,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="EDIT_USER">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="EDIT" />
@@ -221,8 +234,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="PRINT_USER">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="PRINT" />
@@ -241,8 +254,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="ADD_OWN_EQUIPMENT">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="ADD" />
@@ -250,8 +263,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="DELETE_OWN_EQUIPMENT">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="REMOVE" />
@@ -279,8 +292,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="ADD_OTHER_EQUIPMENT">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="ADD" />
@@ -288,8 +301,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="DELETE_OTHER_EQUIPMENT">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="REMOVE" />
@@ -297,8 +310,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="EDIT_OTHER_EQUIPMENT">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="EDIT" />
@@ -306,8 +319,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="PRINT_OTHER_EQUIPMENT">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="PRINT" />
@@ -315,8 +328,8 @@
                                         <CheckBox>
                                             <CheckBox.IsChecked>
                                                 <MultiBinding Converter="{StaticResource columnCheckConverter}" ConverterParameter="VIEW_OTHER_EQUIPMENT">
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.DataEmployees"/>
-                                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}" Path="DataContext.SelectedIndex"/>
+                                                    <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                    <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 </MultiBinding>
                                             </CheckBox.IsChecked>
                                             <TextBlock Text="VIEW" />

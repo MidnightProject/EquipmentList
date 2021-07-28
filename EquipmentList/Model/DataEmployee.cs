@@ -19,6 +19,7 @@ namespace EquipmentList.Model
         public string Postcode { get; set; }
 
         public Boolean Active { get; set; }
+        public String Status { get; set; }
         public Boolean AddUser { get; set; }
         public Boolean EditUser { get; set; }
         public Boolean DeleteUser { get; set; }

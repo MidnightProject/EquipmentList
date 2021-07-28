@@ -23,6 +23,21 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private string columnStatusFilter;
+        public string ColumnStatusFilter
+        {
+            get
+            {
+                return columnStatusFilter;
+            }
+
+            set
+            {
+                columnStatusFilter = value;
+                RaisePropertyChanged("ColumnStatusFilter");
+            }
+        }
+
         private int selectedIndex;
         public int SelectedIndex
         {
@@ -74,8 +89,28 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private Boolean hiddenSystemUser;
+        public Boolean HiddenSystemUser
+        {
+            get
+            {
+                return hiddenSystemUser;
+            }
+
+            set
+            {
+                if (hiddenSystemUser != value)
+                {
+                    hiddenSystemUser = value;
+                    RaisePropertyChanged("HiddenSystemUser");
+                }
+            }
+        }
+
         public EmployeeViewModel(DataTable dt)
         {
+            HiddenSystemUser = true;
+
             DataEmployees = new Collection<DataEmployee>();
             foreach (DataRow row in dt.Rows)
             {
@@ -91,6 +126,7 @@ namespace EquipmentList.ViewModel
                     Postcode = row["POSTCODE"].ToString(),
                     Address = row["ADDRESS"].ToString(),
                     Active = row["ACTIVE"].ToBoolean(),
+                    Status = row["ACTIVE"].ToStatus(),
                     AddUser = row["ADD_USER"].ToBoolean(),
                     EditUser = row["EDIT_USER"].ToBoolean(),
                     DeleteUser = row["DELETE_USER"].ToBoolean(),
@@ -107,7 +143,6 @@ namespace EquipmentList.ViewModel
         }
     }
 
-
     public static class DataTableExtensions
     {
         public static Boolean ToBoolean(this object val)
@@ -118,6 +153,21 @@ namespace EquipmentList.ViewModel
             }
 
             return (Boolean)val;
+        }
+
+        public static String ToStatus(this object val)
+        {
+            string status = val.ToString();
+
+            switch (status)
+            {
+                case "True":
+                    return "Enabled";
+                case "False":
+                    return "Disabled";
+                default:
+                    return "Disabled";
+            }  
         }
     }
 }
