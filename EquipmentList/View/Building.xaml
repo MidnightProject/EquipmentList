@@ -2,12 +2,27 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:EquipmentList.View"
+             xmlns:converters="clr-namespace:EquipmentList.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/GroupHeaderStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <Grid>
-        <DataGrid ItemsSource="{Binding BuildingTable}" AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" IsReadOnly="True" SelectionMode="Single" AutoGenerateColumns="False" SelectedIndex="{Binding SelectedIndex}">
+        <DataGrid ItemsSource="{Binding BuildingTable}" 
+                  AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" 
+                  IsReadOnly="True" SelectionMode="Single" 
+                  AutoGenerateColumns="False" 
+                  SelectedIndex="{Binding SelectedIndex}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding NAME}" />
                 <DataGridTextColumn Header="Country" Binding="{Binding COUNTRY}" />

@@ -10,90 +10,72 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <converters:ListToTextConverter x:Key="columnTextConverter"/>
-        <converters:ListToCheckConverter x:Key="columnCheckConverter"/>
-        <converters:SystemUserToRowVisibility x:Key="hiddenRowConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/EmptyTextBlock.xaml"/>
+                <ResourceDictionary Source="/Styles/GroupHeaderStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-        <CollectionViewSource x:Key="GroupBuildings" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
-            <CollectionViewSource.LiveSortingProperties>
-                <s:String>Building</s:String>
-            </CollectionViewSource.LiveSortingProperties>
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Building"/>
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
-        <CollectionViewSource x:Key="GroupNames" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
-            <CollectionViewSource.LiveSortingProperties>
-                <s:String>Name</s:String>
-            </CollectionViewSource.LiveSortingProperties>
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Name"/>
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
-        <CollectionViewSource x:Key="GroupJobs" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
-            <CollectionViewSource.LiveSortingProperties>
-                <s:String>Job</s:String>
-            </CollectionViewSource.LiveSortingProperties>
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Job"/>
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
-        <CollectionViewSource x:Key="GroupActives" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
-            <CollectionViewSource.LiveSortingProperties>
-                <s:String>Active</s:String>
-            </CollectionViewSource.LiveSortingProperties>
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Active"/>
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
+            <converters:ListToTextConverter x:Key="columnTextConverter"/>
+            <converters:ListToCheckConverter x:Key="columnCheckConverter"/>
+            <converters:SystemUserToRowVisibility x:Key="hiddenRowConverter"/>
 
-        <ControlTemplate x:Key="ComboboxFilter">
-            <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
-                <Grid>
-                    <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
-                    <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
+            <ControlTemplate x:Key="ComboboxFilter">
+                <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
+                    <Grid Margin="10,0,0,0">
+                        <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
+                        <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
+                    </Grid>
                 </Grid>
-            </Grid>
-            <ControlTemplate.Triggers>
-                <Trigger SourceName="ComboBox" Property="Text" Value="">
-                    <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
-                </Trigger>
-                <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
-                    <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
-                </Trigger>
-                <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
-                    <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
-                </Trigger>
-                <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
-                    <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
+                <ControlTemplate.Triggers>
+                    <Trigger SourceName="ComboBox" Property="Text" Value="">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                    </Trigger>
+                    <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                    </Trigger>
+                    <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                    </Trigger>
+                    <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
 
-        <Style x:Key="EmptyTextBlock" TargetType="TextBlock">
-            <Style.Triggers>
-                <Trigger Property="Text" Value="{x:Null}">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </Trigger>
-                <Trigger Property="Text" Value="">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="GroupHeaderStyle" TargetType="GroupItem">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="GroupItem">
-                        <Expander IsExpanded="True" Background="{DynamicResource {x:Static SystemColors.GradientActiveCaptionBrushKey}}" Foreground="Black">
-                            <Expander.Header>
-                                <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                            </Expander.Header>
-                            <ItemsPresenter Margin="0,10,0,10"/>
-                        </Expander>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+            <CollectionViewSource x:Key="GroupBuildings" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>Building</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Building"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="GroupNames" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>Name</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Name"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="GroupJobs" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>Job</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Job"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="GroupActives" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>Active</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Active"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>

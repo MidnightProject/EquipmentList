@@ -147,6 +147,10 @@ namespace EquipmentList.ViewModel
                                                                 "Job title",
                                                                 "Building",
                                                                 "Status", };
+
+        private static String[] groupBuilding = new String[] {  String.Empty,
+                                                                "Country",
+                                                                "City", };
         public String[] Group
         {
             get
@@ -155,6 +159,8 @@ namespace EquipmentList.ViewModel
                 {
                     case DefinedViews.EmployeeView:
                         return groupEmployee;
+                    case DefinedViews.BuildingView:
+                        return groupBuilding;
                     default:
                         return new string[] { };
                 }
@@ -188,7 +194,6 @@ namespace EquipmentList.ViewModel
                         groupEmployeeIndex = value;
                         ((EmployeeViewModel)ViewModel).Group = groupEmployee[groupEmployeeIndex];
                         ((EmployeeViewModel)ViewModel).SelectedIndex = -1;
-                        //((EmployeeViewModel)ViewModel).ColumnStatusFilter = "Enabled";
                         break;
                 }
 
@@ -230,8 +235,6 @@ namespace EquipmentList.ViewModel
 
             buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
             employeeExtendedTable = new DataTable();
-            //employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEE", connection);
-
             
             try
             {
