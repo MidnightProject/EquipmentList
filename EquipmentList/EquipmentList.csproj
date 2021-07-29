@@ -107,7 +107,7 @@
     <Compile Include="Model\DataBuilding.cs" />
     <Compile Include="Model\DataEmployee.cs" />
     <Compile Include="Model\DataTableExtensions.cs" />
-    <Compile Include="Model\Views.cs" />
+    <Compile Include="View\Views.cs" />
     <Compile Include="ViewModel\BuildingViewModel.cs" />
     <Compile Include="ViewModel\EmployeeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

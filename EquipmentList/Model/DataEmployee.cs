@@ -17,6 +17,7 @@ namespace EquipmentList.Model
         public string City { get; set; }
         public string Address { get; set; }
         public string Postcode { get; set; }
+        public string Room { get; set; }
 
         public Boolean Active { get; set; }
         public String Status { get; set; }

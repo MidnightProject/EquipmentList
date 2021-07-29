@@ -125,6 +125,7 @@ namespace EquipmentList.ViewModel
                     City = row["CITY"].ToString(),
                     Postcode = row["POSTCODE"].ToString(),
                     Address = row["ADDRESS"].ToString(),
+                    Room = row["ROOM"].ToString(),
                     Active = row["ACTIVE"].ToBoolean(),
                     Status = row["ACTIVE"].ToStatus(),
                     AddUser = row["ADD_USER"].ToBoolean(),
