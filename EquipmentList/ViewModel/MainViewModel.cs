@@ -60,8 +60,9 @@ namespace EquipmentList.ViewModel
                         break;
                 }
 
-                RaisePropertyChanged("Group");              
+                RaisePropertyChanged("Group");
                 GroupIndex = GroupIndex;
+
                 HiddenUserSystem = HiddenUserSystem;
             }
         }
@@ -222,7 +223,6 @@ namespace EquipmentList.ViewModel
         {
             DatabseToolBar = Visibility.Visible;
             EditToolBar = Visibility.Visible;
-            
 
             string databaseName = Path.Combine(Environment.CurrentDirectory, @"DB\", "EQUIPMENT.FDB");
 

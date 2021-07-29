@@ -12,30 +12,50 @@ namespace EquipmentList.Converters
         {
             StringBuilder sb = new StringBuilder();
             
-            switch ((string)parameter)
+            if ((string)parameter != "Group")
             {
-                case "Add":
-                    sb.Append("Add ");
-                    break;
-                case "Remove":
-                    sb.Append("Remove ");
-                    break;
-                case "Edit":
-                    sb.Append("Edit ");
-                    break;
-            }
+                switch ((string)parameter)
+                {
+                    case "Add":
+                        sb.Append("Add ");
+                        break;
+                    case "Remove":
+                        sb.Append("Remove ");
+                        break;
+                    case "Edit":
+                        sb.Append("Edit ");
+                        break;
+                }
 
-            switch ((DefinedViews)value)
+                switch ((DefinedViews)value)
+                {
+                    case DefinedViews.BuildingView:
+                        sb.Append("building");
+                        break;
+                    case DefinedViews.EmployeeView:
+                        sb.Append("employee");
+                        break;
+                    case DefinedViews.EquipmentView:
+                        sb.Append("equipment");
+                        break;
+                }
+            }
+            else
             {
-                case DefinedViews.BuildingView:
-                    sb.Append("building");
-                    break;
-                case DefinedViews.EmployeeView:
-                    sb.Append("employee");
-                    break;
-                case DefinedViews.EquipmentView:
-                    sb.Append("equipment");
-                    break;
+                sb.Append("Group ");
+
+                switch ((DefinedViews)value)
+                {
+                    case DefinedViews.BuildingView:
+                        sb.Append("buildings");
+                        break;
+                    case DefinedViews.EmployeeView:
+                        sb.Append("employees");
+                        break;
+                    case DefinedViews.EquipmentView:
+                        sb.Append("equipments");
+                        break;
+                }
             }
 
             return sb.ToString();

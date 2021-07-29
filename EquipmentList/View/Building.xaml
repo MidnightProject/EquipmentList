@@ -15,6 +15,29 @@
                 <ResourceDictionary Source="/Styles/GroupHeaderStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <ControlTemplate x:Key="ComboboxFilter">
+                <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
+                    <Grid Margin="10,0,0,0">
+                        <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
+                        <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
+                    </Grid>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger SourceName="ComboBox" Property="Text" Value="">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                    </Trigger>
+                    <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                    </Trigger>
+                    <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                    </Trigger>
+                    <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+
             <CollectionViewSource x:Key="GroupCountries" Source="{Binding DataBuildings}" IsLiveGroupingRequested="True">
                 <CollectionViewSource.LiveSortingProperties>
                     <s:String>Country</s:String>
@@ -36,6 +59,7 @@
     
     <Grid>
         <DataGrid Name="DataGrid"
+                  dgx:DataGridFilter.IsAutoFilterEnabled="True"
                   AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" 
                   IsReadOnly="True" SelectionMode="Single" 
                   AutoGenerateColumns="False" 
@@ -63,11 +87,11 @@
                 </GroupStyle>
             </DataGrid.GroupStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Country" Binding="{Binding Country}" />
-                <DataGridTextColumn Header="City" Binding="{Binding City}" />
-                <DataGridTextColumn Header="Address" Binding="{Binding Address}" />
-                <DataGridTextColumn Header="Postcode" Binding="{Binding Postcode}" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Country" Binding="{Binding Country}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                <DataGridTextColumn Header="City" Binding="{Binding City}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                <DataGridTextColumn Header="Address" Binding="{Binding Address}"/>
+                <DataGridTextColumn Header="Postcode" Binding="{Binding Postcode}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

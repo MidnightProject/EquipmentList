@@ -1,7 +1,6 @@
 ﻿using DataGridExtensions;
 using System.Windows.Controls;
 using System;
-using System.Diagnostics;
 using System.Windows.Threading;
 using System.Windows.Data;
 
