@@ -145,15 +145,6 @@
                         <Border BorderThickness="0" Background="White" >
                             <StackPanel Margin="10" >
                                 <TextBlock Text="Building:" FontWeight="Bold" />
-                                <TextBlock Margin="10,5,0,5" Style="{StaticResource EmptyTextBlock}">
-                                    <TextBlock.Text>
-                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ADDRESS">
-                                            <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
-                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
-                                            <Binding Source="{StaticResource View}"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
                                 <WrapPanel Margin="10,5,0,5">
                                     <TextBlock Style="{StaticResource EmptyTextBlock}">
                                         <TextBlock.Text>
@@ -164,7 +155,7 @@
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
-                                    <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="5,0,0,0">
+                                    <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="CITY">
                                                 <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
@@ -173,16 +164,25 @@
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
+                                    <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ADDRESS">
+                                                <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                <Binding Source="{StaticResource View}"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                    <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0" >
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="COUNTRY">
+                                                <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                <Binding Source="{StaticResource View}"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
                                 </WrapPanel>
-                                <TextBlock Margin="10,5,0,5" Style="{StaticResource EmptyTextBlock}">
-                                    <TextBlock.Text>
-                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="COUNTRY">
-                                            <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
-                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
-                                            <Binding Source="{StaticResource View}"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
                                 <TextBlock Text="Permissions:" FontWeight="Bold" />
                                 <GroupBox Header="USER" Margin="10,5,0,5">
                                     <WrapPanel Margin="0,5,0,0">

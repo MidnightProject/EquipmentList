@@ -49,10 +49,10 @@ namespace EquipmentList.ViewModel
                         ViewModel = new EquipmentViewModel(equipmentTable);
                         break;
                     case DefinedViews.EmployeeView:
-                        employeeExtendedTable = new DataTable();
-                        employeeExtendedAdapter.Fill(employeeExtendedTable);
+                        employeeTable = new DataTable();
+                        employeeAdapter.Fill(employeeTable);
                         //ViewModel = null;
-                        ViewModel = new EmployeeViewModel(employeeExtendedTable);
+                        ViewModel = new EmployeeViewModel(employeeTable);
                         ((EmployeeViewModel)ViewModel).ColumnStatusFilter = "Enabled";
                         break;
                     case DefinedViews.BuildingView:
@@ -219,8 +219,8 @@ namespace EquipmentList.ViewModel
         private FbDataAdapter equipmentAdapter;
         private DataTable equipmentTable;
 
-        private FbDataAdapter employeeExtendedAdapter;
-        private DataTable employeeExtendedTable;
+        private FbDataAdapter employeeAdapter;
+        private DataTable employeeTable;
 
         public MainViewModel()
         {
@@ -246,7 +246,7 @@ namespace EquipmentList.ViewModel
 
             buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
 
-            employeeExtendedTable = new DataTable();
+            employeeTable = new DataTable();
             try
             {
                 StringBuilder sb = new StringBuilder();
@@ -254,10 +254,11 @@ namespace EquipmentList.ViewModel
                 sb.Append("EMPLOYEE.NAME, EMPLOYEE.JOB, EMPLOYEE.PHONE, EMPLOYEE.EMAIL, EMPLOYEE.BUILDING, EMPLOYEE.ROOM, ");
                 sb.Append("BUILDING.COUNTRY, BUILDING.CITY, BUILDING.ADDRESS, BUILDING.POSTCODE, ");
                 sb.Append("PERMISSIONS.ACTIVE, PERMISSIONS.ADD_USER, PERMISSIONS.EDIT_USER, PERMISSIONS.DELETE_USER, PERMISSIONS.ADD_OWN_EQUIPMENT, PERMISSIONS.DELETE_OWN_EQUIPMENT, PERMISSIONS.ADD_OTHER_EQUIPMENT, PERMISSIONS.DELETE_OTHER_EQUIPMENT, PERMISSIONS.VIEW_OTHER_EQUIPMENT, PERMISSIONS.EDIT_OTHER_EQUIPMENT, PERMISSIONS.PRINT_USER, PERMISSIONS.PRINT_OTHER_EQUIPMENT ");
-                sb.Append("FROM EMPLOYEE LEFT JOIN BUILDING ON EMPLOYEE.BUILDING = BUILDING.NAME LEFT JOIN PERMISSIONS ON EMPLOYEE.ID = PERMISSIONS.ID ");
+                sb.Append("FROM EMPLOYEE ");
+                sb.Append("LEFT JOIN BUILDING ON EMPLOYEE.BUILDING = BUILDING.NAME LEFT JOIN PERMISSIONS ON EMPLOYEE.ID = PERMISSIONS.ID ");
 
-                employeeExtendedAdapter = new FbDataAdapter(sb.ToString(), connection);
-                employeeExtendedAdapter.Fill(employeeExtendedTable);
+                employeeAdapter = new FbDataAdapter(sb.ToString(), connection);
+                employeeAdapter.Fill(employeeTable);
             }
             catch (Exception e)
             {
@@ -269,9 +270,14 @@ namespace EquipmentList.ViewModel
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("SELECT ");
-                sb.Append("EQUIPMENT.ID, EQUIPMENT.NAME, EQUIPMENT.SN, EQUIPMENT.SUBGROUP, EQUIPMENT.EMPLOYEE, ");
-                sb.Append("EMPLOYEE.NAME AS EMPLOYEE_NAME ");
-                sb.Append("FROM EQUIPMENT LEFT JOIN EMPLOYEE ON EQUIPMENT.EMPLOYEE = EMPLOYEE.ID ");
+                sb.Append("EQUIPMENT.ID, EQUIPMENT.NAME, EQUIPMENT.SN, EQUIPMENT.SUBGROUP, EQUIPMENT.EMPLOYEE, EQUIPMENT.DESCRIPTION, EQUIPMENT.ROOM, EQUIPMENT.PRODUCER, EQUIPMENT.BUILDING, EQUIPMENT.PRODUCTION_DATE, EQUIPMENT.WARRANTY_DATE, EQUIPMENT.COMMENTS, EQUIPMENT.LEGALIZATION_DATE, EQUIPMENT.REVIEW_DATE, ");
+                sb.Append("EMPLOYEE.NAME AS EMPLOYEE_NAME, EMPLOYEE.ROOM AS EMPLOYEE_ROOM, EMPLOYEE.PHONE AS EMPLOYEE_PHONE, EMPLOYEE.EMAIL AS EMPLOYEE_EMAIL, ");
+                sb.Append("EMPLOYEE_BUILDING.NAME AS EMPLOYEE_BUILDING_NAME, EMPLOYEE_BUILDING.COUNTRY AS EMPLOYEE_BUILDING_COUNTRY, EMPLOYEE_BUILDING.CITY AS EMPLOYEE_BUILDING_CITY, EMPLOYEE_BUILDING.ADDRESS AS EMPLOYEE_BUILDING_ADDRESS, EMPLOYEE_BUILDING.POSTCODE AS EMPLOYEE_BUILDING_POSTCODE, ");
+                sb.Append("EQUIPMENT_BUILDING.COUNTRY AS EQUIPMENT_BUILDING_COUNTRY, EQUIPMENT_BUILDING.CITY AS EQUIPMENT_BUILDING_CITY, EQUIPMENT_BUILDING.ADDRESS AS EQUIPMENT_BUILDING_ADDRESS, EQUIPMENT_BUILDING.POSTCODE AS EQUIPMENT_BUILDING_POSTCODE ");
+                sb.Append("FROM EQUIPMENT ");
+                sb.Append("LEFT JOIN EMPLOYEE ON EQUIPMENT.EMPLOYEE = EMPLOYEE.ID ");
+                sb.Append("LEFT JOIN BUILDING AS EMPLOYEE_BUILDING ON EMPLOYEE.BUILDING = EMPLOYEE_BUILDING.NAME ");
+                sb.Append("LEFT JOIN BUILDING AS EQUIPMENT_BUILDING ON EQUIPMENT.BUILDING = EQUIPMENT_BUILDING.NAME ");
 
                 equipmentAdapter = new FbDataAdapter(sb.ToString(), connection);
                 equipmentAdapter.Fill(equipmentTable);
