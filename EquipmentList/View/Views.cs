@@ -1,4 +1,4 @@
-﻿namespace EquipmentList.Model
+﻿namespace EquipmentList.View
 {
     public class Views
     {

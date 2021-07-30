@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using static EquipmentList.Model.Views;
+using static EquipmentList.View.Views;
 
 namespace EquipmentList.Converters
 {

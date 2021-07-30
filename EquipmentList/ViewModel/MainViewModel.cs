@@ -6,7 +6,7 @@ using System.Windows;
 using FirebirdSql.Data.FirebirdClient;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using static EquipmentList.Model.Views;
+using static EquipmentList.View.Views;
 
 namespace EquipmentList.ViewModel
 {
@@ -43,19 +43,22 @@ namespace EquipmentList.ViewModel
                 switch (value)
                 {
                     case DefinedViews.EquipmentView:
-                        ViewModel = null;
+                        //ViewModel = null;
+                        equipmentTable = new DataTable();
+                        equipmentAdapter.Fill(equipmentTable);
+                        ViewModel = new EquipmentViewModel(equipmentTable);
                         break;
                     case DefinedViews.EmployeeView:
                         employeeExtendedTable = new DataTable();
                         employeeExtendedAdapter.Fill(employeeExtendedTable);
-                        ViewModel = null;
+                        //ViewModel = null;
                         ViewModel = new EmployeeViewModel(employeeExtendedTable);
                         ((EmployeeViewModel)ViewModel).ColumnStatusFilter = "Enabled";
                         break;
                     case DefinedViews.BuildingView:
                         buildingTable = new DataTable();
                         buildingAdapter.Fill(buildingTable);
-                        ViewModel = null;
+                        //ViewModel = null;
                         ViewModel = new BuildingViewModel(buildingTable);
                         break;
                 }
@@ -213,8 +216,8 @@ namespace EquipmentList.ViewModel
         private FbDataAdapter buildingAdapter;
         private DataTable buildingTable;
 
-        //private FbDataAdapter employeeAdapter;
-        //private DataTable employeeTable;
+        private FbDataAdapter equipmentAdapter;
+        private DataTable equipmentTable;
 
         private FbDataAdapter employeeExtendedAdapter;
         private DataTable employeeExtendedTable;
@@ -242,8 +245,8 @@ namespace EquipmentList.ViewModel
             connection.Open();
 
             buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
+
             employeeExtendedTable = new DataTable();
-            
             try
             {
                 StringBuilder sb = new StringBuilder();
@@ -260,7 +263,25 @@ namespace EquipmentList.ViewModel
             {
 
             }
-          
+
+            equipmentTable = new DataTable();
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT ");
+                sb.Append("EQUIPMENT.ID, EQUIPMENT.NAME, EQUIPMENT.SN, EQUIPMENT.SUBGROUP, EQUIPMENT.EMPLOYEE, ");
+                sb.Append("EMPLOYEE.NAME AS EMPLOYEE_NAME ");
+                sb.Append("FROM EQUIPMENT LEFT JOIN EMPLOYEE ON EQUIPMENT.EMPLOYEE = EMPLOYEE.ID ");
+
+                equipmentAdapter = new FbDataAdapter(sb.ToString(), connection);
+                equipmentAdapter.Fill(equipmentTable);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            View = DefinedViews.EquipmentView;
         }
     }
 }

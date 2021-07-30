@@ -16,10 +16,13 @@
         <converters:VisibilityToIsCheckedConverter x:Key="checkedConverter"/>
 
         <DataTemplate DataType="{x:Type vm:BuildingViewModel}">
-            <v:Building />
+            <v:Building/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:EmployeeViewModel}">
-            <v:Employee />
+            <v:Employee/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:EquipmentViewModel}">
+            <v:Equipment/>
         </DataTemplate>
     </Window.Resources>
     

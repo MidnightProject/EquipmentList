@@ -3,11 +3,27 @@ using GalaSoft.MvvmLight;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using static EquipmentList.View.Views;
 
 namespace EquipmentList.ViewModel
 {
     public class EmployeeViewModel : ViewModelBase
     {
+        private DefinedViews view;
+        public DefinedViews View
+        {
+            get
+            {
+                return view;
+            }
+
+            set
+            {
+                view = value;
+                RaisePropertyChanged("View");
+            }
+        }
+
         private Collection<DataEmployee> dataEmployees;
         public Collection<DataEmployee> DataEmployees
         {
@@ -109,6 +125,8 @@ namespace EquipmentList.ViewModel
 
         public EmployeeViewModel(DataTable dt)
         {
+            View = DefinedViews.EmployeeView;
+
             HiddenSystemUser = true;
 
             DataEmployees = new Collection<DataEmployee>();

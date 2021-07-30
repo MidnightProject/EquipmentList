@@ -1,5 +1,4 @@
 ﻿using EquipmentList.Model;
-using FirebirdSql.Data.FirebirdClient;
 using GalaSoft.MvvmLight;
 using System;
 using System.Collections.ObjectModel;

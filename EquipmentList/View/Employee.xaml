@@ -16,6 +16,8 @@
                 <ResourceDictionary Source="/Styles/GroupHeaderStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <s:String x:Key="View">Employee</s:String>
+
             <converters:ListToTextConverter x:Key="columnTextConverter"/>
             <converters:ListToCheckConverter x:Key="columnCheckConverter"/>
             <converters:SystemUserToRowVisibility x:Key="hiddenRowConverter"/>
@@ -130,13 +132,14 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="columnName" Header="Name" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Job title" Binding="{Binding Job}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                    <DataGridTextColumn Header="Job Title" Binding="{Binding Job}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                     <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                     <DataGridTextColumn Header="Building" Binding="{Binding Building}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                     <DataGridTextColumn Header="Room" Binding="{Binding Room}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                     <DataGridTextColumn x:Name="columnStatus" Header="Status" Binding="{Binding Status}" dgx:DataGridFilterColumn.Filter="{Binding ColumnStatusFilter}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 </DataGrid.Columns>
+                
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
                         <Border BorderThickness="0" Background="White" >
@@ -147,6 +150,7 @@
                                         <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ADDRESS">
                                             <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                             <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
@@ -156,6 +160,7 @@
                                             <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="POSTCODE">
                                                 <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                <Binding Source="{StaticResource View}"/>
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
@@ -164,6 +169,7 @@
                                             <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="CITY">
                                                 <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                                 <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                                <Binding Source="{StaticResource View}"/>
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
@@ -173,6 +179,7 @@
                                         <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="COUNTRY">
                                             <Binding Path="DataContext.DataEmployees" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
                                             <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>

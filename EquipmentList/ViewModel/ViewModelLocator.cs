@@ -12,6 +12,7 @@ namespace EquipmentList.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<BuildingViewModel>();
             SimpleIoc.Default.Register<EmployeeViewModel>();
+            SimpleIoc.Default.Register<EquipmentViewModel>();
         }
 
         public MainViewModel Main
@@ -35,6 +36,14 @@ namespace EquipmentList.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<EmployeeViewModel>();
+            }
+        }
+
+        public EquipmentViewModel Equipment
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<EquipmentViewModel>();
             }
         }
 

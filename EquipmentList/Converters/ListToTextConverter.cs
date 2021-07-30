@@ -1,9 +1,7 @@
 ﻿using EquipmentList.Model;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
-using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
@@ -19,14 +17,44 @@ namespace EquipmentList.Converters
             }
 
             int row = (int)values[1];
-            var list = (IList<DataEmployee>)values[0];
 
             string value = String.Empty;
-            switch (parameter.ToString())
+
+            if (values[2].ToString() == "Employee")
             {
-                case "ADDRESSS":
-                    value = list[row].Address;
-                    break;
+                var list = (IList<DataEmployee>)values[0];
+
+                switch (parameter.ToString())
+                {
+                    case "ADDRESS":
+                        value = list[row].Address;
+                        break;
+                    case "POSTCODE":
+                        value = list[row].Postcode;
+                        break;
+                    case "CITY":
+                        value = list[row].City;
+                        break;
+                    case "COUNTRY":
+                        value = list[row].Country;
+                        break;
+                }
+
+                return value.ToString();
+            }
+
+            if (values[2].ToString() == "Equipment")
+            {
+                var list = (IList<DataEquipment>)values[0];
+
+                switch (parameter.ToString())
+                {
+                    case "EMPLOYEE_NAME":
+                        value = list[row].EmployeeName;
+                        break;
+                }
+
+                return value.ToString();
             }
 
             return value.ToString();
