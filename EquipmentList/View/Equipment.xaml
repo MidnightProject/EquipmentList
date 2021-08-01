@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
              xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:EquipmentList.View"
              xmlns:converters="clr-namespace:EquipmentList.Converters"
              mc:Ignorable="d" 
@@ -317,6 +318,12 @@
                                             <Binding Source="{StaticResource View}"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
+                                    
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.WWW, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                         </i:EventTrigger>
+                                     </i:Interaction.Triggers>
                                 </TextBlock>
                             </WrapPanel>
                             <WrapPanel Margin="0,5,0,0">

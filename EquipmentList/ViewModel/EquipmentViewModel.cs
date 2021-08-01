@@ -39,6 +39,8 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        public string WWW { get { return "www.wp.pl"; } }
+
         public EquipmentViewModel(DataTable dt)
         {
             DataEquipments = new Collection<DataEquipment>();
