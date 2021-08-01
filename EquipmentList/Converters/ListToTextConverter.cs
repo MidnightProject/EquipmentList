@@ -145,6 +145,41 @@ namespace EquipmentList.Converters
                     case "EMPLOYEE_BUILDING_POSTCODE":
                         value = list[row].EmployeeBuildingPostcode;
                         break;
+                    case "PRODUCER_NAME":
+                        value = list[row].ProducerName;
+                        break;
+                    case "PRODUCER_POSTCODE":
+                        value = list[row].ProducerPostcode;
+                        break;
+                    case "PRODUCER_CITY":
+                        value = list[row].ProducerCity;
+                        break;
+                    case "PRODUCER_ADDRESS":
+                        value = list[row].ProducerAddress;
+                        break;
+                    case "PRODUCER_COUNTRY":
+                        value = list[row].ProducerCountry;
+                        break;
+                    case "PRODUCER_PERSON":
+                        value = list[row].ProducerPerson;
+                        break;
+                    case "PRODUCER_WWW":
+                        value = list[row].ProducerWWW;
+                        break;
+                    case "PRODUCER_PHONE":
+                        if (String.IsNullOrEmpty(list[row].ProducerPhone))
+                        {
+                            break;
+                        }
+                        value = "Phone: " + list[row].ProducerPhone;
+                        break;
+                    case "PRODUCER_EMAIL":
+                        if (String.IsNullOrEmpty(list[row].ProducerEmail))
+                        {
+                            break;
+                        }
+                        value = "Email: " + list[row].ProducerEmail;
+                        break;
                 }
 
                 return value.ToString();

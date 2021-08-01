@@ -43,7 +43,6 @@ namespace EquipmentList.ViewModel
                 switch (value)
                 {
                     case DefinedViews.EquipmentView:
-                        //ViewModel = null;
                         equipmentTable = new DataTable();
                         equipmentAdapter.Fill(equipmentTable);
                         ViewModel = new EquipmentViewModel(equipmentTable);
@@ -51,14 +50,12 @@ namespace EquipmentList.ViewModel
                     case DefinedViews.EmployeeView:
                         employeeTable = new DataTable();
                         employeeAdapter.Fill(employeeTable);
-                        //ViewModel = null;
                         ViewModel = new EmployeeViewModel(employeeTable);
                         ((EmployeeViewModel)ViewModel).ColumnStatusFilter = "Enabled";
                         break;
                     case DefinedViews.BuildingView:
                         buildingTable = new DataTable();
                         buildingAdapter.Fill(buildingTable);
-                        //ViewModel = null;
                         ViewModel = new BuildingViewModel(buildingTable);
                         break;
                 }
@@ -245,7 +242,10 @@ namespace EquipmentList.ViewModel
             connection.Open();
 
             buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
+            employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEEVIEW", connection);
+            equipmentAdapter = new FbDataAdapter("SELECT * FROM EQUIPMENTVIEW", connection);
 
+            /*
             employeeTable = new DataTable();
             try
             {
@@ -264,7 +264,8 @@ namespace EquipmentList.ViewModel
             {
 
             }
-
+            */
+            /*
             equipmentTable = new DataTable();
             try
             {
@@ -286,8 +287,25 @@ namespace EquipmentList.ViewModel
             {
 
             }
+            */
+            /*
+            CREATE VIEW EQUIPMENTVIEW
+            AS
+            SELECT 
+            EQUIPMENT.ID, EQUIPMENT."NAME", EQUIPMENT.SN, EQUIPMENT.SUBGROUP, EQUIPMENT.EMPLOYEE, EQUIPMENT.DESCRIPTION, EQUIPMENT.ROOM, EQUIPMENT.PRODUCER, EQUIPMENT.BUILDING, EQUIPMENT.PRODUCTION_DATE, EQUIPMENT.WARRANTY_DATE, EQUIPMENT.COMMENTS, EQUIPMENT.LEGALIZATION_DATE, EQUIPMENT.REVIEW_DATE, 
+            EMPLOYEE.NAME AS EMPLOYEE_NAME, EMPLOYEE.ROOM AS EMPLOYEE_ROOM, EMPLOYEE.PHONE AS EMPLOYEE_PHONE, EMPLOYEE.EMAIL AS EMPLOYEE_EMAIL, 
+            EMPLOYEE_BUILDING."NAME" AS EMPLOYEE_BUILDING_NAME, EMPLOYEE_BUILDING.COUNTRY AS EMPLOYEE_BUILDING_COUNTRY, EMPLOYEE_BUILDING.CITY AS EMPLOYEE_BUILDING_CITY, EMPLOYEE_BUILDING.ADDRESS AS EMPLOYEE_BUILDING_ADDRESS, EMPLOYEE_BUILDING.POSTCODE AS EMPLOYEE_BUILDING_POSTCODE, 
+            EQUIPMENT_BUILDING.COUNTRY AS EQUIPMENT_BUILDING_COUNTRY, EQUIPMENT_BUILDING.CITY AS EQUIPMENT_BUILDING_CITY, EQUIPMENT_BUILDING.ADDRESS AS EQUIPMENT_BUILDING_ADDRESS, EQUIPMENT_BUILDING.POSTCODE AS EQUIPMENT_BUILDING_POSTCODE 
+            FROM EQUIPMENT
+            LEFT JOIN EMPLOYEE ON EQUIPMENT.EMPLOYEE = EMPLOYEE.ID 
+            LEFT JOIN BUILDING AS EMPLOYEE_BUILDING ON EMPLOYEE.BUILDING = EMPLOYEE_BUILDING.NAME 
+            LEFT JOIN BUILDING AS EQUIPMENT_BUILDING ON EQUIPMENT.BUILDING = EQUIPMENT_BUILDING.NAME
+            LEFT JOIN CONTRACTOR ON EQUIPMENT.PRODUCER = CONTRACTOR."NAME"
+            */
+
 
             View = DefinedViews.EquipmentView;
         }
     }
 }
+ 

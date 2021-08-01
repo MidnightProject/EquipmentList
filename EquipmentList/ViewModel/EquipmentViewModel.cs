@@ -71,6 +71,15 @@ namespace EquipmentList.ViewModel
                     WarrantyDate = row["WARRANTY_DATE"].ToDateTime(),
                     LegalizationDate = row["LEGALIZATION_DATE"].ToDateTime(),
                     ReviewDate = row["REVIEW_DATE"].ToDateTime(),
+                    ProducerName = row["PRODUCER"].ToString(),
+                    ProducerPerson = row["PRODUCER_PERSON"].ToString(),
+                    ProducerPhone = row["PRODUCER_PHONE"].ToString(),
+                    ProducerEmail = row["PRODUCER_EMAIL"].ToString(),
+                    ProducerWWW = row["PRODUCER_WWW"].ToString(),
+                    ProducerCountry = row["PRODUCER_COUNTRY"].ToString(),
+                    ProducerCity = row["PRODUCER_CITY"].ToString(),
+                    ProducerAddress = row["PRODUCER_ADDRESS"].ToString(),
+                    ProducerPostcode = row["PRODUCER_POSTCODE"].ToString(),
                 });
             }
         }

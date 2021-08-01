@@ -16,6 +16,7 @@ namespace EquipmentList.Model
         public string City { get; set; }
         public string Address { get; set; }
         public string Postcode { get; set; }
+
         public string EmployeeName { get; set; }
         public string EmployeeRoom { get; set; }
         public string EmployeePhone { get; set; }
@@ -25,6 +26,16 @@ namespace EquipmentList.Model
         public string EmployeeBuildingCity { get; set; }
         public string EmployeeBuildingAddress { get; set; }
         public string EmployeeBuildingPostcode { get; set; }
+
+        public string ProducerName { get; set; }
+        public string ProducerPerson { get; set; }
+        public string ProducerPhone { get; set; }
+        public string ProducerEmail { get; set; }
+        public string ProducerWWW { get; set; }
+        public string ProducerCountry { get; set; }
+        public string ProducerCity { get; set; }
+        public string ProducerAddress { get; set; }
+        public string ProducerPostcode { get; set; }
 
         public DateTime ProductionDate { get; set; }
         public DateTime WarrantyDate { get; set; }
