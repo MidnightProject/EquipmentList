@@ -3,6 +3,7 @@
                     xmlns:local="clr-namespace:EquipmentList.Styles">
 
     <Style x:Key="EmptyTextBlock" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="Normal"/>
         <Style.Triggers>
             <Trigger Property="Text" Value="{x:Null}">
                 <Setter Property="Visibility" Value="Collapsed"/>

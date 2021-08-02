@@ -114,14 +114,10 @@ namespace EquipmentList.Converters
                         {
                             break;
                         }
-                        value = "Room: " + list[row].EmployeeRoom;
+                        value = "[ " + list[row].EmployeeRoom + " ]";
                         break;
                     case "EMPLOYEE_PHONE":
-                        if (String.IsNullOrEmpty(list[row].EmployeePhone))
-                        {
-                            break;
-                        }
-                        value = "Phone: " + list[row].EmployeePhone;
+                        value = list[row].EmployeePhone;
                         break;
                     case "EMPLOYEE_EMAIL":
                         value = list[row].EmployeeEmail;
@@ -163,11 +159,7 @@ namespace EquipmentList.Converters
                         value = list[row].ProducerWWW;
                         break;
                     case "PRODUCER_PHONE":
-                        if (String.IsNullOrEmpty(list[row].ProducerPhone))
-                        {
-                            break;
-                        }
-                        value = "Phone: " + list[row].ProducerPhone;
+                        value = list[row].ProducerPhone;
                         break;
                     case "PRODUCER_EMAIL":
                         value = list[row].ProducerEmail;
@@ -194,11 +186,7 @@ namespace EquipmentList.Converters
                         value = list[row].ProviderWWW;
                         break;
                     case "PROVIDER_PHONE":
-                        if (String.IsNullOrEmpty(list[row].ProviderPhone))
-                        {
-                            break;
-                        }
-                        value = "Phone: " + list[row].ProviderPhone;
+                        value = list[row].ProviderPhone;
                         break;
                     case "PROVIDER_EMAIL":
                         value = list[row].ProviderEmail;
@@ -225,11 +213,7 @@ namespace EquipmentList.Converters
                         value = list[row].ServiceWWW;
                         break;
                     case "SERVICE_PHONE":
-                        if (String.IsNullOrEmpty(list[row].ServicePhone))
-                        {
-                            break;
-                        }
-                        value = "Phone: " + list[row].ServicePhone;
+                        value = list[row].ServicePhone;
                         break;
                     case "SERVICE_EMAIL":
                         value = list[row].ServiceEmail;
@@ -256,11 +240,7 @@ namespace EquipmentList.Converters
                         value = list[row].AttestationWWW;
                         break;
                     case "ATTESTATION_PHONE":
-                        if (String.IsNullOrEmpty(list[row].AttestationPhone))
-                        {
-                            break;
-                        }
-                        value = "Phone: " + list[row].AttestationPhone;
+                        value = list[row].AttestationPhone;
                         break;
                     case "ATTESTATION_EMAIL":
                         value = list[row].AttestationEmail;
