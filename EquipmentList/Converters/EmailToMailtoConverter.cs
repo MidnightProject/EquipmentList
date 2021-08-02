@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace EquipmentList.Converters
 {
-    public class EmailToMailto : IValueConverter
+    public class EmailToMailtoConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

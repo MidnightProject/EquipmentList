@@ -234,6 +234,7 @@ namespace EquipmentList.ViewModel
                 Database = databaseName,
                 DataSource = "localhost",
                 Port = 3050,
+                Charset = "WIN1250",
             };
             
 

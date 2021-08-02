@@ -21,7 +21,8 @@
             <s:String x:Key="View">Equipment</s:String>
             
             <converters:ListToTextConverter x:Key="columnTextConverter"/>
-            <converters:EmailToMailto x:Key="mailtoConverter"/>
+            <converters:EmailToMailtoConverter x:Key="mailtoConverter"/>
+            <converters:DateToForegroundConverter x:Key="foregroundConverter"/>
 
             <ControlTemplate x:Key="ComboboxFilter">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
@@ -581,7 +582,14 @@
 
                                 </TextBlock>
                             </WrapPanel>
-                            <TextBlock Text="Review:" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <TextBlock Text="Review:" FontWeight="Bold" Margin="0,5,0,0">
+                                <TextBlock.Foreground>
+                                    <MultiBinding Converter="{StaticResource foregroundConverter}" ConverterParameter="REVIEW">
+                                        <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                        <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                    </MultiBinding>
+                                </TextBlock.Foreground>
+                            </TextBlock>
                             <WrapPanel Margin="0,5,0,0">
                                 <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                     <TextBlock.Text>
@@ -593,7 +601,14 @@
                                     </TextBlock.Text>
                                 </TextBlock>
                             </WrapPanel>
-                            <TextBlock Text="Attestation:" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <TextBlock Text="Attestation:" FontWeight="Bold" Margin="0,5,0,0">
+                                <TextBlock.Foreground>
+                                    <MultiBinding Converter="{StaticResource foregroundConverter}" ConverterParameter="LEGALIZATION">
+                                        <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                        <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                    </MultiBinding>
+                                </TextBlock.Foreground>
+                            </TextBlock>
                             <WrapPanel Margin="0,5,0,0">
                                 <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                     <TextBlock.Text>
