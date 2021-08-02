@@ -124,11 +124,7 @@ namespace EquipmentList.Converters
                         value = "Phone: " + list[row].EmployeePhone;
                         break;
                     case "EMPLOYEE_EMAIL":
-                        if (String.IsNullOrEmpty(list[row].EmployeeEmail))
-                        {
-                            break;
-                        }
-                        value = "Email: " + list[row].EmployeeEmail;
+                        value = list[row].EmployeeEmail;
                         break;
                     case "EMPLOYEE_BUILDING":
                         value = list[row].EmployeeBuilding;
@@ -174,11 +170,103 @@ namespace EquipmentList.Converters
                         value = "Phone: " + list[row].ProducerPhone;
                         break;
                     case "PRODUCER_EMAIL":
-                        if (String.IsNullOrEmpty(list[row].ProducerEmail))
+                        value = list[row].ProducerEmail;
+                        break;
+                    case "PROVIDER_NAME":
+                        value = list[row].ProviderName;
+                        break;
+                    case "PROVIDER_POSTCODE":
+                        value = list[row].ProviderPostcode;
+                        break;
+                    case "PROVIDER_CITY":
+                        value = list[row].ProviderCity;
+                        break;
+                    case "PROVIDER_ADDRESS":
+                        value = list[row].ProviderAddress;
+                        break;
+                    case "PROVIDER_COUNTRY":
+                        value = list[row].ProviderCountry;
+                        break;
+                    case "PROVIDER_PERSON":
+                        value = list[row].ProviderPerson;
+                        break;
+                    case "PROVIDER_WWW":
+                        value = list[row].ProviderWWW;
+                        break;
+                    case "PROVIDER_PHONE":
+                        if (String.IsNullOrEmpty(list[row].ProviderPhone))
                         {
                             break;
                         }
-                        value = "Email: " + list[row].ProducerEmail;
+                        value = "Phone: " + list[row].ProviderPhone;
+                        break;
+                    case "PROVIDER_EMAIL":
+                        value = list[row].ProviderEmail;
+                        break;
+                    case "SERVICE_NAME":
+                        value = list[row].ServiceName;
+                        break;
+                    case "SERVICE_POSTCODE":
+                        value = list[row].ServicePostcode;
+                        break;
+                    case "SERVICE_CITY":
+                        value = list[row].ServiceCity;
+                        break;
+                    case "SERVICE_ADDRESS":
+                        value = list[row].ServiceAddress;
+                        break;
+                    case "SERVICE_COUNTRY":
+                        value = list[row].ServiceCountry;
+                        break;
+                    case "SERVICE_PERSON":
+                        value = list[row].ServicePerson;
+                        break;
+                    case "SERVICE_WWW":
+                        value = list[row].ServiceWWW;
+                        break;
+                    case "SERVICE_PHONE":
+                        if (String.IsNullOrEmpty(list[row].ServicePhone))
+                        {
+                            break;
+                        }
+                        value = "Phone: " + list[row].ServicePhone;
+                        break;
+                    case "SERVICE_EMAIL":
+                        value = list[row].ServiceEmail;
+                        break;
+                    case "ATTESTATION_NAME":
+                        value = list[row].AttestationName;
+                        break;
+                    case "ATTESTATION_POSTCODE":
+                        value = list[row].AttestationPostcode;
+                        break;
+                    case "ATTESTATION_CITY":
+                        value = list[row].AttestationCity;
+                        break;
+                    case "ATTESTATION_ADDRESS":
+                        value = list[row].AttestationAddress;
+                        break;
+                    case "ATTESTATION_COUNTRY":
+                        value = list[row].AttestationCountry;
+                        break;
+                    case "ATTESTATION_PERSON":
+                        value = list[row].AttestationPerson;
+                        break;
+                    case "ATTESTATION_WWW":
+                        value = list[row].AttestationWWW;
+                        break;
+                    case "ATTESTATION_PHONE":
+                        if (String.IsNullOrEmpty(list[row].AttestationPhone))
+                        {
+                            break;
+                        }
+                        value = "Phone: " + list[row].AttestationPhone;
+                        break;
+                    case "ATTESTATION_EMAIL":
+                        value = list[row].AttestationEmail;
+                        break;
+                    case "CERTIFICATE_NUMBER":
+                        value = list[row].CertificationNumber;
                         break;
                 }
 

@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.IO;
-using System.Text;
 using System.Windows;
 using FirebirdSql.Data.FirebirdClient;
 using GalaSoft.MvvmLight;

@@ -15,16 +15,13 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/EmptyTextBlock.xaml"/>
                 <ResourceDictionary Source="/Styles/GroupHeaderStyle.xaml"/>
+                <ResourceDictionary Source="/Styles/ActionLabelStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <Style x:Key="ActionLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource EmptyTextBlock}">
-                <Setter Property="Foreground" Value="Blue"/>
-                <Setter Property="TextDecorations" Value="Underline"/>
-            </Style>
 
             <s:String x:Key="View">Equipment</s:String>
             
             <converters:ListToTextConverter x:Key="columnTextConverter"/>
+            <converters:EmailToMailto x:Key="mailtoConverter"/>
 
             <ControlTemplate x:Key="ComboboxFilter">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
@@ -85,7 +82,9 @@
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Producer" Binding="{Binding ProducerName}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 <DataGridTextColumn Header="Serial Number" Binding="{Binding SN}"/>
+                <DataGridTextColumn Header="Norm" Binding="{Binding Norm}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 <DataGridTextColumn Header="Group" Binding="{Binding Group}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                <DataGridTextColumn Header="Condition" Binding="{Binding Condition}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 <DataGridTextColumn Header="Room" Binding="{Binding Room}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                 <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeeName}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
             </DataGrid.Columns>
@@ -94,8 +93,8 @@
                 <DataTemplate>
                     <Border BorderThickness="0" Background="White">
                         <StackPanel Margin="10">
-                            <WrapPanel Margin="0,5,0,0">
-                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                            <WrapPanel Margin="0,5,0,0" MaxWidth="700" HorizontalAlignment="Left">
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0" TextWrapping="Wrap">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="DESCRIPTION">
                                             <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
@@ -127,7 +126,7 @@
                                     </TextBlock.Text>
                                 </TextBlock>
                             </WrapPanel>
-                            <TextBlock Text="Building:" FontWeight="Bold"/>
+                            <TextBlock Text="Building:" FontWeight="Bold" Margin="0,5,0,0"/>
                             <WrapPanel Margin="0,5,0,0">
                                 <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                     <TextBlock.Text>
@@ -175,7 +174,7 @@
                                     </TextBlock.Text>
                                 </TextBlock>
                             </WrapPanel>
-                            <TextBlock Text="Assigned employee:" FontWeight="Bold"/>
+                            <TextBlock Text="Assigned employee:" FontWeight="Bold" Margin="0,5,0,0"/>
                             <WrapPanel Margin="0,5,0,0">
                                 <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                     <TextBlock.Text>
@@ -195,7 +194,7 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="EMPLOYEE_EMAIL">
                                             <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
@@ -203,6 +202,15 @@
                                             <Binding Source="{StaticResource View}"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
+                                    
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.EmployeesEmail, Converter={StaticResource mailtoConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                         </i:EventTrigger>
+                                        <i:EventTrigger EventName="MouseRightButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding DataContext.EmployeesEmail, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                        </i:EventTrigger>
+                                     </i:Interaction.Triggers>
                                 </TextBlock>
                                 <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                     <TextBlock.Text>
@@ -261,7 +269,7 @@
                                     </TextBlock.Text>
                                 </TextBlock>
                             </WrapPanel>
-                            <TextBlock Text="Producer:" FontWeight="Bold"/>
+                            <TextBlock Text="Producer:" FontWeight="Bold" Margin="0,5,0,0"/>
                             <WrapPanel Margin="0,5,0,0">
                                 <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                     <TextBlock.Text>
@@ -321,7 +329,7 @@
                                     
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseLeftButtonUp">
-                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.WWW, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersWWW, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
                                          </i:EventTrigger>
                                      </i:Interaction.Triggers>
                                 </TextBlock>
@@ -345,7 +353,7 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PRODUCER_EMAIL">
                                             <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
@@ -353,15 +361,227 @@
                                             <Binding Source="{StaticResource View}"/>
                                         </MultiBinding>
                                     </TextBlock.Text>
+                                    
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersEmail, Converter={StaticResource mailtoConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                         </i:EventTrigger>
+                                        <i:EventTrigger EventName="MouseRightButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding DataContext.ProducersEmail, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                        </i:EventTrigger>
+                                     </i:Interaction.Triggers>
+                                    
                                 </TextBlock>
                             </WrapPanel>
-                            <TextBlock Text="Provider:" FontWeight="Bold"/>
+                            <TextBlock Text="Provider:" FontWeight="Bold" Margin="0,5,0,0"/>
                             <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PROVIDER_NAME">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PROVIDER_POSTCODE">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PROVIDER_CITY">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PROVIDER_ADDRESS">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PROVIDER_COUNTRY">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
                             </WrapPanel>
-                            <TextBlock Text="Service:" FontWeight="Bold"/>
                             <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PROVIDER_WWW">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                    
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.ProvidersWWW, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                         </i:EventTrigger>
+                                     </i:Interaction.Triggers>
+                                </TextBlock>
                             </WrapPanel>
-                            <TextBlock Text="Review:" FontWeight="Bold"/>
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PROVIDER_PERSON">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PROVIDER_PHONE">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PROVIDER_EMAIL">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                    
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersEmail, Converter={StaticResource mailtoConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                         </i:EventTrigger>
+                                        <i:EventTrigger EventName="MouseRightButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding DataContext.ProvidersEmail, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                        </i:EventTrigger>
+                                     </i:Interaction.Triggers>
+
+                                </TextBlock>
+                            </WrapPanel>
+                            <TextBlock Text="Service:" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="SERVICE_NAME">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="SERVICE_POSTCODE">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="SERVICE_CITY">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="SERVICE_ADDRESS">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="SERVICE_COUNTRY">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </WrapPanel>
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="SERVICE_WWW">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                    
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.ProvidersWWW, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                         </i:EventTrigger>
+                                     </i:Interaction.Triggers>
+                                </TextBlock>
+                            </WrapPanel>
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="SERVICE_PERSON">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="SERVICE_PHONE">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="SERVICE_EMAIL">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                    
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersEmail, Converter={StaticResource mailtoConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                         </i:EventTrigger>
+                                        <i:EventTrigger EventName="MouseRightButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding DataContext.ServicesEmail, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                        </i:EventTrigger>
+                                     </i:Interaction.Triggers>
+
+                                </TextBlock>
+                            </WrapPanel>
+                            <TextBlock Text="Review:" FontWeight="Bold" Margin="0,5,0,0"/>
                             <WrapPanel Margin="0,5,0,0">
                                 <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                     <TextBlock.Text>
@@ -373,7 +593,7 @@
                                     </TextBlock.Text>
                                 </TextBlock>
                             </WrapPanel>
-                            <TextBlock Text="Legalization:" FontWeight="Bold"/>
+                            <TextBlock Text="Attestation:" FontWeight="Bold" Margin="0,5,0,0"/>
                             <WrapPanel Margin="0,5,0,0">
                                 <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                     <TextBlock.Text>
@@ -385,9 +605,123 @@
                                     </TextBlock.Text>
                                 </TextBlock>
                             </WrapPanel>
-                            <TextBlock Text="Comments:" FontWeight="Bold"/>
                             <WrapPanel Margin="0,5,0,0">
                                 <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="CERTIFICATE_NUMBER">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </WrapPanel>
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ATTESTATION_NAME">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ATTESTATION_POSTCODE">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ATTESTATION_CITY">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ATTESTATION_ADDRESS">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ATTESTATION_COUNTRY">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </WrapPanel>
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ATTESTATION_WWW">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                    
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.ProvidersWWW, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                         </i:EventTrigger>
+                                     </i:Interaction.Triggers>
+                                </TextBlock>
+                            </WrapPanel>
+                            <WrapPanel Margin="0,5,0,0">
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ATTESTATION_PERSON">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ATTESTATION_PHONE">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ATTESTATION_EMAIL">
+                                            <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Path="DataContext.SelectedIndex" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
+                                            <Binding Source="{StaticResource View}"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                    
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersEmail, Converter={StaticResource mailtoConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                         </i:EventTrigger>
+                                        <i:EventTrigger EventName="MouseRightButtonUp">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding DataContext.AttestationsEmail, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                        </i:EventTrigger>
+                                     </i:Interaction.Triggers>
+
+                                </TextBlock>
+                            </WrapPanel>
+                            <TextBlock Text="Comments:" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <WrapPanel Margin="0,5,0,0" MaxWidth="700" HorizontalAlignment="Left">
+                                <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0" TextWrapping="Wrap">
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="COMMENTS">
                                             <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>

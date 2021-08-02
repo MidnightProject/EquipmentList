@@ -144,7 +144,7 @@
                     <DataTemplate>
                         <Border BorderThickness="0" Background="White" >
                             <StackPanel Margin="10" >
-                                <TextBlock Text="Building:" FontWeight="Bold" />
+                                <TextBlock Text="Building:" FontWeight="Bold" Margin="0,5,0,0"/>
                                 <WrapPanel Margin="10,5,0,5">
                                     <TextBlock Style="{StaticResource EmptyTextBlock}">
                                         <TextBlock.Text>
@@ -183,7 +183,7 @@
                                         </TextBlock.Text>
                                     </TextBlock>
                                 </WrapPanel>
-                                <TextBlock Text="Permissions:" FontWeight="Bold" />
+                                <TextBlock Text="Permissions:" FontWeight="Bold" Margin="0,5,0,0"/>
                                 <GroupBox Header="USER" Margin="10,5,0,5">
                                     <WrapPanel Margin="0,5,0,0">
                                         <WrapPanel.Resources>
