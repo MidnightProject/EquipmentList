@@ -730,7 +730,7 @@
                                         </TextBlock>
                                     </WrapPanel>
                                     <WrapPanel Margin="0,5,0,0">
-                                        <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
+                                        <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0" ToolTip="Phone">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="ATTESTATION_PHONE">
                                                     <Binding Path="DataContext.DataEquipments" RelativeSource="{RelativeSource FindAncestor, AncestorType=DataGrid}"/>
