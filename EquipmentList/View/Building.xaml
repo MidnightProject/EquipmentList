@@ -63,7 +63,8 @@
                   AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" 
                   IsReadOnly="True" SelectionMode="Single" 
                   AutoGenerateColumns="False" 
-                  SelectedIndex="{Binding SelectedIndex}">
+                  SelectedIndex="{Binding SelectedIndex}"
+                  FontSize="16">
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                     <Setter Property="ItemsSource" Value="{Binding DataBuildings}"/>

@@ -72,13 +72,28 @@
                   AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" 
                   IsReadOnly="True" SelectionMode="Single" 
                   AutoGenerateColumns="False" 
-                  SelectedIndex="{Binding SelectedIndex}">
+                  SelectedIndex="{Binding SelectedIndex}"
+                  FontSize="16">
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                     <Setter Property="ItemsSource" Value="{Binding DataEquipments}"/>
                 </Style>
             </DataGrid.Style>
             <DataGrid.Columns>
+                <DataGridTemplateColumn Width="SizeToCells" dgx:DataGridFilterColumn.IsFilterVisible="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <WrapPanel MaxHeight="20">
+                                <Image Source="/Images/user_group.png" ToolTip="Substitute employee" Visibility="Collapsed"/>
+                                <Image Source="/Images/user.png" ToolTip="Error employee" Visibility="Collapsed"/>
+                                <Image Source="/Images/calendar.png" ToolTip="Incorrect review date" Visibility="Collapsed"/>
+                                <Image Source="/Images/certificate.png" ToolTip="Incorrect legalization date" Visibility="Collapsed"/>
+                                <Image Source="/Images/clock.png" ToolTip="Alarm" Visibility="Collapsed"/>
+                                <Image Source="/Images/warning_blue.png" ToolTip="" Visibility="Collapsed"/>
+                            </WrapPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Indeks" Binding="{Binding ID}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Producer" Binding="{Binding ProducerName}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
@@ -776,7 +791,7 @@
                                             </TextBlock.Text>
                                         </TextBlock>
                                     </WrapPanel>
-                                    <WrapPanel Margin="15,5,0,0">
+                                    <WrapPanel Margin="0,5,0,0">
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="PRODUCTION_DATE">
@@ -787,7 +802,7 @@
                                             </TextBlock.Text>
                                         </TextBlock>
                                     </WrapPanel>
-                                    <WrapPanel Margin="15,5,0,0">
+                                    <WrapPanel Margin="0,5,0,0">
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}" ConverterParameter="WARRANTY_DATE">

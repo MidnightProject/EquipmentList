@@ -88,7 +88,8 @@
                       SelectedIndex="{Binding SelectedIndex}" 
                       IsReadOnly="True" SelectionMode="Single" 
                       AutoGenerateColumns="False" 
-                      RowDetailsVisibilityMode="VisibleWhenSelected">
+                      RowDetailsVisibilityMode="VisibleWhenSelected"
+                      FontSize="16">
                 <DataGrid.Style>
                     <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                         <Setter Property="ItemsSource" Value="{Binding DataEmployees}"/>

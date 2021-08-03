@@ -4,6 +4,7 @@
 
     <Style x:Key="EmptyTextBlock" TargetType="TextBlock">
         <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Foreground" Value="Black"/>
         <Style.Triggers>
             <Trigger Property="Text" Value="{x:Null}">
                 <Setter Property="Visibility" Value="Collapsed"/>
