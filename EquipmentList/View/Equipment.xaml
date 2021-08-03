@@ -23,12 +23,36 @@
             <converters:ListToTextConverter x:Key="columnTextConverter"/>
             <converters:EmailToMailtoConverter x:Key="mailtoConverter"/>
             <converters:DateToForegroundConverter x:Key="foregroundConverter"/>
+            <converters:EmployeesToEmployeeConverter x:Key="employeeConverter"/>
+            <converters:ListToWarningVisibilityConverter x:Key="warningConverter"/>
 
             <ControlTemplate x:Key="ComboboxFilter">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
                     <Grid Margin="10,0,0,0">
                         <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
                         <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding SourceValues}" IsEditable="True" />
+                    </Grid>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger SourceName="ComboBox" Property="Text" Value="">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                    </Trigger>
+                    <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                    </Trigger>
+                    <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                    </Trigger>
+                    <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <ControlTemplate x:Key="ComboboxFilterEmployee">
+                <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
+                    <Grid Margin="10,0,0,0">
+                        <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
+                        <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding DataContext.EmployeesName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" IsEditable="False" />
                     </Grid>
                 </Grid>
                 <ControlTemplate.Triggers>
@@ -84,8 +108,8 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <WrapPanel MaxHeight="20">
-                                <Image Source="/Images/user_group.png" ToolTip="Substitute employee" Visibility="Collapsed"/>
-                                <Image Source="/Images/user.png" ToolTip="Error employee" Visibility="Collapsed"/>
+                                <Image Source="/Images/user_group.png" ToolTip="Posted worker" Visibility="{Binding EmployeesName, Converter={StaticResource warningConverter}, ConverterParameter=POSTED_WORKER}"/>
+                                <Image Source="/Images/user.png" ToolTip="Unassigned employee" Visibility="{Binding EmployeesName, Converter={StaticResource warningConverter}, ConverterParameter=NULL_EMPLOYEE}"/>
                                 <Image Source="/Images/calendar.png" ToolTip="Incorrect review date" Visibility="Collapsed"/>
                                 <Image Source="/Images/certificate.png" ToolTip="Incorrect legalization date" Visibility="Collapsed"/>
                                 <Image Source="/Images/clock.png" ToolTip="Alarm" Visibility="Collapsed"/>
@@ -102,7 +126,7 @@
                 <DataGridTextColumn Header="Group" Binding="{Binding Group}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 <DataGridTextColumn Header="Condition" Binding="{Binding Condition}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 <DataGridTextColumn Header="Room" Binding="{Binding Room}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
-                <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeeName}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeesName, Converter={StaticResource employeeConverter}}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilterEmployee}"/>
             </DataGrid.Columns>
 
             <DataGrid.RowDetailsTemplate>

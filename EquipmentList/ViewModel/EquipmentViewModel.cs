@@ -2,9 +2,9 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Text;
 using System.Windows;
 
 namespace EquipmentList.ViewModel
@@ -23,6 +23,23 @@ namespace EquipmentList.ViewModel
             {
                 dataEquipments = value;
                 RaisePropertyChanged("DataEquipments");
+            }
+        }
+
+        private List<string> employeesName;
+        public List<string> EmployeesName
+        {
+            get
+            {
+                return employeesName;
+            }
+
+            set
+            {
+                employeesName = new List<string>();
+                RaisePropertyChanged("EmployeesName");
+                employeesName = value;
+                RaisePropertyChanged("EmployeesName");
             }
         }
 
@@ -68,11 +85,27 @@ namespace EquipmentList.ViewModel
             Clipboard.SetData(DataFormats.Text, pararameters);
         }
 
-        public EquipmentViewModel(DataTable dt)
+        public EquipmentViewModel(DataTable equipment)
         {
             DataEquipments = new Collection<DataEquipment>();
-            foreach (DataRow row in dt.Rows)
+            foreach (DataRow row in equipment.Rows)
             {
+                DateTime postingDate = row["REPLACEMENT_DATE"].ToDateTime();
+                string replacementEmployeeName;
+
+                if (postingDate == new DateTime())
+                {
+                    replacementEmployeeName = row["REPLACEMENT_EMPLOYEE_NAME"].ToString();
+                }
+                else if (postingDate < DateTime.Now)
+                {
+                    replacementEmployeeName = String.Empty;
+                }
+                else
+                {
+                    replacementEmployeeName = row["REPLACEMENT_EMPLOYEE_NAME"].ToString();
+                }
+
                 DataEquipments.Add(new DataEquipment()
                 {
                     ID = row["ID"].ToString(),
@@ -88,6 +121,8 @@ namespace EquipmentList.ViewModel
                     Postcode = row["EQUIPMENT_BUILDING_POSTCODE"].ToString(),
                     Group = row["SUBGROUP"].ToString(),
                     EmployeeName = row["EMPLOYEE_NAME"].ToString(),
+                    PostedWorkerName = row["REPLACEMENT_EMPLOYEE_NAME"].ToString(),
+                    EmployeesName = row["EMPLOYEE_NAME"].ToString() + "#" + replacementEmployeeName,
                     EmployeeRoom = row["EMPLOYEE_ROOM"].ToString(),
                     EmployeePhone = row["EMPLOYEE_PHONE"].ToString(),
                     EmployeeEmail = row["EMPLOYEE_EMAIL"].ToString(),
@@ -139,6 +174,7 @@ namespace EquipmentList.ViewModel
                     Condition = row["CONDITION"].ToString(),
                     Norm = row["NORM"].ToString(),
                     CertificationNumber = row["CERTIFICATE_NUMBER"].ToString(),
+                    PostingDate = postingDate,
                 });
             }
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Windows;
@@ -45,6 +46,7 @@ namespace EquipmentList.ViewModel
                         equipmentTable = new DataTable();
                         equipmentAdapter.Fill(equipmentTable);
                         ViewModel = new EquipmentViewModel(equipmentTable);
+                        ((EquipmentViewModel)ViewModel).EmployeesName = employeesName;
                         break;
                     case DefinedViews.EmployeeView:
                         employeeTable = new DataTable();
@@ -133,12 +135,34 @@ namespace EquipmentList.ViewModel
                 hiddenUserSystem = value;
                 RaisePropertyChanged("HiddenUserSystem");
 
+                if (hiddenUserSystem)
+                {
+                    EmployeesName.Remove("Admin");
+                }
+
                 switch (View)
                 {
                     case DefinedViews.EmployeeView:
                         ((EmployeeViewModel)ViewModel).HiddenSystemUser = value;
                         break;
-                }
+                    case DefinedViews.EquipmentView:
+                        ((EquipmentViewModel)ViewModel).EmployeesName = EmployeesName;
+                        break;
+                }                
+            }
+        }
+
+        private List<string> employeesName;
+        public List<string> EmployeesName
+        {
+            get
+            {
+                return employeesName;
+            }
+
+            set
+            {
+                EmployeesName = value;
             }
         }
 
@@ -218,6 +242,9 @@ namespace EquipmentList.ViewModel
         private FbDataAdapter employeeAdapter;
         private DataTable employeeTable;
 
+        private FbDataAdapter employeeNameAdapter;
+        private DataTable employeeNameTable;
+
         public MainViewModel()
         {
             DatabseToolBar = Visibility.Visible;
@@ -244,6 +271,7 @@ namespace EquipmentList.ViewModel
             buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
             employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEEVIEW", connection);
             equipmentAdapter = new FbDataAdapter("SELECT * FROM EQUIPMENTVIEW", connection);
+            employeeNameAdapter = new FbDataAdapter("SELECT NAME FROM EMPLOYEE", connection);
 
             /*
             employeeTable = new DataTable();
@@ -303,6 +331,17 @@ namespace EquipmentList.ViewModel
             LEFT JOIN CONTRACTOR ON EQUIPMENT.PRODUCER = CONTRACTOR."NAME"
             */
 
+            employeeNameTable = new DataTable();
+            employeeAdapter.Fill(employeeNameTable);
+
+            employeesName = new List<string>();
+            foreach (DataRow row in employeeNameTable.Rows)
+            {
+                EmployeesName.Add(row["NAME"].ToString());
+            }
+
+            EmployeesName.Add(String.Empty);
+            
 
             View = DefinedViews.EquipmentView;
         }

@@ -30,6 +30,9 @@ namespace EquipmentList.Model
         public string EmployeeBuildingAddress { get; set; }
         public string EmployeeBuildingPostcode { get; set; }
 
+        public string EmployeesName { get; set; }
+        public string PostedWorkerName { get; set; }
+
         public string ProducerName { get; set; }
         public string ProducerPerson { get; set; }
         public string ProducerPhone { get; set; }
@@ -74,6 +77,7 @@ namespace EquipmentList.Model
         public DateTime WarrantyDate { get; set; }
         public DateTime ReviewDate { get; set; }
         public DateTime LegalizationDate { get; set; }
+        public DateTime PostingDate { get; set; }
 
         public int WarrantyAlarm { get; set; }
         public int ReviewAlarm { get; set; }
