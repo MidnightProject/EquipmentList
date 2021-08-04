@@ -37,7 +37,6 @@ namespace EquipmentList.ViewModel
             set
             {
                 employeesName = new List<string>();
-                RaisePropertyChanged("EmployeesName");
                 employeesName = value;
                 RaisePropertyChanged("EmployeesName");
             }

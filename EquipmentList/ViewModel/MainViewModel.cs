@@ -46,7 +46,7 @@ namespace EquipmentList.ViewModel
                         equipmentTable = new DataTable();
                         equipmentAdapter.Fill(equipmentTable);
                         ViewModel = new EquipmentViewModel(equipmentTable);
-                        ((EquipmentViewModel)ViewModel).EmployeesName = employeesName;
+                        ((EquipmentViewModel)ViewModel).EmployeesName = EmployeesName;
                         break;
                     case DefinedViews.EmployeeView:
                         employeeTable = new DataTable();
@@ -137,7 +137,27 @@ namespace EquipmentList.ViewModel
 
                 if (hiddenUserSystem)
                 {
-                    EmployeesName.Remove("Admin");
+                    if (EmployeesName.Contains("Admin"))
+                    {
+                        EmployeesName.Remove("Admin");
+                    }
+
+                    if (EmployeesName.Contains("Guest"))
+                    {
+                        EmployeesName.Remove("Guest");
+                    }
+                }
+                else
+                {
+                    if (!EmployeesName.Contains("Admin"))
+                    {
+                        EmployeesName.Add("Admin");
+                    }
+
+                    if (!EmployeesName.Contains("Guest"))
+                    {
+                        EmployeesName.Add("Guest");
+                    }
                 }
 
                 switch (View)
@@ -148,23 +168,13 @@ namespace EquipmentList.ViewModel
                     case DefinedViews.EquipmentView:
                         ((EquipmentViewModel)ViewModel).EmployeesName = EmployeesName;
                         break;
-                }                
+                }
             }
         }
 
-        private List<string> employeesName;
-        public List<string> EmployeesName
-        {
-            get
-            {
-                return employeesName;
-            }
+        //private List<string> employeesName;
+        public List<string> EmployeesName { get; set; }
 
-            set
-            {
-                EmployeesName = value;
-            }
-        }
 
         private static String[] groupEmployee = new String[] {  String.Empty,
                                                                 "Name",
@@ -334,14 +344,13 @@ namespace EquipmentList.ViewModel
             employeeNameTable = new DataTable();
             employeeAdapter.Fill(employeeNameTable);
 
-            employeesName = new List<string>();
+            EmployeesName = new List<string>();
+            EmployeesName.Add(String.Empty);
             foreach (DataRow row in employeeNameTable.Rows)
             {
                 EmployeesName.Add(row["NAME"].ToString());
             }
 
-            EmployeesName.Add(String.Empty);
-            
 
             View = DefinedViews.EquipmentView;
         }
