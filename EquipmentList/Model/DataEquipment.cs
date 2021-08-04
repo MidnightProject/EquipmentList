@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GalaSoft.MvvmLight;
 
-namespace EquipmentList.Model
+namespace EquipmentList.Model 
 {
-    public class DataEquipment
+    public class DataEquipment : ViewModelBase
     {
         public string ID { get; set; }
         public string Name { get; set; }
@@ -31,6 +32,24 @@ namespace EquipmentList.Model
         public string EmployeeBuildingCity { get; set; }
         public string EmployeeBuildingAddress { get; set; }
         public string EmployeeBuildingPostcode { get; set; }
+
+        private Boolean employeeActive;
+        public Boolean EmployeeActive
+        {
+            get
+            {
+                return employeeActive;
+            }
+
+            set
+            {
+                if (employeeActive != value)
+                {
+                    employeeActive = value;
+                    RaisePropertyChanged("EmployeeActive");
+                }
+            }
+        }
 
         public string EmployeesName { get; set; }
         public string PostedWorkerName { get; set; }

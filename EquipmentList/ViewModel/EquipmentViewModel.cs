@@ -26,19 +26,47 @@ namespace EquipmentList.ViewModel
             }
         }
 
-        private List<string> employeesName;
-        public List<string> EmployeesName
+        private List<EmployeeStatus> employeesStatus;
+        public List<EmployeeStatus> EmployeesStatus
         {
             get
             {
-                return employeesName;
+                return employeesStatus;
             }
 
             set
             {
-                employeesName = new List<string>();
-                employeesName = value;
+                employeesStatus = new List<EmployeeStatus>();
+                employeesStatus = value;
                 RaisePropertyChanged("EmployeesName");
+
+                foreach(DataEquipment equipment in DataEquipments)
+                {
+                    foreach(EmployeeStatus employee in EmployeesStatus)
+                    {
+                        if (employee.Name == equipment.EmployeeName)
+                        {
+                            equipment.EmployeeActive = employee.Active;
+                            break;
+                        }
+                    } 
+                }
+            }
+        }
+
+        public List<string> EmployeesName
+        {
+            get
+            {
+                List<string> names = new List<string>();
+                names.Add("");
+
+                foreach (EmployeeStatus employee in EmployeesStatus)
+                {
+                    names.Add(employee.Name);
+                }
+
+                return names;
             }
         }
 
@@ -84,9 +112,11 @@ namespace EquipmentList.ViewModel
             Clipboard.SetData(DataFormats.Text, pararameters);
         }
 
-        public EquipmentViewModel(DataTable equipment)
+        public EquipmentViewModel(List<EmployeeStatus> employeeStatus, DataTable equipment)
         {
             DataEquipments = new Collection<DataEquipment>();
+            EmployeesStatus = employeeStatus;
+      
             foreach (DataRow row in equipment.Rows)
             {
                 DateTime postingDate = row["REPLACEMENT_DATE"].ToDateTime();
@@ -105,6 +135,24 @@ namespace EquipmentList.ViewModel
                     replacementEmployeeName = row["REPLACEMENT_EMPLOYEE_NAME"].ToString();
                 }
 
+                Boolean active = false;
+                string employeeName = row["EMPLOYEE_NAME"].ToString();
+                if (String.IsNullOrEmpty(employeeName))
+                {
+                    active = true;
+                }
+                else
+                {
+                    foreach (EmployeeStatus employee in EmployeesStatus)
+                    {
+                        if (employee.Name == employeeName)
+                        {
+                            active = employee.Active;
+                            break;
+                        }
+                    }
+                }
+
                 DataEquipments.Add(new DataEquipment()
                 {
                     ID = row["ID"].ToString(),
@@ -119,9 +167,9 @@ namespace EquipmentList.ViewModel
                     Address = row["EQUIPMENT_BUILDING_ADDRESS"].ToString(),
                     Postcode = row["EQUIPMENT_BUILDING_POSTCODE"].ToString(),
                     Group = row["SUBGROUP"].ToString(),
-                    EmployeeName = row["EMPLOYEE_NAME"].ToString(),
+                    EmployeeName = employeeName,
                     PostedWorkerName = row["REPLACEMENT_EMPLOYEE_NAME"].ToString(),
-                    EmployeesName = row["EMPLOYEE_NAME"].ToString() + "#" + replacementEmployeeName,
+                    EmployeesName = employeeName + "#" + replacementEmployeeName,
                     EmployeeRoom = row["EMPLOYEE_ROOM"].ToString(),
                     EmployeePhone = row["EMPLOYEE_PHONE"].ToString(),
                     EmployeeEmail = row["EMPLOYEE_EMAIL"].ToString(),
@@ -130,6 +178,7 @@ namespace EquipmentList.ViewModel
                     EmployeeBuildingCity = row["EMPLOYEE_BUILDING_CITY"].ToString(),
                     EmployeeBuildingAddress = row["EMPLOYEE_BUILDING_ADDRESS"].ToString(),
                     EmployeeBuildingPostcode = row["EMPLOYEE_BUILDING_POSTCODE"].ToString(),
+                    EmployeeActive = active,
                     ProductionDate = row["PRODUCTION_DATE"].ToDateTime(),
                     WarrantyDate = row["WARRANTY_DATE"].ToDateTime(),
                     LegalizationDate = row["LEGALIZATION_DATE"].ToDateTime(),
