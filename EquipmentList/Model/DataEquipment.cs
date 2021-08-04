@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EquipmentList.Model
 {
@@ -82,5 +84,15 @@ namespace EquipmentList.Model
         public int WarrantyAlarm { get; set; }
         public int ReviewAlarm { get; set; }
         public int LegalizationAlarm { get; set; }
+    }
+
+    public static class DataEquipmentExtensions
+    {
+        public static DataEquipment GetEquipment(this IList<DataEquipment> list, string name)
+        {
+            var dataEquipment = list.FirstOrDefault(equipment => equipment.Name == name);
+
+            return dataEquipment;
+        }
     }
 }

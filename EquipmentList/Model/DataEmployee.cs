@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EquipmentList.Model
 {
@@ -33,4 +31,16 @@ namespace EquipmentList.Model
         public Boolean ViewOtherEquipment { get; set; }
         public Boolean PrintOtherEquipment { get; set; }
     }
+
+    public static class DataEmployeeExtensions
+    {
+        public static DataEmployee GetEmployee(this IList<DataEmployee> list, string name)
+        {
+            var dataEmployee = list.FirstOrDefault(emmployee => emmployee.Name == name);
+
+            return dataEmployee;
+        }
+    }
 }
+
+

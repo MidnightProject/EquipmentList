@@ -17,27 +17,7 @@ namespace EquipmentList.Converters
                 return Brushes.Black;
             }
 
-            int row = (int)values[1];
-
-            if (row == -1)
-            {
-                return Brushes.Black;
-            }
-
-            var list = (IList<DataEquipment>)values[0];
-            DateTime date = new DateTime();
-
-            switch (parameter)
-            {
-                case "LEGALIZATION":
-                    date = list[row].LegalizationDate;
-                    break;
-                case "REVIEW":
-                    date = list[row].ReviewDate;
-                    break;
-            }
-
-            if (date < DateTime.Today)
+            if (values[0].ToDateTime() < DateTime.Today)
             {
                 return Brushes.Red;
             }

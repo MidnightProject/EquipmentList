@@ -353,6 +353,7 @@ namespace EquipmentList.ViewModel
 
 
             View = DefinedViews.EquipmentView;
+            //View = DefinedViews.EmployeeView;
         }
     }
 }
