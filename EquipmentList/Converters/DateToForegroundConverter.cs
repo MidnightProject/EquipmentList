@@ -17,6 +17,11 @@ namespace EquipmentList.Converters
                 return Brushes.Black;
             }
 
+            if (values[0].ToDateTime() == new DateTime())
+            {
+                return Brushes.Black;
+            }
+
             if (values[0].ToDateTime() < DateTime.Today)
             {
                 return Brushes.Red;

@@ -38,6 +38,11 @@ namespace EquipmentList.Converters
 
             if (values[1].ToString() == "Room")
             {
+                if (String.IsNullOrEmpty(values[0].ToString()))
+                {
+                    return String.Empty;
+                }
+
                 return "Room: " + parameter.ToString() + values[0].ToString();
             }
 

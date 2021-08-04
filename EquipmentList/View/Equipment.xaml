@@ -130,10 +130,10 @@
                 </Style>
             </DataGrid.Style>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="*" dgx:DataGridFilterColumn.IsFilterVisible="False">
+                <DataGridTemplateColumn Width="Auto" dgx:DataGridFilterColumn.IsFilterVisible="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <WrapPanel MaxHeight="20">
+                            <WrapPanel MaxHeight="20" >
                                 <Image Source="/Images/user_group.png" ToolTip="Posted worker" Visibility="{Binding EmployeesName, Converter={StaticResource postedWorkerWarningConverter}}"/>
                                 <Image Source="/Images/sub_black_delete.png" ToolTip="Unassigned employee" Visibility="{Binding EmployeesName, Converter={StaticResource nullEmployeeWarningConverter}}">
                                     <Image.RenderTransform>
@@ -141,12 +141,12 @@
                                             <ScaleTransform/>
                                             <SkewTransform/>
                                             <RotateTransform/>
-                                            <TranslateTransform X="-5" Y="-5"/>
+                                            <TranslateTransform X="-5" Y="-2"/>
                                         </TransformGroup>
                                     </Image.RenderTransform>
                                 </Image>
                                 <Image Source="/Images/user.png" ToolTip="Inactive employee " Visibility="{Binding EmployeeActive, Converter={StaticResource activeEmployeeWarningConverter}}"/>
-                                <Image Source="/Images/calendar.png" ToolTip="Incorrect review date" Visibility="Collapsed"/>
+                                <Image Source="/Images/calendar.png" ToolTip="Incorrect review date" Visibility="Visible"/>
                                 <Image Source="/Images/certificate.png" ToolTip="Incorrect legalization date" Visibility="Collapsed"/>
                                 <Image Source="/Images/clock.png" ToolTip="Alarm" Visibility="Collapsed"/>
                                 <Image Source="/Images/warning_blue.png" ToolTip="" Visibility="Collapsed"/>
