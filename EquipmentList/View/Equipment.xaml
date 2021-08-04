@@ -21,7 +21,8 @@
             <s:String x:Key="TypeDate">Date</s:String>
             <s:String x:Key="TypeString">String</s:String>
             <s:String x:Key="TypeRoom">Room</s:String>
-            
+            <s:Int32 x:Key="Dupa">0</s:Int32>
+
             <converters:ListToTextConverter x:Key="columnTextConverter"/>
             <converters:EmailToMailtoConverter x:Key="mailtoConverter"/>
             <converters:DateToForegroundConverter x:Key="foregroundConverter"/>
@@ -123,14 +124,15 @@
                   IsReadOnly="True" SelectionMode="Single" 
                   AutoGenerateColumns="False" 
                   SelectedIndex="{Binding SelectedIndex}"
-                  FontSize="16">
+                  FontSize="16"
+                  ColumnWidth="Auto">
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                     <Setter Property="ItemsSource" Value="{Binding DataEquipments}"/>
                 </Style>
             </DataGrid.Style>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="Auto" dgx:DataGridFilterColumn.IsFilterVisible="False">
+                <DataGridTemplateColumn dgx:DataGridFilterColumn.IsFilterVisible="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <WrapPanel MaxHeight="20" >
@@ -146,7 +148,7 @@
                                     </Image.RenderTransform>
                                 </Image>
                                 <Image Source="/Images/user.png" ToolTip="Inactive employee " Visibility="{Binding EmployeeActive, Converter={StaticResource activeEmployeeWarningConverter}}"/>
-                                <Image Source="/Images/calendar.png" ToolTip="Incorrect review date" Visibility="Visible"/>
+                                <Image Source="/Images/calendar.png" ToolTip="Incorrect review date" Visibility="Collapsed"/>
                                 <Image Source="/Images/certificate.png" ToolTip="Incorrect legalization date" Visibility="Collapsed"/>
                                 <Image Source="/Images/clock.png" ToolTip="Alarm" Visibility="Collapsed"/>
                                 <Image Source="/Images/warning_blue.png" ToolTip="" Visibility="Collapsed"/>
@@ -268,10 +270,10 @@
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding DataContext.EmployeesEmail, Converter={StaticResource mailtoConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding EmployeeEmail, Converter={StaticResource mailtoConverter}}"/>
                                                 </i:EventTrigger>
                                                 <i:EventTrigger EventName="MouseRightButtonUp">
-                                                <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding DataContext.EmployeesEmail, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding EmployeeEmail}"/>
                                                 </i:EventTrigger>
                                              </i:Interaction.Triggers>
                                         </TextBlock>
@@ -379,8 +381,8 @@
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersWWW, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
-                                             </i:EventTrigger>
+                                                    <i:LaunchUriOrFileAction Path="{Binding ProducerWWW}"/>
+                                                </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
                                     </WrapPanel>
@@ -415,12 +417,12 @@
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersEmail, Converter={StaticResource mailtoConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersEmail, Converter={StaticResource mailtoConverter}}"/>
                                                 </i:EventTrigger>
                                                 <i:EventTrigger EventName="MouseRightButtonUp">
-                                                <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding DataContext.ProducersEmail, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding ProducerEmail}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
                                         </TextBlock>
                                     </WrapPanel>
                                 </StackPanel>
@@ -482,7 +484,7 @@
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding DataContext.ProvidersWWW, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding ProviderWWW}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
@@ -518,11 +520,11 @@
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersEmail, Converter={StaticResource mailtoConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding ProviderEmail, Converter={StaticResource mailtoConverter}}"/>
                                                 </i:EventTrigger>
                                                 <i:EventTrigger EventName="MouseRightButtonUp">
-                                                <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding DataContext.ProvidersEmail, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
-                                            </i:EventTrigger>
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding ProviderEmail}"/>
+                                                </i:EventTrigger>
                                             </i:Interaction.Triggers>  
                                         </TextBlock>
                                     </WrapPanel>
@@ -585,7 +587,7 @@
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                            <i:LaunchUriOrFileAction Path="{Binding DataContext.ProvidersWWW, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                            <i:LaunchUriOrFileAction Path="{Binding ServiceWWW}"/>
                                             </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
@@ -621,10 +623,10 @@
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                   <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersEmail, Converter={StaticResource mailtoConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                                   <i:LaunchUriOrFileAction Path="{Binding ServiceEmail, Converter={StaticResource mailtoConverter}}"/>
                                                 </i:EventTrigger>
                                                 <i:EventTrigger EventName="MouseRightButtonUp">
-                                                <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding DataContext.ServicesEmail, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding ServiceEmail}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
@@ -732,7 +734,7 @@
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding DataContext.ProvidersWWW, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding AttestationWWW}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
@@ -761,17 +763,17 @@
                                         <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ServiceEmail"></Binding>
+                                                    <Binding Path="AttestationEmail"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersEmail, Converter={StaticResource mailtoConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding AttestationEmail, Converter={StaticResource mailtoConverter}}"/>
                                                 </i:EventTrigger>
                                                 <i:EventTrigger EventName="MouseRightButtonUp">
-                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding DataContext.AttestationsEmail, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding AttestationEmail}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>

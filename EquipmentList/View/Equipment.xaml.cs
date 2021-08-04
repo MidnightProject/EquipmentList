@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using TomsToolbox.Essentials;
 
 namespace EquipmentList.View
 {

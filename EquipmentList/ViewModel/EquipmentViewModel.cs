@@ -53,7 +53,7 @@ namespace EquipmentList.ViewModel
                 }
             }
         }
-
+       
         public List<string> EmployeesName
         {
             get
@@ -84,20 +84,6 @@ namespace EquipmentList.ViewModel
                 RaisePropertyChanged("SelectedIndex");
             }
         }
-
-        public string EmployeesEmail { get { return DataEquipments[SelectedIndex].EmployeeEmail; } }
-
-        public string ProducersWWW { get { return DataEquipments[SelectedIndex].ProducerWWW; } }
-        public string ProducersEmail { get { return DataEquipments[SelectedIndex].ProducerEmail; } }
-
-        public string ProvidersWWW { get { return DataEquipments[SelectedIndex].ProviderWWW; } }
-        public string ProvidersEmail { get { return DataEquipments[SelectedIndex].ProviderEmail; } }
-
-        public string ServicesWWW { get { return DataEquipments[SelectedIndex].ServiceWWW; } }
-        public string ServicesEmail { get { return DataEquipments[SelectedIndex].ServiceEmail; } }
-
-        public string AttestationsWWW { get { return DataEquipments[SelectedIndex].AttestationWWW; } }
-        public string AttestationsEmail { get { return DataEquipments[SelectedIndex].AttestationEmail; } }
 
         private RelayCommand<string> copyStringCommand;
         public RelayCommand<string> CopyStringCommand
