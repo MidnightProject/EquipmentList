@@ -99,6 +99,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\ActiveEmployeeToWarningVisibilityConverter.cs" />
     <Compile Include="Converters\DateToForegroundConverter.cs" />
+    <Compile Include="Converters\DateToWarningVisibilityConverter.cs" />
     <Compile Include="Converters\EmailToMailtoConverter.cs" />
     <Compile Include="Converters\EmployeesToEmployeeConverter.cs" />
     <Compile Include="Converters\ListToCheckConverter.cs" />
