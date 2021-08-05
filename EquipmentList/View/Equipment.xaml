@@ -31,6 +31,7 @@
             <converters:PostedWorkerToWarningVisibilityConverter x:Key="postedWorkerWarningConverter"/>
             <converters:ActiveEmployeeToWarningVisibilityConverter x:Key="activeEmployeeWarningConverter"/>
             <converters:DateToWarningVisibilityConverter x:Key="dateWarningConverter"/>
+            <converters:WarningToColorConverter x:Key="rowColorConverter"/>
 
             <ControlTemplate x:Key="ComboboxFilter">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
@@ -120,9 +121,9 @@
     
     <Grid>
         <DataGrid Name="DataGrid"
-                  dgx:DataGridFilter.IsAutoFilterEnabled="True"
-                  AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" 
+                  dgx:DataGridFilter.IsAutoFilterEnabled="True" 
                   IsReadOnly="True" SelectionMode="Single" 
+                  AlternationCount="2"
                   AutoGenerateColumns="False" 
                   SelectedIndex="{Binding SelectedIndex}"
                   FontSize="16"
@@ -174,7 +175,31 @@
                 <DataGridTextColumn Header="Room" Binding="{Binding Room}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                 <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeesName, Converter={StaticResource employeeConverter}}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilterEmployee}"/>
             </DataGrid.Columns>
-
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <!-- Setup the background color for normal rows using AlternationIndex -->
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="WhiteSmoke" />
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
+                        </Trigger>
+                        <!-- Override the above background colors if it is in the deleted list - NOTE: these styles are processed in order, make sure this is after the above triggers -->
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource rowColorConverter}">
+                                    <Binding Path="EmployeeActive"/>
+                                    <Binding Path="DataContext.Color" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}"/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <DataTrigger.Setters>
+                                <Setter Property="Background" Value="{Binding DataContext.Color, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                            </DataTrigger.Setters>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
                     <Border BorderThickness="0" Background="White">

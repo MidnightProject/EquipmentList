@@ -110,6 +110,7 @@
     <Compile Include="Converters\ViewToEnableConverter.cs" />
     <Compile Include="Converters\ViewToTextConverter.cs" />
     <Compile Include="Converters\VisibilityToIsCheckedConverter.cs" />
+    <Compile Include="Converters\WarningToColorConverter.cs" />
     <Compile Include="Model\DataBuilding.cs" />
     <Compile Include="Model\DataEmployee.cs" />
     <Compile Include="Model\DataEquipment.cs" />

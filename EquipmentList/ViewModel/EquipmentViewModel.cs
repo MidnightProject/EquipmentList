@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
+using System.Windows.Media;
 
 namespace EquipmentList.ViewModel
 {
@@ -82,6 +83,21 @@ namespace EquipmentList.ViewModel
             {
                 selectedIndex = value;
                 RaisePropertyChanged("SelectedIndex");
+            }
+        }
+
+        private SolidColorBrush color;
+        public SolidColorBrush Color
+        {
+            get
+            {
+                return color;
+            }
+
+            set
+            {
+                color = value;
+                RaisePropertyChanged("Color");
             }
         }
 
@@ -211,6 +227,11 @@ namespace EquipmentList.ViewModel
                     PostingDate = postingDate,
                 });
             }
+
+            Color = Brushes.Black; 
+
+            //Color = Brushes.Blue;
+            //Color myColorFromBrush = newBrush.Color;
         }
     }
 }
