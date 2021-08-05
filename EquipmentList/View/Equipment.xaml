@@ -133,27 +133,36 @@
                 </Style>
             </DataGrid.Style>
             <DataGrid.Columns>
-                <DataGridTemplateColumn dgx:DataGridFilterColumn.IsFilterVisible="False">
+                <DataGridTemplateColumn dgx:DataGridFilterColumn.IsFilterVisible="False" CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <WrapPanel MaxHeight="20">
-                                <Image Source="/Images/user_group.png" ToolTip="Posted worker" Visibility="{Binding EmployeesName, Converter={StaticResource postedWorkerWarningConverter}}"/>
-                                <Image Source="/Images/sub_black_delete.png" ToolTip="Unassigned employee" Visibility="{Binding EmployeesName, Converter={StaticResource nullEmployeeWarningConverter}}">
-                                    <Image.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform/>
-                                            <SkewTransform/>
-                                            <RotateTransform/>
-                                            <TranslateTransform X="-5" Y="-2"/>
-                                        </TransformGroup>
-                                    </Image.RenderTransform>
-                                </Image>
-                                <Image Source="/Images/user.png" ToolTip="Inactive employee " Visibility="{Binding EmployeeActive, Converter={StaticResource activeEmployeeWarningConverter}}"/>
-                                <Image Source="/Images/calendar.png" ToolTip="Incorrect review date" Visibility="{Binding ReviewDate, Converter={StaticResource dateWarningConverter}}"/>
-                                <Image Source="/Images/certificate.png" ToolTip="Incorrect legalization date" Visibility="{Binding LegalizationDate, Converter={StaticResource dateWarningConverter}}"/>
-                                <Image Source="/Images/clock.png" ToolTip="Alarm" Visibility="Collapsed"/>
-                                <Image Source="/Images/warning_blue.png" ToolTip="" Visibility="Collapsed"/>
-                            </WrapPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel MaxHeight="20" Orientation="Horizontal" SizeChanged="WarningColumn_SizeChanged" Grid.Column="0">
+                                    <Image Source="/Images/user_group.png" ToolTip="Posted worker" Visibility="{Binding EmployeesName, Converter={StaticResource postedWorkerWarningConverter}}"/>
+                                    <Image Source="/Images/sub_black_delete.png" ToolTip="Unassigned employee" Visibility="{Binding EmployeesName, Converter={StaticResource nullEmployeeWarningConverter}}">
+                                        <Image.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform X="-5" Y="-2"/>
+                                            </TransformGroup>
+                                        </Image.RenderTransform>
+                                    </Image>
+                                    <Image Source="/Images/user.png" ToolTip="Inactive employee " Visibility="{Binding EmployeeActive, Converter={StaticResource activeEmployeeWarningConverter}}"/>
+                                    <Image Source="/Images/calendar.png" ToolTip="Incorrect review date" Visibility="{Binding ReviewDate, Converter={StaticResource dateWarningConverter}}"/>
+                                    <Image Source="/Images/certificate.png" ToolTip="Incorrect legalization date" Visibility="{Binding LegalizationDate, Converter={StaticResource dateWarningConverter}}"/>
+                                    <Image Source="/Images/clock.png" ToolTip="Alarm" Visibility="Collapsed"/>
+                                    <Image Source="/Images/warning_blue.png" ToolTip="" Visibility="Collapsed"/>
+                                    <Image Source="/Images/warning_blue.png" Visibility="Collapsed"/>
+                                    <Image Source="/Images/warning_blue.png" Visibility="Collapsed"/>
+                                </StackPanel>
+                            </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
