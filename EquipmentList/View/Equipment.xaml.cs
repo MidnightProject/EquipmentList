@@ -11,7 +11,8 @@ namespace EquipmentList.View
     {
         private Boolean dataGridIsInitialize = true;
         private int defaultValue = -1;
-        private List<int> cellWidth = new List<int>();
+        //private List<int> cellWidth = new List<int>();
+        private int[] cellWidth = new int[12];
         private int maxWidth = 0;
 
         public Equipment()
@@ -37,7 +38,8 @@ namespace EquipmentList.View
                 
                 if ((int)e.PreviousSize.Width == 0 && defaultValue == (int)e.NewSize.Width)
                 {
-                    cellWidth.Add((int)e.NewSize.Width);
+                    //cellWidth.Add((int)e.NewSize.Width);
+                    cellWidth[0]++;
                 }
                 else
                 {
@@ -52,14 +54,37 @@ namespace EquipmentList.View
                     maxWidth = (int)e.NewSize.Width;
                 }
 
-                cellWidth.Remove((int)e.PreviousSize.Width);
-
-                if (maxWidth == (int)e.PreviousSize.Width);
+                //cellWidth.Remove((int)e.PreviousSize.Width);
+                if((int)e.PreviousSize.Width == defaultValue)
                 {
-                    maxWidth = cellWidth.Max();
+                    cellWidth[0]--;
+                }
+                else
+                {
+                    cellWidth[(int)e.PreviousSize.Width / 10]--;
                 }
 
-                cellWidth.Add((int)e.NewSize.Width);
+                if (maxWidth == (int)e.PreviousSize.Width)
+                {
+                    //maxWidth = cellWidth.Max();
+                    for (int i = 11; i > 0; i--)
+                    {
+                        if (cellWidth[i] != 0)
+                        {
+                            if (i != 0)
+                            {
+                                maxWidth = cellWidth[i] * 10;
+                            }
+                            else
+                            {
+                                maxWidth = defaultValue;
+                            }
+                        }
+                    }
+                }
+
+                //cellWidth.Add((int)e.NewSize.Width);
+                cellWidth[(int)e.NewSize.Width / 10]++;
             }
 
             DataGrid.Columns[0].Width = maxWidth + 5;

@@ -21,7 +21,7 @@
             <s:String x:Key="TypeDate">Date</s:String>
             <s:String x:Key="TypeString">String</s:String>
             <s:String x:Key="TypeRoom">Room</s:String>
-            <s:Int32 x:Key="Dupa">0</s:Int32>
+            <s:String x:Key="TypeCertificate">Certificate</s:String>
 
             <converters:ListToTextConverter x:Key="columnTextConverter"/>
             <converters:EmailToMailtoConverter x:Key="mailtoConverter"/>
@@ -159,8 +159,6 @@
                                     <Image Source="/Images/certificate.png" ToolTip="Incorrect legalization date" Visibility="{Binding LegalizationDate, Converter={StaticResource dateWarningConverter}}"/>
                                     <Image Source="/Images/clock.png" ToolTip="Alarm" Visibility="Collapsed"/>
                                     <Image Source="/Images/warning_blue.png" ToolTip="" Visibility="Collapsed"/>
-                                    <Image Source="/Images/warning_blue.png" Visibility="Collapsed"/>
-                                    <Image Source="/Images/warning_blue.png" Visibility="Collapsed"/>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -684,7 +682,7 @@
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
                                                     <Binding Path="CertificationNumber"></Binding>
-                                                    <Binding Source="{StaticResource TypeString}"/>
+                                                    <Binding Source="{StaticResource TypeCertificate}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>

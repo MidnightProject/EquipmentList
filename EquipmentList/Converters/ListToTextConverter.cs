@@ -25,8 +25,7 @@ namespace EquipmentList.Converters
             {
                 return parameter.ToString() + values[0].ToString();
             }
-
-            if (values[1].ToString() == "Date")
+            else if (values[1].ToString() == "Date")
             {
                 if (values[0].ToDateTime() ==  new DateTime())
                 {
@@ -34,9 +33,7 @@ namespace EquipmentList.Converters
                 }
 
                 return parameter.ToString() + values[0].ToDateTime().ToShortDateString();
-            }
-
-            if (values[1].ToString() == "Room")
+            } if (values[1].ToString() == "Room")
             {
                 if (String.IsNullOrEmpty(values[0].ToString()))
                 {
@@ -44,6 +41,15 @@ namespace EquipmentList.Converters
                 }
 
                 return "Room: " + parameter.ToString() + values[0].ToString();
+            }
+            else if (values[1].ToString() == "Certificate")
+            {
+                if (String.IsNullOrEmpty(values[0].ToString()))
+                {
+                    return String.Empty;
+                }
+
+                return "Certificate number:  " + parameter.ToString() + values[0].ToString();
             }
 
             return String.Empty;
