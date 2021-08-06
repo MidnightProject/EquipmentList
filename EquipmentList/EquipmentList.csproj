@@ -104,13 +104,14 @@
     <Compile Include="Converters\EmployeesToEmployeeConverter.cs" />
     <Compile Include="Converters\ListToCheckConverter.cs" />
     <Compile Include="Converters\ListToTextConverter.cs" />
+    <Compile Include="Converters\NullEmployeeToColorConverter.cs" />
     <Compile Include="Converters\NullEmployeeToWarningVisibilityConverter.cs" />
     <Compile Include="Converters\PostedWorkerToWarningVisibilityConverter.cs" />
     <Compile Include="Converters\SystemUserToRowVisibility.cs" />
     <Compile Include="Converters\ViewToEnableConverter.cs" />
     <Compile Include="Converters\ViewToTextConverter.cs" />
     <Compile Include="Converters\VisibilityToIsCheckedConverter.cs" />
-    <Compile Include="Converters\WarningToColorConverter.cs" />
+    <Compile Include="Converters\ActiveEmployeeToColorConverter.cs" />
     <Compile Include="Model\DataBuilding.cs" />
     <Compile Include="Model\DataEmployee.cs" />
     <Compile Include="Model\DataEquipment.cs" />

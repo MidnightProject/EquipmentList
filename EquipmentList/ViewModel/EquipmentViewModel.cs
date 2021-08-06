@@ -86,18 +86,33 @@ namespace EquipmentList.ViewModel
             }
         }
 
-        private SolidColorBrush color;
-        public SolidColorBrush Color
+        private SolidColorBrush activeEmployeeColor;
+        public SolidColorBrush ActiveEmployeeColor
         {
             get
             {
-                return color;
+                return activeEmployeeColor;
             }
 
             set
             {
-                color = value;
-                RaisePropertyChanged("Color");
+                activeEmployeeColor = value;
+                RaisePropertyChanged("ActiveEmployeeColor");
+            }
+        }
+
+        private SolidColorBrush nullEmployeeColor;
+        public SolidColorBrush NullEmployeeColor
+        {
+            get
+            {
+                return nullEmployeeColor;
+            }
+
+            set
+            {
+                nullEmployeeColor = value;
+                RaisePropertyChanged("NullEmployeeColor");
             }
         }
 
@@ -228,10 +243,8 @@ namespace EquipmentList.ViewModel
                 });
             }
 
-            Color = Brushes.Black; 
-
-            //Color = Brushes.Blue;
-            //Color myColorFromBrush = newBrush.Color;
+            ActiveEmployeeColor = Brushes.Orange; 
+            NullEmployeeColor = Brushes.Red;
         }
     }
 }
