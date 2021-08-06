@@ -1,4 +1,5 @@
-﻿using EquipmentList.Model;
+﻿using Dsafa.WpfColorPicker;
+using EquipmentList.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -111,6 +112,7 @@ namespace EquipmentList.ViewModel
 
             set
             {
+                //nullEmployeeColor = new SolidColorBrush();
                 nullEmployeeColor = value;
                 RaisePropertyChanged("NullEmployeeColor");
             }
@@ -243,8 +245,21 @@ namespace EquipmentList.ViewModel
                 });
             }
 
-            ActiveEmployeeColor = Brushes.Orange; 
-            NullEmployeeColor = Brushes.Red;
+            ActiveEmployeeColor = Brushes.Transparent;
+            NullEmployeeColor = Brushes.Transparent;
+
+            Color newColor = Colors.Yellow;
+
+            var initialColor = ActiveEmployeeColor.Color;
+            var dialog = new ColorPickerDialog(initialColor);
+            var result = dialog.ShowDialog();
+            if (result.HasValue && result.Value)
+            {
+                newColor = dialog.Color;
+
+                ActiveEmployeeColor = new SolidColorBrush(newColor);
+                NullEmployeeColor = new SolidColorBrush(newColor);
+            }
         }
     }
 }

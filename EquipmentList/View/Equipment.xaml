@@ -33,6 +33,7 @@
             <converters:DateToWarningVisibilityConverter x:Key="dateWarningConverter"/>
             <converters:ActiveEmployeeToColorConverter x:Key="activeEmployeeColorConverter"/>
             <converters:NullEmployeeToColorConverter x:Key="nullEmployeeColorConverter"/>
+            <converters:BackgroundToForegroundConverter x:Key="foregroundForRowConverter"/>
 
             <ControlTemplate x:Key="ComboboxFilter">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
@@ -43,16 +44,16 @@
                 </Grid>
                 <ControlTemplate.Triggers>
                     <Trigger SourceName="ComboBox" Property="Text" Value="">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0"/>
                     </Trigger>
                     <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0"/>
                     </Trigger>
                     <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1"/>
                     </Trigger>
                     <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1"/>
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
@@ -65,38 +66,38 @@
                 </Grid>
                 <ControlTemplate.Triggers>
                     <Trigger SourceName="ComboBox" Property="Text" Value="">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0"/>
                     </Trigger>
                     <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0"/>
                     </Trigger>
                     <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1"/>
                     </Trigger>
                     <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1"/>
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
             <ControlTemplate x:Key="ComboboxFilterEmployee">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
                     <Grid Margin="10,0,0,0">
-                        <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}" />
+                        <Control Style="{DynamicResource {x:Static dgx:DataGridFilter.IconStyleKey}}"/>
                         <ComboBox x:Name="ComboBox" Text="{Binding Path=Filter, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding DataContext.EmployeesName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" IsEditable="True"/>
                     </Grid>
                 </Grid>
                 <ControlTemplate.Triggers>
                     <Trigger SourceName="ComboBox" Property="Text" Value="">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0"/>
                     </Trigger>
                     <Trigger SourceName="ComboBox" Property="Text" Value="{x:Null}">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="0" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="0"/>
                     </Trigger>
                     <Trigger SourceName="ComboBox" Property="IsMouseOver" Value="True">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1"/>
                     </Trigger>
                     <Trigger SourceName="ComboBox" Property="IsFocused" Value="True">
-                        <Setter TargetName="ComboBox" Property="Opacity" Value="1" />
+                        <Setter TargetName="ComboBox" Property="Opacity" Value="1"/>
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
@@ -156,7 +157,7 @@
                                             </TransformGroup>
                                         </Image.RenderTransform>
                                     </Image>
-                                    <Image Source="/Images/user.png" ToolTip="Inactive employee " Visibility="{Binding EmployeeActive, Converter={StaticResource activeEmployeeWarningConverter}}"/>
+                                    <Image Source="/Images/user.png" ToolTip="Inactive employee" Visibility="{Binding EmployeeActive, Converter={StaticResource activeEmployeeWarningConverter}}"/>
                                     <Image Source="/Images/calendar.png" ToolTip="Incorrect review date" Visibility="{Binding ReviewDate, Converter={StaticResource dateWarningConverter}}"/>
                                     <Image Source="/Images/certificate.png" ToolTip="Incorrect legalization date" Visibility="{Binding LegalizationDate, Converter={StaticResource dateWarningConverter}}"/>
                                     <Image Source="/Images/clock.png" ToolTip="Alarm" Visibility="Collapsed"/>
@@ -189,20 +190,24 @@
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource activeEmployeeColorConverter}">
                                     <Binding Path="EmployeeActive"/>
+                                    <Binding Path="DataContext.ActiveEmployeeColor" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}"/>
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <DataTrigger.Setters>
                                 <Setter Property="Background" Value="{Binding DataContext.ActiveEmployeeColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                                <Setter Property="Foreground" Value="{Binding DataContext.ActiveEmployeeColor, Converter={StaticResource foregroundForRowConverter},  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
                             </DataTrigger.Setters>
                         </DataTrigger>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource nullEmployeeColorConverter}">
                                     <Binding Path="EmployeeName"/>
+                                    <Binding Path="DataContext.NullEmployeeColor" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}"/>
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <DataTrigger.Setters>
                                 <Setter Property="Background" Value="{Binding DataContext.NullEmployeeColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                                <Setter Property="Foreground" Value="{Binding DataContext.NullEmployeeColor, Converter={StaticResource foregroundForRowConverter},  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
                             </DataTrigger.Setters>
                         </DataTrigger>
                         <Trigger Property="Background" Value="Black">

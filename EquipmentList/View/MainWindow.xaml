@@ -137,6 +137,62 @@
                     <MenuItem Header="Edit" IsCheckable="True" IsChecked="{Binding EditToolBar, Converter={StaticResource checkedConverter}}"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="Hidden System User" IsCheckable="True" IsChecked="{Binding HiddenUserSystem}"></MenuItem>
+                <MenuItem Header="Warning">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/warning_blue.png" Height="20"></Image>
+                    </MenuItem.Icon>
+                    <MenuItem Header="Unassigned employee">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/sub_black_delete.png" Height="20">
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform X="-5" Y="-2"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </MenuItem.Icon>
+                        <MenuItem Background="{Binding ActiveEmployeeColor}">
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Inactive employee">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/user.png" Height="20"></Image>
+                        </MenuItem.Icon>
+                        <MenuItem Background="{Binding NullEmployeeColor}">
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Posted worker">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/user_group.png" Height="20"></Image>
+                        </MenuItem.Icon>
+                        <MenuItem Background="{Binding NullEmployeeColor}">
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Incorrect review date">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/calendar.png" Height="20"></Image>
+                        </MenuItem.Icon>
+                        <MenuItem Background="{Binding NullEmployeeColor}">
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Incorrect legalization date">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/certificate.png" Height="20"></Image>
+                        </MenuItem.Icon>
+                        <MenuItem Background="{Binding NullEmployeeColor}">
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Alarm">
+                        <MenuItem.Icon>
+                            <Image Source="/Images/clock.png" Height="20"></Image>
+                        </MenuItem.Icon>
+                        <MenuItem Background="{Binding NullEmployeeColor}">
+                        </MenuItem>
+                    </MenuItem>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="About author" >

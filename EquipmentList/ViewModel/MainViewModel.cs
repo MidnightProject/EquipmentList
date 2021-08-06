@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using EquipmentList.Model;
 using FirebirdSql.Data.FirebirdClient;
 using GalaSoft.MvvmLight;
@@ -224,6 +225,21 @@ namespace EquipmentList.ViewModel
                 }
 
                 RaisePropertyChanged("GroupIndex");
+            }
+        }
+
+        private SolidColorBrush activeEmployeeColor;
+        public SolidColorBrush ActiveEmployeeColor
+        {
+            get
+            {
+                return activeEmployeeColor;
+            }
+
+            set
+            {
+                activeEmployeeColor = value;
+                RaisePropertyChanged("ActiveEmployeeColor");
             }
         }
 

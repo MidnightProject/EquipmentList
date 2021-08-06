@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace EquipmentList.Converters
 {
@@ -12,6 +9,11 @@ namespace EquipmentList.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            if (((SolidColorBrush)values[1]).Color == Colors.Transparent)
+            {
+                return false;
+            }
+
             if (String.IsNullOrEmpty(values[0].ToString()))
             {
                 return true;
