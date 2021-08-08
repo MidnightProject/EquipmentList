@@ -112,9 +112,23 @@ namespace EquipmentList.ViewModel
 
             set
             {
-                //nullEmployeeColor = new SolidColorBrush();
                 nullEmployeeColor = value;
                 RaisePropertyChanged("NullEmployeeColor");
+            }
+        }
+
+        private SolidColorBrush incorrectReviewDateColor;
+        public SolidColorBrush IncorrectReviewDateColor
+        {
+            get
+            {
+                return incorrectReviewDateColor;
+            }
+
+            set
+            {
+                incorrectReviewDateColor = value;
+                RaisePropertyChanged("IncorrectReviewDateColor");
             }
         }
 
@@ -243,22 +257,6 @@ namespace EquipmentList.ViewModel
                     CertificationNumber = row["CERTIFICATE_NUMBER"].ToString(),
                     PostingDate = postingDate,
                 });
-            }
-
-            ActiveEmployeeColor = Brushes.Transparent;
-            NullEmployeeColor = Brushes.Transparent;
-
-            Color newColor = Colors.Yellow;
-
-            var initialColor = ActiveEmployeeColor.Color;
-            var dialog = new ColorPickerDialog(initialColor);
-            var result = dialog.ShowDialog();
-            if (result.HasValue && result.Value)
-            {
-                newColor = dialog.Color;
-
-                ActiveEmployeeColor = new SolidColorBrush(newColor);
-                NullEmployeeColor = new SolidColorBrush(newColor);
             }
         }
     }

@@ -14,6 +14,7 @@
         <converters:ViewToEnableConverter x:Key="enableViewConverter"/>
         <converters:ViewToTextConverter x:Key="textViewConverter"/>
         <converters:VisibilityToIsCheckedConverter x:Key="checkedConverter"/>
+        <converters:ColorToNameConverter x:Key="colorNameConverter"/>
 
         <DataTemplate DataType="{x:Type vm:BuildingViewModel}">
             <v:Building/>
@@ -136,7 +137,6 @@
                     <MenuItem Header="Database" IsCheckable="True" IsChecked="{Binding DatabseToolBar, Converter={StaticResource checkedConverter}}"></MenuItem>
                     <MenuItem Header="Edit" IsCheckable="True" IsChecked="{Binding EditToolBar, Converter={StaticResource checkedConverter}}"></MenuItem>
                 </MenuItem>
-                <MenuItem Header="Hidden System User" IsCheckable="True" IsChecked="{Binding HiddenUserSystem}"></MenuItem>
                 <MenuItem Header="Warning">
                     <MenuItem.Icon>
                         <Image Source="/Images/warning_blue.png" Height="20"></Image>
@@ -154,14 +154,19 @@
                                 </Image.RenderTransform>
                             </Image>
                         </MenuItem.Icon>
-                        <MenuItem Background="{Binding ActiveEmployeeColor}">
-                        </MenuItem>
+                        <MenuItem Header="{Binding NullEmployeeColor, Converter={StaticResource colorNameConverter}}" 
+                                      Command="{Binding ColorOfWarningCommand}" CommandParameter="NullEmployee">
+                            <MenuItem.Icon>
+                                <Rectangle Fill="{Binding NullEmployeeColor}"></Rectangle>
+                            </MenuItem.Icon>
+                            </MenuItem>
                     </MenuItem>
                     <MenuItem Header="Inactive employee">
                         <MenuItem.Icon>
                             <Image Source="/Images/user.png" Height="20"></Image>
                         </MenuItem.Icon>
-                        <MenuItem Background="{Binding NullEmployeeColor}">
+                        <MenuItem Background="{Binding ActiveEmployeeColor}"
+                                  Command="{Binding ColorOfWarningCommand}" CommandParameter="ActiveEmployee">
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="Posted worker">
@@ -175,7 +180,8 @@
                         <MenuItem.Icon>
                             <Image Source="/Images/calendar.png" Height="20"></Image>
                         </MenuItem.Icon>
-                        <MenuItem Background="{Binding NullEmployeeColor}">
+                        <MenuItem Background="{Binding IncorrectReviewDateColor}"
+                                  Command="{Binding ColorOfWarningCommand}" CommandParameter="IncorrectReviewDate">
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="Incorrect legalization date">
@@ -192,6 +198,9 @@
                         <MenuItem Background="{Binding NullEmployeeColor}">
                         </MenuItem>
                     </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Advanced...">
+                    <MenuItem Header="Hidden System User" IsCheckable="True" IsChecked="{Binding HiddenUserSystem}"></MenuItem>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Help">

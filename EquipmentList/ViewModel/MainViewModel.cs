@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
+using Dsafa.WpfColorPicker;
 using EquipmentList.Model;
 using FirebirdSql.Data.FirebirdClient;
 using GalaSoft.MvvmLight;
@@ -90,6 +93,52 @@ namespace EquipmentList.ViewModel
                 case "BuildingView":
                     View = DefinedViews.BuildingView;
                     break;
+            }
+        }
+
+        private RelayCommand<string> colorOfWarningCommand;
+        public RelayCommand<string> ColorOfWarningCommand
+        {
+            get
+            {
+                return colorOfWarningCommand = new RelayCommand<string>((pararameters) => SetColorOfWarning(pararameters));
+            }
+        }
+        private void SetColorOfWarning(string pararameters)
+        {
+            Color initialColor = Colors.Transparent;
+
+            switch (pararameters)
+            {
+                case "NullEmployee":
+                    initialColor = NullEmployeeColor.Color;
+                    break;
+                case "ActiveEmployee":
+                    initialColor = ActiveEmployeeColor.Color;
+                    break;
+                case "IncorrectReviewDate":
+                    initialColor = IncorrectReviewDateColor.Color;
+                    break;
+            }
+
+            ColorPickerDialog dialog = new ColorPickerDialog(initialColor);
+
+            var result = dialog.ShowDialog();
+            if (result.HasValue && result.Value)
+            {
+                switch (pararameters)
+                {
+                    case "NullEmployee":
+                        NullEmployeeColor = new SolidColorBrush(dialog.Color);
+                        break;
+                    case "ActiveEmployee":
+                        ActiveEmployeeColor = new SolidColorBrush(dialog.Color);
+                        break;
+                    case "IncorrectReviewDate":
+                        IncorrectReviewDateColor = new SolidColorBrush(dialog.Color);
+                        break;
+
+                }
             }
         }
 
@@ -240,6 +289,57 @@ namespace EquipmentList.ViewModel
             {
                 activeEmployeeColor = value;
                 RaisePropertyChanged("ActiveEmployeeColor");
+
+                switch (View)
+                {
+                    case DefinedViews.EquipmentView:
+                        ((EquipmentViewModel)ViewModel).ActiveEmployeeColor = value;
+                        break;
+                }
+            }
+        }
+
+        private SolidColorBrush nullEmployeeColor;
+        public SolidColorBrush NullEmployeeColor
+        {
+            get
+            {
+                return nullEmployeeColor;
+            }
+
+            set
+            {
+                nullEmployeeColor = value;
+                RaisePropertyChanged("NullEmployeeColor");
+
+                switch (View)
+                {
+                    case DefinedViews.EquipmentView:
+                        ((EquipmentViewModel)ViewModel).NullEmployeeColor = value;
+                        break;
+                }
+            }
+        }
+
+        private SolidColorBrush incorrectReviewDateColor;
+        public SolidColorBrush IncorrectReviewDateColor
+        {
+            get
+            {
+                return incorrectReviewDateColor;
+            }
+
+            set
+            {
+                incorrectReviewDateColor = value;
+                RaisePropertyChanged("IncorrectReviewDateColor");
+
+                switch (View)
+                {
+                    case DefinedViews.EquipmentView:
+                        ((EquipmentViewModel)ViewModel).IncorrectReviewDateColor = value;
+                        break;
+                }
             }
         }
 
@@ -273,7 +373,7 @@ namespace EquipmentList.ViewModel
                 Port = 3050,
                 Charset = "WIN1250",
             };
-            
+
 
             FbConnection connection = new FbConnection(stringConnection.ToString());
             connection.Open();
@@ -301,7 +401,13 @@ namespace EquipmentList.ViewModel
 
             View = DefinedViews.EquipmentView;
             //View = DefinedViews.EmployeeView;
+
+            ActiveEmployeeColor = Brushes.Transparent;
+            NullEmployeeColor = Brushes.Transparent;
+            IncorrectReviewDateColor = Brushes.Transparent;
         }
     }
+    
+
 }
  
