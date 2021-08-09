@@ -50,7 +50,7 @@ namespace EquipmentList.ViewModel
                     case DefinedViews.EquipmentView:
                         equipmentTable = new DataTable();
                         equipmentAdapter.Fill(equipmentTable);
-                        ViewModel = new EquipmentViewModel(EmployeesStatus, equipmentTable);
+                        ViewModel = new EquipmentViewModel(EmployeesStatus, equipmentTable, AlarmColor, PostedWorkerColor, ActiveEmployeeColor, NullEmployeeColor, IncorrectReviewDateColor, IncorrectLegalizationDateColor);
                         break;
                     case DefinedViews.EmployeeView:
                         employeeTable = new DataTable();
@@ -119,6 +119,15 @@ namespace EquipmentList.ViewModel
                 case "IncorrectReviewDate":
                     initialColor = IncorrectReviewDateColor.Color;
                     break;
+                case "IncorrectLegalizationDate":
+                    initialColor = IncorrectLegalizationDateColor.Color;
+                    break;
+                case "PostedWorker":
+                    initialColor = PostedWorkerColor.Color;
+                    break;
+                case "Alarm":
+                    initialColor = AlarmColor.Color;
+                    break;
             }
 
             ColorPickerDialog dialog = new ColorPickerDialog(initialColor);
@@ -136,6 +145,15 @@ namespace EquipmentList.ViewModel
                         break;
                     case "IncorrectReviewDate":
                         IncorrectReviewDateColor = new SolidColorBrush(dialog.Color);
+                        break;
+                    case "IncorrectLegalizationDate":
+                        IncorrectLegalizationDateColor = new SolidColorBrush(dialog.Color);
+                        break;
+                    case "PostedWorker":
+                        PostedWorkerColor = new SolidColorBrush(dialog.Color);
+                        break;
+                    case "Alarm":
+                        AlarmColor = new SolidColorBrush(dialog.Color);
                         break;
 
                 }
@@ -343,6 +361,72 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private SolidColorBrush incorrectLegalizationDateColor;
+        public SolidColorBrush IncorrectLegalizationDateColor
+        {
+            get
+            {
+                return incorrectLegalizationDateColor;
+            }
+
+            set
+            {
+                incorrectLegalizationDateColor = value;
+                RaisePropertyChanged("IncorrectLegalizationDateColor");
+
+                switch (View)
+                {
+                    case DefinedViews.EquipmentView:
+                        ((EquipmentViewModel)ViewModel).IncorrectLegalizationDateColor = value;
+                        break;
+                }
+            }
+        }
+
+        private SolidColorBrush postedWorkerColor;
+        public SolidColorBrush PostedWorkerColor
+        {
+            get
+            {
+                return postedWorkerColor;
+            }
+
+            set
+            {
+                postedWorkerColor = value;
+                RaisePropertyChanged("PostedWorkerColor");
+
+                switch (View)
+                {
+                    case DefinedViews.EquipmentView:
+                        ((EquipmentViewModel)ViewModel).PostedWorkerColor = value;
+                        break;
+                }
+            }
+        }
+
+        private SolidColorBrush alarmColor;
+        public SolidColorBrush AlarmColor
+        {
+            get
+            {
+                return alarmColor;
+            }
+
+            set
+            {
+                alarmColor = value;
+                RaisePropertyChanged("AlarmColor");
+
+                switch (View)
+                {
+                    case DefinedViews.EquipmentView:
+                        ((EquipmentViewModel)ViewModel).AlarmColor = value;
+                        break;
+                }
+            }
+        }
+
         private FbDataAdapter buildingAdapter;
         private DataTable buildingTable;
 
@@ -404,7 +488,10 @@ namespace EquipmentList.ViewModel
 
             ActiveEmployeeColor = Brushes.Transparent;
             NullEmployeeColor = Brushes.Transparent;
-            IncorrectReviewDateColor = Brushes.Transparent;
+            IncorrectReviewDateColor = Brushes.Red;
+            IncorrectLegalizationDateColor = Brushes.Red;
+            PostedWorkerColor = Brushes.Transparent;
+            AlarmColor = Brushes.MistyRose;
         }
     }
     

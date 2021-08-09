@@ -25,7 +25,7 @@
 
             <converters:ListToTextConverter x:Key="columnTextConverter"/>
             <converters:EmailToMailtoConverter x:Key="mailtoConverter"/>
-            <converters:DateToForegroundConverter x:Key="foregroundConverter"/>
+            <converters:DateToForegroundConverter x:Key="dateForegroundConverter"/>
             <converters:EmployeesToEmployeeConverter x:Key="employeeConverter"/>
             <converters:NullEmployeeToWarningVisibilityConverter x:Key="nullEmployeeWarningConverter"/>
             <converters:PostedWorkerToWarningVisibilityConverter x:Key="postedWorkerWarningConverter"/>
@@ -34,6 +34,10 @@
             <converters:ActiveEmployeeToColorConverter x:Key="activeEmployeeColorConverter"/>
             <converters:NullEmployeeToColorConverter x:Key="nullEmployeeColorConverter"/>
             <converters:BackgroundToForegroundConverter x:Key="foregroundForRowConverter"/>
+            <converters:EmployeeToForegroundConverter x:Key="employeeForegroundConverter"/>
+            <converters:AlarmToColorConverter x:Key="alarmColorConverter"/>
+            <converters:DateToColorConverter x:Key="dateColorConverter"/>
+            <converters:PostedWorkerToColorConverter x:Key="postedWorkerColorConverter"/>
 
             <ControlTemplate x:Key="ComboboxFilter">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
@@ -186,6 +190,18 @@
                         <Trigger Property="ItemsControl.AlternationIndex" Value="1">
                             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
                         </Trigger>
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource postedWorkerColorConverter}">
+                                    <Binding Path="EmployeesName"/>
+                                    <Binding Path="DataContext.PostedWorkerColor" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}"/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <DataTrigger.Setters>
+                                <Setter Property="Background" Value="{Binding DataContext.PostedWorkerColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                                <Setter Property="Foreground" Value="{Binding DataContext.PostedWorkerColor, Converter={StaticResource foregroundForRowConverter},  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                            </DataTrigger.Setters>
+                        </DataTrigger>
                         <DataTrigger Value="False">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource activeEmployeeColorConverter}">
@@ -210,9 +226,45 @@
                                 <Setter Property="Foreground" Value="{Binding DataContext.NullEmployeeColor, Converter={StaticResource foregroundForRowConverter},  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
                             </DataTrigger.Setters>
                         </DataTrigger>
-                        <Trigger Property="Background" Value="Black">
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource alarmColorConverter}">
+                                    <Binding Path="ReviewDate"/>
+                                    <Binding Path="ReviewAlarm"/>
+                                    <Binding Path="LegalizationDate"/>
+                                    <Binding Path="LegalizationAlarm"/>
+                                    <Binding Path="DataContext.AlarmColor" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}"/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <DataTrigger.Setters>
+                                <Setter Property="Background" Value="{Binding DataContext.AlarmColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                                <Setter Property="Foreground" Value="{Binding DataContext.AlarmColor, Converter={StaticResource foregroundForRowConverter},  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                            </DataTrigger.Setters>
+                        </DataTrigger>
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource dateColorConverter}">
+                                    <Binding Path="ReviewDate"/>
+                                    <Binding Path="DataContext.IncorrectReviewDateColor" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}"/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <DataTrigger.Setters>
+                                <Setter Property="Background" Value="{Binding DataContext.IncorrectReviewDateColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                                <Setter Property="Foreground" Value="{Binding DataContext.IncorrectReviewDateColor, Converter={StaticResource foregroundForRowConverter},  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                            </DataTrigger.Setters>
+                        </DataTrigger>
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource dateColorConverter}">
+                                    <Binding Path="LegalizationDate"/>
+                                    <Binding Path="DataContext.IncorrectLegalizationDateColor" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}"/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <DataTrigger.Setters>
+                                <Setter Property="Background" Value="{Binding DataContext.IncorrectLegalizationDateColor, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                                <Setter Property="Foreground" Value="{Binding DataContext.IncorrectLegalizationDateColor, Converter={StaticResource foregroundForRowConverter},  RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                            </DataTrigger.Setters>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
@@ -279,6 +331,12 @@
                                 </StackPanel>
                             </Expander>
                             <Expander Header="Assigned employee:" FontWeight="Bold" Margin="0,5,0,0" IsExpanded="False">
+                                <Expander.Foreground>
+                                    <MultiBinding Converter="{StaticResource employeeForegroundConverter}">
+                                        <Binding Path="EmployeeName"></Binding>
+                                        <Binding Path="EmployeeActive"></Binding>
+                                    </MultiBinding>
+                                </Expander.Foreground>
                                 <StackPanel Margin="15,0,0,0">
                                     <WrapPanel Margin="0,5,0,0">
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
@@ -684,7 +742,7 @@
                             </Expander>
                             <Expander Header="Review:" FontWeight="Bold" Margin="0,5,0,0" IsExpanded="False">
                                 <Expander.Foreground>
-                                    <MultiBinding Converter="{StaticResource foregroundConverter}">
+                                    <MultiBinding Converter="{StaticResource dateForegroundConverter}">
                                         <Binding Path="ReviewDate"></Binding>
                                     </MultiBinding>
                                 </Expander.Foreground>
@@ -703,7 +761,7 @@
                             </Expander>
                             <Expander Header="Attestation:" FontWeight="Bold" Margin="0,5,0,0" IsExpanded="False">
                                 <Expander.Foreground>
-                                    <MultiBinding Converter="{StaticResource foregroundConverter}">
+                                    <MultiBinding Converter="{StaticResource dateForegroundConverter}">
                                         <Binding Path="LegalizationDate"></Binding>
                                     </MultiBinding>
                                 </Expander.Foreground>

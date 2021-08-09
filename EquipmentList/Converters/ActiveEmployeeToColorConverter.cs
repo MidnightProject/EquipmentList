@@ -9,6 +9,11 @@ namespace EquipmentList.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            if (values[1] == null)
+            {
+                return true;
+            }
+
             if (((SolidColorBrush)values[1]).Color == Colors.Transparent)
             {
                 return true;

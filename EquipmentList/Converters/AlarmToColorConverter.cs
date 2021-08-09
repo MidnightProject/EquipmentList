@@ -5,21 +5,26 @@ using System.Windows.Media;
 
 namespace EquipmentList.Converters
 {
-    class NullEmployeeToColorConverter : IMultiValueConverter
+    public class AlarmToColorConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[1] == null)
+            if (values[4] == null)
             {
                 return false;
             }
 
-            if (((SolidColorBrush)values[1]).Color == Colors.Transparent)
+            if (((SolidColorBrush)values[4]).Color == Colors.Transparent)
             {
                 return false;
             }
 
-            if (String.IsNullOrEmpty(values[0].ToString()))
+            if (values[0].ToDateTime().AddDays((int)values[1]) < DateTime.Now)
+            {
+                return true;
+            }
+
+            if (values[2].ToDateTime().AddDays((int)values[3]) < DateTime.Now)
             {
                 return true;
             }

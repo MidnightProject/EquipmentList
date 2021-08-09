@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
 
 namespace EquipmentList.Converters
 {
-    class NullEmployeeToColorConverter : IMultiValueConverter
+    public class DateToColorConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -19,7 +23,12 @@ namespace EquipmentList.Converters
                 return false;
             }
 
-            if (String.IsNullOrEmpty(values[0].ToString()))
+            if (values[0].ToDateTime() == new DateTime())
+            {
+                return false;
+            }
+
+            if (values[0].ToDateTime() < DateTime.Now)
             {
                 return true;
             }

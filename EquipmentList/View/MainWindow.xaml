@@ -155,9 +155,9 @@
                             </Image>
                         </MenuItem.Icon>
                         <MenuItem Header="{Binding NullEmployeeColor, Converter={StaticResource colorNameConverter}}" 
-                                      Command="{Binding ColorOfWarningCommand}" CommandParameter="NullEmployee">
+                                  Command="{Binding ColorOfWarningCommand}" CommandParameter="NullEmployee">
                             <MenuItem.Icon>
-                                <Rectangle Fill="{Binding NullEmployeeColor}"></Rectangle>
+                                <Rectangle Width="20" Height="20" Fill="{Binding NullEmployeeColor}"></Rectangle>
                             </MenuItem.Icon>
                             </MenuItem>
                     </MenuItem>
@@ -165,37 +165,55 @@
                         <MenuItem.Icon>
                             <Image Source="/Images/user.png" Height="20"></Image>
                         </MenuItem.Icon>
-                        <MenuItem Background="{Binding ActiveEmployeeColor}"
+                        <MenuItem Header="{Binding ActiveEmployeeColor, Converter={StaticResource colorNameConverter}}"
                                   Command="{Binding ColorOfWarningCommand}" CommandParameter="ActiveEmployee">
+                            <MenuItem.Icon>
+                                <Rectangle Width="20" Height="20" Fill="{Binding ActiveEmployeeColor}"></Rectangle>
+                            </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="Posted worker">
                         <MenuItem.Icon>
                             <Image Source="/Images/user_group.png" Height="20"></Image>
                         </MenuItem.Icon>
-                        <MenuItem Background="{Binding NullEmployeeColor}">
+                        <MenuItem Header="{Binding PostedWorkerColor, Converter={StaticResource colorNameConverter}}"
+                                  Command="{Binding ColorOfWarningCommand}" CommandParameter="PostedWorker">
+                            <MenuItem.Icon>
+                                <Rectangle Width="20" Height="20" Fill="{Binding PostedWorkerColor}"></Rectangle>
+                            </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="Incorrect review date">
                         <MenuItem.Icon>
                             <Image Source="/Images/calendar.png" Height="20"></Image>
                         </MenuItem.Icon>
-                        <MenuItem Background="{Binding IncorrectReviewDateColor}"
+                        <MenuItem Header="{Binding IncorrectReviewDateColor, Converter={StaticResource colorNameConverter}}"
                                   Command="{Binding ColorOfWarningCommand}" CommandParameter="IncorrectReviewDate">
+                            <MenuItem.Icon>
+                                <Rectangle Width="20" Height="20" Fill="{Binding IncorrectReviewDateColor}"></Rectangle>
+                            </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="Incorrect legalization date">
                         <MenuItem.Icon>
                             <Image Source="/Images/certificate.png" Height="20"></Image>
                         </MenuItem.Icon>
-                        <MenuItem Background="{Binding NullEmployeeColor}">
+                        <MenuItem Header="{Binding IncorrectLegalizationDateColor, Converter={StaticResource colorNameConverter}}"
+                                  Command="{Binding ColorOfWarningCommand}" CommandParameter="IncorrectLegalizationDate">
+                            <MenuItem.Icon>
+                                <Rectangle Width="20" Height="20" Fill="{Binding IncorrectLegalizationDateColor}"></Rectangle>
+                            </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="Alarm">
                         <MenuItem.Icon>
                             <Image Source="/Images/clock.png" Height="20"></Image>
                         </MenuItem.Icon>
-                        <MenuItem Background="{Binding NullEmployeeColor}">
+                        <MenuItem Header="{Binding AlarmColor, Converter={StaticResource colorNameConverter}}"
+                                  Command="{Binding ColorOfWarningCommand}" CommandParameter="Alarm">
+                            <MenuItem.Icon>
+                                <Rectangle Width="20" Height="20" Fill="{Binding AlarmColor}"></Rectangle>
+                            </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
                 </MenuItem>

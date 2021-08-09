@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
-using System.Windows.Media;
 
 namespace EquipmentList.Converters
 {
-    class NullEmployeeToColorConverter : IMultiValueConverter
+    public class PostedWorkerToColorConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -14,17 +17,14 @@ namespace EquipmentList.Converters
                 return false;
             }
 
-            if (((SolidColorBrush)values[1]).Color == Colors.Transparent)
+            string val = (string)values[0];
+
+            if (String.IsNullOrEmpty(val.Substring(val.IndexOf("#") + 1)))
             {
                 return false;
             }
 
-            if (String.IsNullOrEmpty(values[0].ToString()))
-            {
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

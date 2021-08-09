@@ -9,6 +9,11 @@ namespace EquipmentList.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+            {
+                return Brushes.Black;
+            }
+
             Color color = ((SolidColorBrush)value).Color;
 
             if (color.R * 0.2126 + color.G * 0.7152 + color.B * 0.0722 < 50 && color.A > 100)

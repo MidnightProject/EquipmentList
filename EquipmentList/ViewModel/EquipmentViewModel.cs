@@ -132,6 +132,51 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private SolidColorBrush incorrectLegalizationDateColor;
+        public SolidColorBrush IncorrectLegalizationDateColor
+        {
+            get
+            {
+                return incorrectLegalizationDateColor;
+            }
+
+            set
+            {
+                incorrectLegalizationDateColor = value;
+                RaisePropertyChanged("IncorrectLegalizationDateColor");
+            }
+        }
+
+        private SolidColorBrush postedWorkerColor;
+        public SolidColorBrush PostedWorkerColor
+        {
+            get
+            {
+                return postedWorkerColor;
+            }
+
+            set
+            {
+                postedWorkerColor = value;
+                RaisePropertyChanged("PostedWorkerColor");
+            }
+        }
+
+        private SolidColorBrush alarmColor;
+        public SolidColorBrush AlarmColor
+        {
+            get
+            {
+                return alarmColor;
+            }
+
+            set
+            {
+                alarmColor = value;
+                RaisePropertyChanged("AlarmColor");
+            }
+        }
+
         private RelayCommand<string> copyStringCommand;
         public RelayCommand<string> CopyStringCommand
         { 
@@ -145,8 +190,15 @@ namespace EquipmentList.ViewModel
             Clipboard.SetData(DataFormats.Text, pararameters);
         }
 
-        public EquipmentViewModel(List<EmployeeStatus> employeeStatus, DataTable equipment)
+        public EquipmentViewModel(List<EmployeeStatus> employeeStatus, DataTable equipment, SolidColorBrush alarmColor, SolidColorBrush postedWorkerColor, SolidColorBrush activeEmployeeColor , SolidColorBrush nullEmployeeColor, SolidColorBrush incorrectReviewDateColor, SolidColorBrush incorrectLegalizationDateColor)
         {
+            AlarmColor = alarmColor;
+            PostedWorkerColor = postedWorkerColor;
+            ActiveEmployeeColor = activeEmployeeColor;
+            NullEmployeeColor = nullEmployeeColor;
+            IncorrectReviewDateColor = incorrectReviewDateColor;
+            IncorrectLegalizationDateColor = incorrectLegalizationDateColor;
+
             DataEquipments = new Collection<DataEquipment>();
             EmployeesStatus = employeeStatus;
       

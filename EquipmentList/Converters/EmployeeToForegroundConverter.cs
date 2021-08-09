@@ -1,30 +1,31 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
 namespace EquipmentList.Converters
 {
-    class NullEmployeeToColorConverter : IMultiValueConverter
+    public class EmployeeToForegroundConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[1] == null)
+            if (values == null || values[0] == DependencyProperty.UnsetValue)
             {
-                return false;
+                return Brushes.Black;
             }
 
-            if (((SolidColorBrush)values[1]).Color == Colors.Transparent)
+            if (String.IsNullOrEmpty((string)values[0]))
             {
-                return false;
+                return Brushes.Red;
             }
 
-            if (String.IsNullOrEmpty(values[0].ToString()))
+            if ((Boolean)values[1] == false)
             {
-                return true;
+                return Brushes.Red;
             }
 
-            return false;
+            return Brushes.Black;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
