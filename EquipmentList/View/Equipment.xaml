@@ -127,6 +127,10 @@
     </UserControl.Resources>
     
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <DataGrid Name="DataGrid"
                   dgx:DataGridFilter.IsAutoFilterEnabled="True" 
                   IsReadOnly="True" SelectionMode="Single" 
@@ -134,7 +138,9 @@
                   AutoGenerateColumns="False" 
                   SelectedIndex="{Binding SelectedIndex}"
                   FontSize="16"
-                  ColumnWidth="Auto">
+                  ColumnWidth="Auto"
+                  Grid.Column="0"
+                  BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                     <Setter Property="ItemsSource" Value="{Binding DataEquipments}"/>
@@ -948,5 +954,6 @@
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
+        <Rectangle Grid.Column="1" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"></Rectangle>
     </Grid>
 </UserControl>
