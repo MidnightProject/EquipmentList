@@ -106,6 +106,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\ActiveEmployeeToWarningVisibilityConverter.cs" />
     <Compile Include="Converters\AlarmToColorConverter.cs" />
+    <Compile Include="Converters\AlarmToWarningVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToNameConverter.cs" />
     <Compile Include="Converters\DateToColorConverter.cs" />
     <Compile Include="Converters\DateToForegroundConverter.cs" />

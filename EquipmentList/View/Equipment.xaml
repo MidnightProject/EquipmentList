@@ -38,6 +38,7 @@
             <converters:AlarmToColorConverter x:Key="alarmColorConverter"/>
             <converters:DateToColorConverter x:Key="dateColorConverter"/>
             <converters:PostedWorkerToColorConverter x:Key="postedWorkerColorConverter"/>
+            <converters:AlarmToWarningVisibilityConverter x:Key="alarmWarningConverter"/>
 
             <ControlTemplate x:Key="ComboboxFilter">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
@@ -164,7 +165,28 @@
                                     <Image Source="/Images/user.png" ToolTip="Inactive employee" Visibility="{Binding EmployeeActive, Converter={StaticResource activeEmployeeWarningConverter}}"/>
                                     <Image Source="/Images/calendar.png" ToolTip="Incorrect review date" Visibility="{Binding ReviewDate, Converter={StaticResource dateWarningConverter}}"/>
                                     <Image Source="/Images/certificate.png" ToolTip="Incorrect legalization date" Visibility="{Binding LegalizationDate, Converter={StaticResource dateWarningConverter}}"/>
-                                    <Image Source="/Images/clock.png" ToolTip="Alarm" Visibility="Collapsed"/>
+                                    <Image Source="/Images/clock.png" ToolTip="Alarm">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Value="True">
+                                                        <DataTrigger.Binding>
+                                                            <MultiBinding Converter="{StaticResource alarmWarningConverter}">
+                                                                <Binding Path="ReviewDate"/>
+                                                                <Binding Path="ReviewAlarm"/>
+                                                                <Binding Path="LegalizationDate"/>
+                                                                <Binding Path="LegalizationAlarm"/>
+                                                            </MultiBinding>
+                                                        </DataTrigger.Binding>
+                                                        <DataTrigger.Setters>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger.Setters>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
                                     <Image Source="/Images/warning_blue.png" ToolTip="" Visibility="Collapsed"/>
                                 </StackPanel>
                             </Grid>
