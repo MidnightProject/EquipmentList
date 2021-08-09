@@ -89,5 +89,19 @@ namespace EquipmentList.View
 
             DataGrid.Columns[0].Width = maxWidth + 5;
         }
+
+        private void DataGrid_UnloadingRow(object sender, DataGridRowEventArgs e)
+        {
+            if (dataGridIsInitialize == false)
+            {
+                dataGridIsInitialize = true;
+
+                for (int i = 0; i < cellWidth.Count(); i++)
+                {
+                    cellWidth[i] = 0;
+                }
+            }
+
+        }
     }
 }

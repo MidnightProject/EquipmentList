@@ -140,7 +140,7 @@
                   FontSize="16"
                   ColumnWidth="Auto"
                   Grid.Column="0"
-                  BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                  BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" UnloadingRow="DataGrid_UnloadingRow">
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                     <Setter Property="ItemsSource" Value="{Binding DataEquipments}"/>
