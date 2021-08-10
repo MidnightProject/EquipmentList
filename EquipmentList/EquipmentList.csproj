@@ -110,6 +110,7 @@
     <Compile Include="Converters\ColorToNameConverter.cs" />
     <Compile Include="Converters\DateToColorConverter.cs" />
     <Compile Include="Converters\DateToForegroundConverter.cs" />
+    <Compile Include="Converters\DateToShortDateStringConverter.cs" />
     <Compile Include="Converters\DateToWarningVisibilityConverter.cs" />
     <Compile Include="Converters\EmailToMailtoConverter.cs" />
     <Compile Include="Converters\EmployeesToEmployeeConverter.cs" />

@@ -39,6 +39,7 @@
             <converters:DateToColorConverter x:Key="dateColorConverter"/>
             <converters:PostedWorkerToColorConverter x:Key="postedWorkerColorConverter"/>
             <converters:AlarmToWarningVisibilityConverter x:Key="alarmWarningConverter"/>
+            <converters:DateToShortDateStringConverter x:Key="shortDateStringConverter"/>
 
             <ControlTemplate x:Key="ComboboxFilter">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
@@ -106,6 +107,7 @@
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
+
 
             <CollectionViewSource x:Key="GroupCountries" Source="{Binding DataBuildings}" IsLiveGroupingRequested="True">
                 <CollectionViewSource.LiveSortingProperties>
@@ -208,6 +210,7 @@
                 <DataGridTextColumn Header="Condition" Binding="{Binding Condition}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxNotEditableFilter}"/>
                 <DataGridTextColumn Header="Room" Binding="{Binding Room}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                 <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeesName, Converter={StaticResource employeeConverter}}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilterEmployee}"/>
+                <DataGridTextColumn Header="Review Date" Binding="{Binding ReviewDate, Converter={StaticResource shortDateStringConverter}}" />
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
@@ -222,6 +225,7 @@
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource postedWorkerColorConverter}">
                                     <Binding Path="EmployeesName"/>
+                                    <Binding Path="PostingDate"/>
                                     <Binding Path="DataContext.PostedWorkerColor" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}"/>
                                 </MultiBinding>
                             </DataTrigger.Binding>

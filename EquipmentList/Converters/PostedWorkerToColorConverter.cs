@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace EquipmentList.Converters
@@ -12,7 +8,7 @@ namespace EquipmentList.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[1] == null)
+            if (values[2] == null)
             {
                 return false;
             }
@@ -20,6 +16,16 @@ namespace EquipmentList.Converters
             string val = (string)values[0];
 
             if (String.IsNullOrEmpty(val.Substring(val.IndexOf("#") + 1)))
+            {
+                return false;
+            }
+
+            if (values[1].ToDateTime() == new DateTime())
+            {
+                return true;
+            }
+
+            if (values[1].ToDateTime() <  DateTime.Today)
             {
                 return false;
             }
