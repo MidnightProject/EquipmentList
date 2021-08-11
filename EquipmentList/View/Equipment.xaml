@@ -7,6 +7,7 @@
              xmlns:s="clr-namespace:System;assembly=mscorlib"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:EquipmentList.View"
+             xmlns:controls="clr-namespace:EquipmentList.Controls"
              xmlns:converters="clr-namespace:EquipmentList.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -106,6 +107,9 @@
                         <Setter TargetName="ComboBox" Property="Opacity" Value="1"/>
                     </Trigger>
                 </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <ControlTemplate x:Key="FilterWithPopup">
+                <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"/>
             </ControlTemplate>
 
 
@@ -210,7 +214,7 @@
                 <DataGridTextColumn Header="Condition" Binding="{Binding Condition}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxNotEditableFilter}"/>
                 <DataGridTextColumn Header="Room" Binding="{Binding Room}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                 <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeesName, Converter={StaticResource employeeConverter}}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilterEmployee}"/>
-                <DataGridTextColumn Header="Review Date" Binding="{Binding ReviewDate, Converter={StaticResource shortDateStringConverter}}" />
+                <DataGridTextColumn Header="Review Date" Binding="{Binding ReviewDate, Converter={StaticResource shortDateStringConverter}}" dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}"/>
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
