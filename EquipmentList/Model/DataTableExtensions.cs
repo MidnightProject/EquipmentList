@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 public static class DataTableExtensions
 {
@@ -14,7 +15,7 @@ public static class DataTableExtensions
 
     public static DateTime ToDateTime(this object val)
     {
-        if (String.IsNullOrEmpty(val.ToString()))
+        if (String.IsNullOrEmpty(val.ToString()) || val == DependencyProperty.UnsetValue)
         {
             return new DateTime();
         }

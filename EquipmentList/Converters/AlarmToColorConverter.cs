@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -9,7 +10,7 @@ namespace EquipmentList.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[4] == null)
+            if (values[4] == null || values[4] == DependencyProperty.UnsetValue)
             {
                 return false;
             }

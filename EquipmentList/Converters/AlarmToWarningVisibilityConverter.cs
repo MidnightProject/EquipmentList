@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace EquipmentList.Converters
@@ -12,6 +13,11 @@ namespace EquipmentList.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            if (values[0] == DependencyProperty.UnsetValue || values[1] == DependencyProperty.UnsetValue || values[2] == DependencyProperty.UnsetValue || values[3] == DependencyProperty.UnsetValue)
+            {
+                return false;
+            }
+
             if (values[0].ToDateTime().AddDays((int)values[1]) < DateTime.Now)
             {
                 return true;

@@ -87,6 +87,33 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private string group;
+        public string Group
+        {
+            get
+            {
+                return group;
+            }
+
+            set
+            {
+                switch (value)
+                {
+                    case "Building":
+                        group = "BUILDING";
+                        break;
+                    case "Test":
+                        group = "REVIEW_DATE";
+                        break;
+                    default:
+                        group = String.Empty;
+                        break;
+                }
+
+                RaisePropertyChanged("Group");
+            }
+        }
+
         private SolidColorBrush activeEmployeeColor;
         public SolidColorBrush ActiveEmployeeColor
         {

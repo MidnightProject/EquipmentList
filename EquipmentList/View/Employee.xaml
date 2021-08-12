@@ -75,14 +75,6 @@
                     <PropertyGroupDescription PropertyName="Building"/>
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
-            <CollectionViewSource x:Key="GroupNames" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
-                <CollectionViewSource.LiveSortingProperties>
-                    <s:String>Name</s:String>
-                </CollectionViewSource.LiveSortingProperties>
-                <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="Name"/>
-                </CollectionViewSource.GroupDescriptions>
-            </CollectionViewSource>
             <CollectionViewSource x:Key="GroupJobs" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
                 <CollectionViewSource.LiveSortingProperties>
                     <s:String>Job</s:String>
@@ -116,9 +108,6 @@
                     <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                         <Setter Property="ItemsSource" Value="{Binding DataEmployees}"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Group}" Value="NAME">
-                                <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupNames}}"/>
-                            </DataTrigger>
                             <DataTrigger Binding="{Binding Group}" Value="JOB">
                                 <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupJobs}}"/>
                             </DataTrigger>

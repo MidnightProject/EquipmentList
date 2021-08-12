@@ -229,7 +229,6 @@ namespace EquipmentList.ViewModel
         private List<EmployeeStatus> EmployeesStatus { get; set; }
 
         private static String[] groupEmployee = new String[] {  String.Empty,
-                                                                "Name",
                                                                 "Job title",
                                                                 "Building",
                                                                 "Status", };
@@ -237,6 +236,11 @@ namespace EquipmentList.ViewModel
         private static String[] groupBuilding = new String[] {  String.Empty,
                                                                 "Country",
                                                                 "City", };
+
+        private static String[] groupEquipment = new String[] {  String.Empty,
+                                                                "Building",
+                                                                "Test", };
+
         public String[] Group
         {
             get
@@ -247,6 +251,8 @@ namespace EquipmentList.ViewModel
                         return groupEmployee;
                     case DefinedViews.BuildingView:
                         return groupBuilding;
+                    case DefinedViews.EquipmentView:
+                        return groupEquipment;
                     default:
                         return new string[] { };
                 }
@@ -255,6 +261,7 @@ namespace EquipmentList.ViewModel
 
         private int groupEmployeeIndex;
         private int groupBuildingIndex;
+        private int groupEquipmentIndex;
         public int GroupIndex
         {
             get
@@ -265,6 +272,8 @@ namespace EquipmentList.ViewModel
                         return groupEmployeeIndex;
                     case DefinedViews.BuildingView:
                         return groupBuildingIndex;
+                    case DefinedViews.EquipmentView:
+                        return groupEquipmentIndex;
                     default:
                         return 0;
                 }
@@ -288,6 +297,11 @@ namespace EquipmentList.ViewModel
                         groupBuildingIndex = value;
                         ((BuildingViewModel)ViewModel).Group = groupBuilding[groupBuildingIndex];
                         ((BuildingViewModel)ViewModel).SelectedIndex = -1;
+                        break;
+                    case DefinedViews.EquipmentView:
+                        groupEquipmentIndex = value;
+                        ((EquipmentViewModel)ViewModel).Group = groupEquipment[groupEquipmentIndex];
+                        ((EquipmentViewModel)ViewModel).SelectedIndex = -1;
                         break;
                 }
 

@@ -112,21 +112,20 @@
                 <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"/>
             </ControlTemplate>
 
-
-            <CollectionViewSource x:Key="GroupCountries" Source="{Binding DataBuildings}" IsLiveGroupingRequested="True">
+            <CollectionViewSource x:Key="GroupBuildings" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
                 <CollectionViewSource.LiveSortingProperties>
-                    <s:String>Country</s:String>
+                    <s:String>Building</s:String>
                 </CollectionViewSource.LiveSortingProperties>
                 <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="Country"/>
+                    <PropertyGroupDescription PropertyName="Building"/>
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
-            <CollectionViewSource x:Key="GroupCities" Source="{Binding DataBuildings}" IsLiveGroupingRequested="True">
+            <CollectionViewSource x:Key="GroupReviewDate" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
                 <CollectionViewSource.LiveSortingProperties>
-                    <s:String>City</s:String>
+                    <s:String>ReviewDate</s:String>
                 </CollectionViewSource.LiveSortingProperties>
                 <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="City"/>
+                    <PropertyGroupDescription PropertyName="ReviewDate"/>
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
         </ResourceDictionary>
@@ -150,8 +149,25 @@
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                     <Setter Property="ItemsSource" Value="{Binding DataEquipments}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Group}" Value="BUILDING">
+                            <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupBuildings}}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Group}" Value="REVIEW_DATE">
+                            <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupReviewDate}}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.Style>
+            <DataGrid.GroupStyle>
+                <GroupStyle ContainerStyle="{StaticResource GroupHeaderStyle}">
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <DataGridRowsPresenter/>
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
             <DataGrid.Columns>
                 <DataGridTemplateColumn dgx:DataGridFilterColumn.IsFilterVisible="False" CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>
@@ -215,6 +231,7 @@
                 <DataGridTextColumn Header="Room" Binding="{Binding Room}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                 <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeesName, Converter={StaticResource employeeConverter}}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilterEmployee}"/>
                 <DataGridTextColumn Header="Review Date" Binding="{Binding ReviewDate, Converter={StaticResource shortDateStringConverter}}" dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}"/>
+                <DataGridTextColumn Header="Legalization Date" Binding="{Binding LegalizationDate, Converter={StaticResource shortDateStringConverter}}" dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}"/>
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
