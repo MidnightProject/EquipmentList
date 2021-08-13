@@ -7,10 +7,12 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using Dsafa.WpfColorPicker;
+using EquipmentList.Messages;
 using EquipmentList.Model;
 using FirebirdSql.Data.FirebirdClient;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using static EquipmentList.View.Views;
 
 namespace EquipmentList.ViewModel
@@ -512,6 +514,13 @@ namespace EquipmentList.ViewModel
             IncorrectLegalizationDateColor = Brushes.Red;
             PostedWorkerColor = Brushes.Transparent;
             AlarmColor = Brushes.MistyRose;
+
+            Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetDataForTransmission);
+        }
+
+        private void SetDataForTransmission(SelectedIndexMessage message)
+        {
+            throw new NotImplementedException();
         }
     }
     

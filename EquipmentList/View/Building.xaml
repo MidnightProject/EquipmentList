@@ -64,7 +64,8 @@
                   IsReadOnly="True" SelectionMode="Single" 
                   AutoGenerateColumns="False" 
                   SelectedIndex="{Binding SelectedIndex}"
-                  FontSize="16">
+                  FontSize="16"
+                  SelectedItem="{Binding SelectedBuilding}">
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                     <Setter Property="ItemsSource" Value="{Binding DataBuildings}"/>

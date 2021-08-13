@@ -1,8 +1,11 @@
-﻿using EquipmentList.Model;
+﻿using EquipmentList.Messages;
+using EquipmentList.Model;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using static EquipmentList.View.Views;
 
 namespace EquipmentList.ViewModel
 {
@@ -35,6 +38,25 @@ namespace EquipmentList.ViewModel
             {
                 selectedIndex = value;
                 RaisePropertyChanged("SelectedIndex");
+
+                Messenger.Default.Send<SelectedIndexMessage>(new SelectedIndexMessage
+                {
+                    View = DefinedViews.BuildingView,
+                }, MessageType.PropertyChangedMessage);
+            }
+        }
+
+        private DataBuilding selectedBuilding;
+        public DataBuilding SelectedBuilding
+        {
+            get
+            {
+                return selectedBuilding;
+            }
+
+            set
+            {
+                selectedBuilding = value;
             }
         }
 
@@ -79,6 +101,7 @@ namespace EquipmentList.ViewModel
                     Address = row["ADDRESS"].ToString(),
                 });
             }
+
         }
     }
 }

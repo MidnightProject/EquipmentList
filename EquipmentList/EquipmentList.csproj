@@ -138,6 +138,8 @@
     <Compile Include="Converters\ViewToTextConverter.cs" />
     <Compile Include="Converters\VisibilityToIsCheckedConverter.cs" />
     <Compile Include="Converters\ActiveEmployeeToColorConverter.cs" />
+    <Compile Include="Messages\MessageType.cs" />
+    <Compile Include="Messages\SelectedIndexMessage.cs" />
     <Compile Include="Model\DataBuilding.cs" />
     <Compile Include="Model\DataEmployee.cs" />
     <Compile Include="Model\DataEquipment.cs" />
