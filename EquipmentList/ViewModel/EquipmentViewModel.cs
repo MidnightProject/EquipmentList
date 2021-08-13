@@ -99,11 +99,29 @@ namespace EquipmentList.ViewModel
             {
                 switch (value)
                 {
+                    case "Employee":
+                        group = "EMPLOYEE";
+                        break;
+                    case "Producer":
+                        group = "PRODUCER";
+                        break;
                     case "Building":
                         group = "BUILDING";
                         break;
-                    case "Test":
+                    case "Norm":
+                        group = "NORM";
+                        break;
+                    case "Group":
+                        group = "GROUP";
+                        break;
+                    case "Condition":
+                        group = "CONDITION";
+                        break;
+                    case "Review Date":
                         group = "REVIEW_DATE";
+                        break;
+                    case "Legalization Date":
+                        group = "LEGALIZATION_DATE";
                         break;
                     default:
                         group = String.Empty;

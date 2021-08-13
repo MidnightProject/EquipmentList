@@ -228,18 +228,24 @@ namespace EquipmentList.ViewModel
 
         private List<EmployeeStatus> EmployeesStatus { get; set; }
 
-        private static String[] groupEmployee = new String[] {  String.Empty,
+        private readonly String[] groupEmployee = new String[] {  String.Empty,
                                                                 "Job title",
                                                                 "Building",
                                                                 "Status", };
 
-        private static String[] groupBuilding = new String[] {  String.Empty,
+        private readonly String[] groupBuilding = new String[] {  String.Empty,
                                                                 "Country",
                                                                 "City", };
 
-        private static String[] groupEquipment = new String[] {  String.Empty,
+        private readonly String[] groupEquipment = new String[] {  String.Empty,
+                                                                "Employee",
+                                                                "Producer",
+                                                                "Norm",
+                                                                "Group",
+                                                                "Condition",
                                                                 "Building",
-                                                                "Test", };
+                                                                "Review Date",
+                                                                "Legalization Date", };
 
         public String[] Group
         {

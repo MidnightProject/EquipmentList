@@ -112,12 +112,54 @@
                 <controls:FilterWithPopupControl Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}"/>
             </ControlTemplate>
 
+            <CollectionViewSource x:Key="GroupNorms" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>Norm</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Norm"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="GroupGroups" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>Group</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Group"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="GroupConditions" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>Condition</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Condition"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="GroupProducers" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>ProducerName</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="ProducerName"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="GroupEmployees" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>EmployeeName</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="EmployeeName"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
             <CollectionViewSource x:Key="GroupBuildings" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
                 <CollectionViewSource.LiveSortingProperties>
                     <s:String>Building</s:String>
+                    <s:String>Room</s:String>
                 </CollectionViewSource.LiveSortingProperties>
                 <CollectionViewSource.GroupDescriptions>
                     <PropertyGroupDescription PropertyName="Building"/>
+                    <PropertyGroupDescription PropertyName="Room"/>
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
             <CollectionViewSource x:Key="GroupReviewDate" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
@@ -125,7 +167,33 @@
                     <s:String>ReviewDate</s:String>
                 </CollectionViewSource.LiveSortingProperties>
                 <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="ReviewDate"/>
+                    <PropertyGroupDescription PropertyName="ReviewDate">
+                        <PropertyGroupDescription.Converter>
+                            <converters:DateToGroupingByYearConverter/>
+                        </PropertyGroupDescription.Converter>
+                    </PropertyGroupDescription>
+                    <PropertyGroupDescription PropertyName="ReviewDate">
+                        <PropertyGroupDescription.Converter>
+                            <converters:DateToGroupingByMounthConverter/>
+                        </PropertyGroupDescription.Converter>
+                    </PropertyGroupDescription>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="GroupLegalizationDate" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
+                <CollectionViewSource.LiveSortingProperties>
+                    <s:String>LegalizationDate</s:String>
+                </CollectionViewSource.LiveSortingProperties>
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="LegalizationDate">
+                        <PropertyGroupDescription.Converter>
+                            <converters:DateToGroupingByYearConverter/>
+                        </PropertyGroupDescription.Converter>
+                    </PropertyGroupDescription>
+                    <PropertyGroupDescription PropertyName="LegalizationDate">
+                        <PropertyGroupDescription.Converter>
+                            <converters:DateToGroupingByMounthConverter/>
+                        </PropertyGroupDescription.Converter>
+                    </PropertyGroupDescription>
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
         </ResourceDictionary>
@@ -150,11 +218,29 @@
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                     <Setter Property="ItemsSource" Value="{Binding DataEquipments}"/>
                     <Style.Triggers>
+                        <DataTrigger Binding="{Binding Group}" Value="PRODUCER">
+                            <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupProducers}}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Group}" Value="EMPLOYEE">
+                            <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupEmployees}}"/>
+                        </DataTrigger>
                         <DataTrigger Binding="{Binding Group}" Value="BUILDING">
                             <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupBuildings}}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Group}" Value="REVIEW_DATE">
                             <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupReviewDate}}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Group}" Value="LEGALIZATION_DATE">
+                            <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupLegalizationDate}}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Group}" Value="NORM">
+                            <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupNorms}}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Group}" Value="GROUP">
+                            <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupGroups}}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Group}" Value="CONDITION">
+                            <Setter Property="ItemsSource" Value="{Binding Source={StaticResource GroupConditions}}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
