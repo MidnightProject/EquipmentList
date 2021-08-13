@@ -19,6 +19,8 @@ namespace EquipmentList.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        private FbConnection connection;
+
         private ViewModelBase viewModel;
         public ViewModelBase ViewModel
         {
@@ -95,6 +97,45 @@ namespace EquipmentList.ViewModel
                 case "BuildingView":
                     View = DefinedViews.BuildingView;
                     break;
+            }
+        }
+
+        private RelayCommand removeCommand;
+        public RelayCommand RemoveCommand
+        {
+            get
+            {
+                return removeCommand = new RelayCommand(() => Remove());
+            }
+        }
+        private void Remove()
+        {
+            switch (View)
+            {
+                case DefinedViews.BuildingView:
+                    RemoveBuilding();
+                    break;
+            }
+        }
+
+        private void RemoveBuilding()
+        {
+            string deleteBuildingSql = "DELETE FROM BUILDING WHERE NAME = @Name";
+            string name = ((BuildingViewModel)ViewModel).SelectedBuilding.Name;
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(deleteBuildingSql, connection, transaction);
+                command.Parameters.Add("@Name", FbDbType.VarChar).Value = name;
+                command.ExecuteNonQuery();
+                transaction.Commit();
+
+                ((BuildingViewModel)ViewModel).RemoveBuilding(name);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error removing building from list." + '\n' + e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -449,6 +490,31 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private void SetSelectedIndex(SelectedIndexMessage message)
+        {
+            if (message.View == View)
+            {
+                SelectedIndex = message.Index;
+            }
+        }
+        private int selectedIndex;
+        public int SelectedIndex
+        {
+            get
+            {
+                return selectedIndex;
+            }
+
+            set
+            {
+                if (selectedIndex != value)
+                {
+                    selectedIndex = value;
+                    RaisePropertyChanged("SelectedIndex");
+                }
+            }
+        }
+
         private FbDataAdapter buildingAdapter;
         private DataTable buildingTable;
 
@@ -481,7 +547,7 @@ namespace EquipmentList.ViewModel
             };
 
 
-            FbConnection connection = new FbConnection(stringConnection.ToString());
+            connection = new FbConnection(stringConnection.ToString());
             connection.Open();
 
             buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
@@ -515,15 +581,8 @@ namespace EquipmentList.ViewModel
             PostedWorkerColor = Brushes.Transparent;
             AlarmColor = Brushes.MistyRose;
 
-            Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetDataForTransmission);
-        }
-
-        private void SetDataForTransmission(SelectedIndexMessage message)
-        {
-            throw new NotImplementedException();
-        }
+            Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetSelectedIndex);
+        } 
     }
-    
-
 }
  

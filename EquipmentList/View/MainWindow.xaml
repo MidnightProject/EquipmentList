@@ -15,6 +15,7 @@
         <converters:ViewToTextConverter x:Key="textViewConverter"/>
         <converters:VisibilityToIsCheckedConverter x:Key="checkedConverter"/>
         <converters:ColorToNameConverter x:Key="colorNameConverter"/>
+        <converters:DeleteButtonIsEnableConverter x:Key="deleteButtonIsEnableConverter"/>
 
         <DataTemplate DataType="{x:Type vm:BuildingViewModel}">
             <v:Building/>
@@ -295,10 +296,20 @@
                             </TransformGroup>
                         </Image.RenderTransform>
                     </Image>
+                    <Button.IsEnabled>
+                        <MultiBinding  Converter="{StaticResource deleteButtonIsEnableConverter}">
+                            <Binding Path="SelectedIndex"/>
+                        </MultiBinding>
+                    </Button.IsEnabled>
                 </Button>
                 <Button ToolBar.OverflowMode="Never" Height="48" 
                         Command="{Binding EditCommand}">
                     <Image Source="/Images/pencil.png" ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Edit}"></Image>
+                    <Button.IsEnabled>
+                        <MultiBinding  Converter="{StaticResource deleteButtonIsEnableConverter}">
+                            <Binding Path="SelectedIndex"/>
+                        </MultiBinding>
+                    </Button.IsEnabled>
                 </Button>
                 <ComboBox x:Name="comboBoxGroup" IsSynchronizedWithCurrentItem = "True" 
                           ItemsSource="{Binding Group, UpdateSourceTrigger=PropertyChanged}" 

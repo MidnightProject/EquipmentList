@@ -3,6 +3,7 @@ using EquipmentList.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using static EquipmentList.View.Views;
@@ -11,8 +12,8 @@ namespace EquipmentList.ViewModel
 {
     public class BuildingViewModel : ViewModelBase
     {
-        private Collection<DataBuilding> dataBuildings;
-        public Collection<DataBuilding> DataBuildings
+        private ObservableCollection<DataBuilding> dataBuildings;
+        public ObservableCollection<DataBuilding> DataBuildings
         {
             get
             {
@@ -42,22 +43,18 @@ namespace EquipmentList.ViewModel
                 Messenger.Default.Send<SelectedIndexMessage>(new SelectedIndexMessage
                 {
                     View = DefinedViews.BuildingView,
+                    Index = SelectedIndex,
+
                 }, MessageType.PropertyChangedMessage);
             }
         }
 
-        private DataBuilding selectedBuilding;
-        public DataBuilding SelectedBuilding
-        {
-            get
-            {
-                return selectedBuilding;
-            }
 
-            set
-            {
-                selectedBuilding = value;
-            }
+        public DataBuilding SelectedBuilding { get; set; }
+        
+        public void RemoveBuilding(string name)
+        {
+            DataBuildings.Remove(name);
         }
 
         private string group;
@@ -89,7 +86,7 @@ namespace EquipmentList.ViewModel
 
         public BuildingViewModel(DataTable dt)
         {
-            DataBuildings = new Collection<DataBuilding>();
+            DataBuildings = new ObservableCollection<DataBuilding>();
             foreach (DataRow row in dt.Rows)
             {
                 DataBuildings.Add(new DataBuilding()
