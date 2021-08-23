@@ -13,6 +13,7 @@ using FirebirdSql.Data.FirebirdClient;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using WpfMessageBoxLibrary;
 using static EquipmentList.View.Views;
 
 namespace EquipmentList.ViewModel
@@ -135,7 +136,11 @@ namespace EquipmentList.ViewModel
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error removing building from list." + '\n' + e.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                WpfMessageBox messageBox = new WpfMessageBox("Error removing building from list.", "Error #0001", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "test details",
+                });
+                messageBox.ShowDialog();
             }
         }
 

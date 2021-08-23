@@ -100,6 +100,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfMessageBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MidnightProject.WpfMessageBox.1.0.2\lib\net40\WpfMessageBox.dll</HintPath>
+    </Reference>
     <Reference Include="WpfScreenHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WpfScreenHelper.1.0.0\lib\net40\WpfScreenHelper.dll</HintPath>
       <Private>True</Private>
