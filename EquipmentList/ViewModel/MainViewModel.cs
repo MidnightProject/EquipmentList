@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Media;
 using Dsafa.WpfColorPicker;
 using EquipmentList.Messages;
@@ -124,23 +125,37 @@ namespace EquipmentList.ViewModel
             string deleteBuildingSql = "DELETE FROM BUILDING WHERE NAME = @Name";
             string name = ((BuildingViewModel)ViewModel).SelectedBuilding.Name;
 
-            try
-            {
-                FbTransaction transaction = connection.BeginTransaction();
-                FbCommand command = new FbCommand(deleteBuildingSql, connection, transaction);
-                command.Parameters.Add("@Name", FbDbType.VarChar).Value = name;
-                command.ExecuteNonQuery();
-                transaction.Commit();
+            WpfMessageBox messageBox;
 
-                ((BuildingViewModel)ViewModel).RemoveBuilding(name);
-            }
-            catch (Exception e)
+            messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
             {
-                WpfMessageBox messageBox = new WpfMessageBox("Error removing building from list.", "Error #0001", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                Header = "Remove '" + name + "' building.",
+                ButtonYesText = "Yes, remove building",
+                ButtonNoText = "Cancel, keep building",
+            });
+            messageBox.ShowDialog();
+            WpfMessageBoxResult result = messageBox.Result;
+
+            if (result == WpfMessageBoxResult.Yes)
+            {
+                try
                 {
-                    Details = "test details",
-                });
-                messageBox.ShowDialog();
+                    FbTransaction transaction = connection.BeginTransaction();
+                    FbCommand command = new FbCommand(deleteBuildingSql, connection, transaction);
+                    command.Parameters.Add("@Name", FbDbType.VarChar).Value = name;
+                    command.ExecuteNonQuery();
+                    transaction.Commit();
+
+                    ((BuildingViewModel)ViewModel).RemoveBuilding(name);
+                }
+                catch (Exception e)
+                {
+                    messageBox = new WpfMessageBox("Error #0001", "Error removing building from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                    {
+                        Details = "Error #0001" + '\n' + '\n' + e.ToString(),
+                    });
+                    messageBox.ShowDialog();
+                }
             }
         }
 
