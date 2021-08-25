@@ -16,6 +16,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using WpfMessageBoxLibrary;
 using static EquipmentList.View.Views;
+using EquipmentList.Windows;
 
 namespace EquipmentList.ViewModel
 {
@@ -119,7 +120,6 @@ namespace EquipmentList.ViewModel
                     break;
             }
         }
-
         private void RemoveBuilding()
         {
             string deleteBuildingSql = "DELETE FROM BUILDING WHERE NAME = @Name";
@@ -602,6 +602,9 @@ namespace EquipmentList.ViewModel
             AlarmColor = Brushes.MistyRose;
 
             Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetSelectedIndex);
+
+            BuildingWindow win = new BuildingWindow(new DataBuilding(), "New building name", "Add");
+            win.ShowDialog();
         } 
     }
 }

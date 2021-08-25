@@ -1,15 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace EquipmentList.Model
 {
-    public class DataBuilding
+    public class DataBuilding : ViewModelBase
     {
+        private string name;
         public string Name { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
-        public string Address { get; set; }
+        private string address;
+        public string Address
+        {
+            get
+            {
+                return address;
+            }
+
+            set
+            {
+                address = value;
+                RaisePropertyChanged("Address");
+            }
+        }
         public string Postcode { get; set; }
     }
 

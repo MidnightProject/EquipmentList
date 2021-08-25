@@ -150,6 +150,8 @@
     <Compile Include="Model\DataEquipment.cs" />
     <Compile Include="Model\DataTableExtensions.cs" />
     <Compile Include="Model\EmployeeStatus.cs" />
+    <Compile Include="Property\SelectTextOnFocus.cs" />
+    <Compile Include="Validations\BuildingNameValidationRule.cs" />
     <Compile Include="ViewModel\EquipmentViewModel.cs" />
     <Compile Include="View\Equipment.xaml.cs">
       <DependentUpon>Equipment.xaml</DependentUpon>
@@ -159,6 +161,10 @@
     <Compile Include="ViewModel\EmployeeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Windows\BindingProxy.cs" />
+    <Compile Include="Windows\BuildingWindow.xaml.cs">
+      <DependentUpon>BuildingWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Controls\DateFilterWithPopupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -213,6 +219,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\BuildingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

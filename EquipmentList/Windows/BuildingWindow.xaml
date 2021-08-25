@@ -1,0 +1,167 @@
+﻿<Window x:Class="EquipmentList.Windows.BuildingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EquipmentList.Windows"
+        xmlns:property="clr-namespace:EquipmentList.Property"
+        xmlns:validations="clr-namespace:EquipmentList.Validations"
+        mc:Ignorable="d"
+        Title="{Binding TitleText}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" MinWidth="250" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Window.Resources>
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <Image Source="/Images/warning_blue.png" Height="20" Margin="0,0,5,0"></Image>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
+
+        <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Label Grid.Row="0" Grid.Column="0" Content="Name:"/>
+            <TextBox x:Name="nameTextBox" 
+                     Grid.Row="0" Grid.Column="2" MinWidth="50"
+                     VerticalContentAlignment="Center"
+                     property:SelectTextOnFocus.Active = "True"
+                     Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                     Style="{StaticResource textBoxInError}">
+                <TextBox.Resources>
+                    <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                </TextBox.Resources>
+                <TextBox.Text>
+                    <Binding Path="Building.Name" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <validations:BuildingNameValidationRule>
+                                <validations:BuildingNameValidationRule.Wrapper>
+                                    <validations:Wrapper BuildingsNames="{Binding Data.BuildingsNamesList, Source={StaticResource proxy}}"/>
+                                </validations:BuildingNameValidationRule.Wrapper>
+                            </validations:BuildingNameValidationRule>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <Expander Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Header="Building address" Margin="0,10,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="Address:"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" MinWidth="50"
+                             VerticalContentAlignment="Center"
+                             Text="{Binding Building.Address, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="City:"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" MinWidth="50"
+                             VerticalContentAlignment="Center"
+                             Text="{Binding Building.City, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Grid.Row="1" Grid.Column="2" Content="Postcode:"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" MinWidth="50"
+                             VerticalContentAlignment="Center"
+                             Text="{Binding Building.Postcode, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Label Grid.Row="3" Grid.Column="0" Content="Country:"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" MinWidth="50"
+                             VerticalContentAlignment="Center"
+                             Text="{Binding Building.Country, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </Expander>
+
+            <WrapPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0">
+                <Image Source="/Images/copy.png" ToolTip="Copy building address" MaxHeight="16">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDown">
+                            <i:InvokeCommandAction Command="{Binding CopyAddressCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+                <Image Source="/Images/paste.png" ToolTip="Paste building address" MaxHeight="16"/>
+            </WrapPanel>
+        </Grid>
+
+        <GroupBox
+                Grid.Column="0" 
+                Grid.ColumnSpan="3"
+                Grid.Row="2"
+                Margin="0,0,0,0"
+                Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+
+            <WrapPanel 
+                Grid.Row="1" 
+                Grid.Column="0" 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Right" 
+                Margin="5">
+                
+                <Button Content="{Binding ButtonOKText}" 
+                        Height="24"
+                        MinWidth="80"
+                        Margin="10,0,0,0"
+                        Padding="10,0"
+                        Command="{Binding Button_OK}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Path=(Validation.HasError), ElementName=nameTextBox}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Content="Cancel"
+                        Height="24"
+                        MinWidth="80"
+                        Margin="10,0,0,0"
+                        Padding="10,0"
+                        Command="{Binding Button_Cancel}"/>
+            </WrapPanel>
+        </GroupBox>
+    </Grid>
+</Window>
