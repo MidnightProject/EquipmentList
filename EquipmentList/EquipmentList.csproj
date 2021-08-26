@@ -135,6 +135,7 @@
     <Compile Include="Converters\NullEmployeeToColorConverter.cs" />
     <Compile Include="Converters\EmployeeToForegroundConverter.cs" />
     <Compile Include="Converters\NullEmployeeToWarningVisibilityConverter.cs" />
+    <Compile Include="Converters\ObjectToVisibilityPasteConverter.cs" />
     <Compile Include="Converters\PostedWorkerToColorConverter.cs" />
     <Compile Include="Converters\PostedWorkerToWarningVisibilityConverter.cs" />
     <Compile Include="Converters\SystemUserToRowVisibility.cs" />

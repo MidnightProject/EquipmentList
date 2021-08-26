@@ -603,7 +603,7 @@ namespace EquipmentList.ViewModel
 
             Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetSelectedIndex);
 
-            BuildingWindow win = new BuildingWindow(new DataBuilding(), "New building name", "Add");
+            BuildingWindow win = new BuildingWindow(new DataBuilding(), new DataBuilding(), "New building name", "Add");
             win.ShowDialog();
         } 
     }

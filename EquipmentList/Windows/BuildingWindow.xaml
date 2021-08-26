@@ -7,9 +7,12 @@
         xmlns:local="clr-namespace:EquipmentList.Windows"
         xmlns:property="clr-namespace:EquipmentList.Property"
         xmlns:validations="clr-namespace:EquipmentList.Validations"
+        xmlns:converters="clr-namespace:EquipmentList.Converters"
         mc:Ignorable="d"
         Title="{Binding TitleText}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" MinWidth="250" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
+        <converters:ObjectToVisibilityPasteConverter x:Key="visibilityPasteConverter"/>
+        
         <ControlTemplate x:Key="validationTemplate">
             <DockPanel>
                 <Image Source="/Images/warning_blue.png" Height="20" Margin="0,0,5,0"></Image>
@@ -117,7 +120,20 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Image>
-                <Image Source="/Images/paste.png" ToolTip="Paste building address" MaxHeight="16"/>
+                <Image Source="/Images/paste.png" ToolTip="Paste building address" MaxHeight="16">
+                    <Image.Visibility>
+                    <MultiBinding Converter="{StaticResource visibilityPasteConverter}" ConverterParameter="2" >
+                        <Binding Path="Building.Address"/>
+                        <Binding Path="Building.City"/>
+                        <Binding Path="Building"/>
+                        </MultiBinding>
+                    </Image.Visibility>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDown">
+                            <i:InvokeCommandAction Command="{Binding PasteAddressCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
             </WrapPanel>
         </Grid>
 
