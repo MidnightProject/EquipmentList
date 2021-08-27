@@ -19,6 +19,7 @@ using static EquipmentList.View.Views;
 using EquipmentList.Windows;
 using System.Collections.ObjectModel;
 
+
 namespace EquipmentList.ViewModel
 {
     public class MainViewModel : ViewModelBase
@@ -130,14 +131,13 @@ namespace EquipmentList.ViewModel
 
             messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
             {
-                Header = "Remove '" + name + "' building.",
+                Header = "Remove '" + name + "' building ?",
                 ButtonYesText = "Yes, remove building",
                 ButtonNoText = "Cancel, keep building",
             });
             messageBox.ShowDialog();
-            WpfMessageBoxResult result = messageBox.Result;
 
-            if (result == WpfMessageBoxResult.Yes)
+            if (messageBox.Result == WpfMessageBoxResult.Yes)
             {
                 try
                 {
@@ -182,10 +182,32 @@ namespace EquipmentList.ViewModel
             BuildingWindow buildingWindow = new BuildingWindow(new DataBuilding(), GetBuildingsNames(), new DataBuilding(), "Add new building", "Add");
             buildingWindow.ShowDialog();
 
-            MessageBoxResult result = buildingWindow.Result;
-            if (result == MessageBoxResult.OK)
+            if (buildingWindow.Result == MessageBoxResult.OK)
             {
+                string addBuildingSql = "INSERT INTO BUILDING(NAME, ADDRESS, CITY, POSTCODE, COUNTRY) VALUES(@Name, @Address, @City, @Postcode, @Country)";
 
+                try
+                {
+                    FbTransaction transaction = connection.BeginTransaction();
+                    FbCommand command = new FbCommand(addBuildingSql, connection, transaction);
+                    command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimString();
+                    command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimString();
+                    command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimString();
+                    command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimString();
+                    command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimString();
+                    command.ExecuteNonQuery();
+                    transaction.Commit();
+
+                    ((BuildingViewModel)ViewModel).AddBuilding(buildingWindow.Building);
+                }
+                catch (Exception e)
+                {
+                    WpfMessageBox messageBox = new WpfMessageBox("Error #0002", "Error adding building to list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                    {
+                        Details = "Error #0002" + '\n' + '\n' + e.ToString(),
+                    });
+                    messageBox.ShowDialog();
+                } 
             }
         }
 
@@ -654,6 +676,19 @@ namespace EquipmentList.ViewModel
             }
 
             return BuildingsNames;
+        }
+    }
+
+    public static class StringExtended
+    {
+        public static string TrimString(this string s)
+        {
+            if (String.IsNullOrEmpty(s))
+            {
+                return s;
+            }
+
+            return s.TrimEnd();
         }
     }
 }

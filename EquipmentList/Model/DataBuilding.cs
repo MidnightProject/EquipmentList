@@ -17,8 +17,11 @@ namespace EquipmentList.Model
 
             set
             {
-                name = value.TrimStart();
-                RaisePropertyChanged("Name");
+                if (name != value)
+                {
+                    name = value.TrimStart();
+                    RaisePropertyChanged("Name");
+                }   
             }
         }
 
@@ -32,8 +35,11 @@ namespace EquipmentList.Model
 
             set
             {
-                country = value.TrimStart();
-                RaisePropertyChanged("Country");
+                if (country != value)
+                {
+                    country = value.TrimStart();
+                    RaisePropertyChanged("Country");
+                }
             }
         }
 
@@ -47,8 +53,11 @@ namespace EquipmentList.Model
 
             set
             {
-                city = value.TrimStart();
-                RaisePropertyChanged("City");
+                if (city != value)
+                {
+                    city = value.TrimStart();
+                    RaisePropertyChanged("City");
+                }
             }
         }
         private string address;
@@ -61,8 +70,11 @@ namespace EquipmentList.Model
 
             set
             {
-                address = value.TrimStart();
-                RaisePropertyChanged("Address");
+                if (address != value)
+                {
+                    address = value.TrimStart();
+                    RaisePropertyChanged("Address");
+                }    
             }
         }
 
@@ -76,8 +88,11 @@ namespace EquipmentList.Model
 
             set
             {
-                postcode = value.TrimStart();
-                RaisePropertyChanged("Postcode");
+                if (postcode != value)
+                {
+                    postcode = value.TrimStart();
+                    RaisePropertyChanged("Postcode");
+                }
             }
         }
     }
