@@ -9,9 +9,10 @@
         xmlns:validations="clr-namespace:EquipmentList.Validations"
         xmlns:converters="clr-namespace:EquipmentList.Converters"
         mc:Ignorable="d"
-        Title="{Binding TitleText}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" MinWidth="250" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+        Title="{Binding TitleText}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" MinWidth="350" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
         <converters:ObjectToVisibilityPasteConverter x:Key="visibilityPasteConverter"/>
+        <converters:ObjectToVisibilityCopyConverter x:Key="visibilityCopyConverter"/>
         
         <ControlTemplate x:Key="validationTemplate">
             <DockPanel>
@@ -56,6 +57,7 @@
             <Label Grid.Row="0" Grid.Column="0" Content="Name:"/>
             <TextBox x:Name="nameTextBox" 
                      Grid.Row="0" Grid.Column="2" MinWidth="50"
+                     MaxLength="50"
                      VerticalContentAlignment="Center"
                      property:SelectTextOnFocus.Active = "True"
                      Validation.ErrorTemplate="{StaticResource validationTemplate}"
@@ -68,7 +70,7 @@
                         <Binding.ValidationRules>
                             <validations:BuildingNameValidationRule>
                                 <validations:BuildingNameValidationRule.Wrapper>
-                                    <validations:Wrapper BuildingsNames="{Binding Data.BuildingsNamesList, Source={StaticResource proxy}}"/>
+                                    <validations:Wrapper BuildingsNames="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
                                 </validations:BuildingNameValidationRule.Wrapper>
                             </validations:BuildingNameValidationRule>
                         </Binding.ValidationRules>
@@ -92,40 +94,72 @@
 
                     <Label Grid.Row="0" Grid.Column="0" Content="Address:"/>
                     <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" MinWidth="50"
+                             MaxLength="50"
                              VerticalContentAlignment="Center"
+                             property:SelectTextOnFocus.Active = "True"
                              Text="{Binding Building.Address, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Row="1" Grid.Column="0" Content="City:"/>
                     <TextBox Grid.Row="1" Grid.Column="1" MinWidth="50"
+                             MaxLength="50"
                              VerticalContentAlignment="Center"
+                             property:SelectTextOnFocus.Active = "True"
                              Text="{Binding Building.City, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Row="1" Grid.Column="2" Content="Postcode:"/>
                     <TextBox Grid.Row="1" Grid.Column="3" MinWidth="50"
+                             MaxLength="10"
                              VerticalContentAlignment="Center"
+                             property:SelectTextOnFocus.Active = "True"
                              Text="{Binding Building.Postcode, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Row="3" Grid.Column="0" Content="Country:"/>
                     <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" MinWidth="50"
+                             MaxLength="50"
                              VerticalContentAlignment="Center"
+                             property:SelectTextOnFocus.Active = "True"
                              Text="{Binding Building.Country, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </Expander>
 
             <WrapPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0">
-                <Image Source="/Images/copy.png" ToolTip="Copy building address" MaxHeight="16">
+                <Image Source="/Images/block_blue.png" ToolTip="Clear building address" MaxHeight="16" Margin="5,0,0,0">
+                    <Image.Visibility>
+                        <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                            <Binding Path="Building.Address"/>
+                            <Binding Path="Building.City"/>
+                            <Binding Path="Building.Postcode"/>
+                            <Binding Path="Building.Country"/>
+                        </MultiBinding>
+                    </Image.Visibility>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDown">
+                            <i:InvokeCommandAction Command="{Binding ClearAddressCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+                <Image Source="/Images/copy.png" ToolTip="Copy building address" MaxHeight="16" Margin="5,0,0,0">
+                    <Image.Visibility>
+                        <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                            <Binding Path="Building.Address"/>
+                            <Binding Path="Building.City"/>
+                            <Binding Path="Building.Postcode"/>
+                            <Binding Path="Building.Country"/>
+                        </MultiBinding>
+                    </Image.Visibility>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
                             <i:InvokeCommandAction Command="{Binding CopyAddressCommand}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Image>
-                <Image Source="/Images/paste.png" ToolTip="Paste building address" MaxHeight="16">
+                <Image Source="/Images/paste.png" ToolTip="Paste building address" MaxHeight="16" Margin="5,0,0,0">
                     <Image.Visibility>
-                    <MultiBinding Converter="{StaticResource visibilityPasteConverter}" ConverterParameter="2" >
-                        <Binding Path="Building.Address"/>
-                        <Binding Path="Building.City"/>
-                        <Binding Path="Building"/>
+                        <MultiBinding Converter="{StaticResource visibilityPasteConverter}">
+                            <Binding Path="BuildingClipboard.Address"/>
+                            <Binding Path="BuildingClipboard.City"/>
+                            <Binding Path="BuildingClipboard.Postcode"/>
+                            <Binding Path="BuildingClipboard.Country"/>
                         </MultiBinding>
                     </Image.Visibility>
                     <i:Interaction.Triggers>

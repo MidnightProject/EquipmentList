@@ -22,10 +22,6 @@ namespace EquipmentList.Validations
             {
                 return new ValidationResult(false, $"Name cannot be empty");
             }
-            else if (String.IsNullOrWhiteSpace(name))
-            {
-                return new ValidationResult(false, $"Name cannot contain only spaces");
-            }
 
             if (Wrapper.BuildingsNames.Contains(name, StringComparer.OrdinalIgnoreCase))
             {

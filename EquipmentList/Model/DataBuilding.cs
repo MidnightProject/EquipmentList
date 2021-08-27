@@ -8,9 +8,49 @@ namespace EquipmentList.Model
     public class DataBuilding : ViewModelBase
     {
         private string name;
-        public string Name { get; set; }
-        public string Country { get; set; }
-        public string City { get; set; }
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+
+            set
+            {
+                name = value.TrimStart();
+                RaisePropertyChanged("Name");
+            }
+        }
+
+        private string country;
+        public string Country
+        {
+            get
+            {
+                return country;
+            }
+
+            set
+            {
+                country = value.TrimStart();
+                RaisePropertyChanged("Country");
+            }
+        }
+
+        private string city;
+        public string City
+        {
+            get
+            {
+                return city;
+            }
+
+            set
+            {
+                city = value.TrimStart();
+                RaisePropertyChanged("City");
+            }
+        }
         private string address;
         public string Address
         {
@@ -21,11 +61,25 @@ namespace EquipmentList.Model
 
             set
             {
-                address = value;
+                address = value.TrimStart();
                 RaisePropertyChanged("Address");
             }
         }
-        public string Postcode { get; set; }
+
+        private string postcode;
+        public string Postcode
+        {
+            get
+            {
+                return postcode;
+            }
+
+            set
+            {
+                postcode = value.TrimStart();
+                RaisePropertyChanged("Postcode");
+            }
+        }
     }
 
     public static class DataBuildingExtensions

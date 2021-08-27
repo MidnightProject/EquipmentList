@@ -2,26 +2,15 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace EquipmentList.Windows
 {
-    public partial class BuildingWindow : Window, INotifyPropertyChanged
+    public partial class BuildingWindow : Window
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        public ObservableCollection<string> BuildingsNamesList { get; set; }
+        public ObservableCollection<string> BuildingsNames { get; set; }
 
         public MessageBoxResult Result { get; set; }
 
@@ -30,22 +19,9 @@ namespace EquipmentList.Windows
 
         public DataBuilding Building { get; set; }
 
-        private DataBuilding buildingClipboard;
-        public DataBuilding BuildingClipboard
-        {
-            get
-            {
-                return buildingClipboard;
-            }
+        public DataBuilding BuildingClipboard { get; set; }
 
-            set
-            {
-                buildingClipboard = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public BuildingWindow(DataBuilding building, DataBuilding buildingClipboard, string title, string buttonOKText)
+        public BuildingWindow(DataBuilding building, ObservableCollection<string> buildingsNames, DataBuilding buildingClipboard, string title, string buttonOKText)
         {
             InitializeComponent();
             DataContext = this;
@@ -61,8 +37,8 @@ namespace EquipmentList.Windows
 
             TitleText = title;
             ButtonOKText = buttonOKText;
-            
-            BuildingsNamesList = new ObservableCollection<string>() { "Gliwice", "TEST" };
+
+            BuildingsNames = buildingsNames;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -113,12 +89,73 @@ namespace EquipmentList.Windows
         }
         private void CopyAddress()
         {
-            BuildingClipboard = new DataBuilding() { Address = Building.Address };
+            if (String.IsNullOrEmpty(Building.Address))
+            {
+                BuildingClipboard.Address = String.Empty;
+            }
+            else
+            {
+                BuildingClipboard.Address = Building.Address;
+            }
 
-            //BuildingClipboard.Address = Building.Address;
-            //BuildingClipboard.City = Building.City;
-            //BuildingClipboard.Postcode = Building.Postcode;
-            //BuildingClipboard.Country = Building.Country;
+            if (String.IsNullOrEmpty(Building.City))
+            {
+                BuildingClipboard.City = String.Empty;
+            }
+            else
+            {
+                BuildingClipboard.City = Building.City;
+            }
+
+            if (String.IsNullOrEmpty(Building.Postcode))
+            {
+                BuildingClipboard.Postcode = String.Empty;
+            }
+            else
+            {
+                BuildingClipboard.Postcode = Building.Postcode;
+            }
+
+            if (String.IsNullOrEmpty(Building.Country))
+            {
+                BuildingClipboard.Country = String.Empty;
+            }
+            else
+            {
+                BuildingClipboard.Country = Building.Country;
+            }
+        }
+
+        private RelayCommand pasteAddressCommand;
+        public RelayCommand PasteAddressCommand
+        {
+            get
+            {
+                return pasteAddressCommand = new RelayCommand(() => PasteAddress());
+            }
+        }
+        private void PasteAddress()
+        {
+            Building.Address = BuildingClipboard.Address;
+            Building.City = BuildingClipboard.City;
+            Building.Postcode = BuildingClipboard.Postcode;
+            Building.Country = BuildingClipboard.Country;
+        }
+
+        private RelayCommand clearAddressCommand;
+        public RelayCommand ClearAddressCommand
+        {
+            get
+            {
+                return clearAddressCommand = new RelayCommand(() => ClearAddress());
+            }
+        }
+        private void ClearAddress()
+        {
+            Building.Address = String.Empty;
+            Building.City = String.Empty;
+            Building.Postcode = String.Empty;
+            Building.Country = String.Empty;
         }
     } 
 }

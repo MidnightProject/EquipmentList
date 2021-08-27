@@ -17,6 +17,7 @@ using GalaSoft.MvvmLight.Messaging;
 using WpfMessageBoxLibrary;
 using static EquipmentList.View.Views;
 using EquipmentList.Windows;
+using System.Collections.ObjectModel;
 
 namespace EquipmentList.ViewModel
 {
@@ -156,6 +157,35 @@ namespace EquipmentList.ViewModel
                     });
                     messageBox.ShowDialog();
                 }
+            }
+        }
+
+        private RelayCommand addCommand;
+        public RelayCommand AddCommand
+        {
+            get
+            {
+                return addCommand = new RelayCommand(() => Add());
+            }
+        }
+        private void Add()
+        {
+            switch (View)
+            {
+                case DefinedViews.BuildingView:
+                    AddBuilding();
+                    break;
+            }
+        }
+        private void AddBuilding()
+        {
+            BuildingWindow buildingWindow = new BuildingWindow(new DataBuilding(), GetBuildingsNames(), new DataBuilding(), "Add new building", "Add");
+            buildingWindow.ShowDialog();
+
+            MessageBoxResult result = buildingWindow.Result;
+            if (result == MessageBoxResult.OK)
+            {
+
             }
         }
 
@@ -547,6 +577,9 @@ namespace EquipmentList.ViewModel
         private FbDataAdapter employeeNameAdapter;
         private DataTable employeeNameTable;
 
+        private FbDataAdapter buildingNameAdapter;
+        private DataTable buildingNameTable;
+
         public MainViewModel()
         {
             DatabseToolBar = Visibility.Visible;
@@ -566,7 +599,6 @@ namespace EquipmentList.ViewModel
                 Charset = "WIN1250",
             };
 
-
             connection = new FbConnection(stringConnection.ToString());
             connection.Open();
 
@@ -574,6 +606,7 @@ namespace EquipmentList.ViewModel
             employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEEVIEW", connection);
             equipmentAdapter = new FbDataAdapter("SELECT * FROM EQUIPMENTVIEW", connection);
             employeeNameAdapter = new FbDataAdapter("SELECT NAME FROM EMPLOYEE", connection);
+            buildingNameAdapter = new FbDataAdapter("SELECT NAME FROM BUILDING", connection);
 
             employeeNameTable = new DataTable();
             employeeAdapter.Fill(employeeNameTable);
@@ -603,9 +636,25 @@ namespace EquipmentList.ViewModel
 
             Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetSelectedIndex);
 
-            BuildingWindow win = new BuildingWindow(new DataBuilding(), new DataBuilding(), "New building name", "Add");
-            win.ShowDialog();
-        } 
+
+
+
+        }
+
+        ObservableCollection<string> GetBuildingsNames()
+        {
+            ObservableCollection<string>  BuildingsNames = new ObservableCollection<string>();
+
+            buildingNameTable = new DataTable();
+            buildingAdapter.Fill(buildingNameTable);
+            
+            foreach (DataRow row in buildingNameTable.Rows)
+            {
+                BuildingsNames.Add(row["Name"].ToString());
+            }
+
+            return BuildingsNames;
+        }
     }
 }
  

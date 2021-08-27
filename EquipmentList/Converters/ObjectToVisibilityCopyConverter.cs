@@ -5,15 +5,22 @@ using System.Windows.Data;
 
 namespace EquipmentList.Converters
 {
-    public class ObjectToVisibilityPasteConverter : IMultiValueConverter
+    class ObjectToVisibilityCopyConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            foreach(object value in values)
+            foreach (object value in values)
             {
                 if (value != null)
                 {
-                    return Visibility.Visible;
+                    if (String.IsNullOrWhiteSpace((string)value) || String.IsNullOrEmpty((string)value))
+                    {
+                        
+                    }
+                    else
+                    {
+                        return Visibility.Visible; 
+                    }
                 }
             }
 
