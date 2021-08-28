@@ -156,10 +156,10 @@
                 <Image Source="/Images/paste.png" ToolTip="Paste building address" MaxHeight="16" Margin="5,0,0,0">
                     <Image.Visibility>
                         <MultiBinding Converter="{StaticResource visibilityPasteConverter}">
-                            <Binding Path="BuildingClipboard.Address"/>
-                            <Binding Path="BuildingClipboard.City"/>
-                            <Binding Path="BuildingClipboard.Postcode"/>
-                            <Binding Path="BuildingClipboard.Country"/>
+                            <Binding Path="Clipboard.Building.Address" />
+                            <Binding Path="Clipboard.Building.City"/>
+                            <Binding Path="Clipboard.Building.Postcode"/>
+                            <Binding Path="Clipboard.Building.Country"/>
                         </MultiBinding>
                     </Image.Visibility>
                     <i:Interaction.Triggers>

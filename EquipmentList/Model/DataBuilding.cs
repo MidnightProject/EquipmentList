@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using EquipmentList.Helpers;
+using GalaSoft.MvvmLight;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -127,6 +128,21 @@ namespace EquipmentList.Model
             if (buildingToRemove != null)
             {
                 colection.Remove(buildingToRemove);
+            }
+
+            return colection;
+        }
+
+        public static Collection<DataBuilding> Update(this Collection<DataBuilding> colection, string name, DataBuilding dataBuilding)
+        {
+            var buildingToUpdate = colection.SingleOrDefault(building => building.Name == name);
+            if (buildingToUpdate != null)
+            {
+                buildingToUpdate.Name = dataBuilding.Name.TrimString();
+                buildingToUpdate.Address = dataBuilding.Address.TrimString();
+                buildingToUpdate.City = dataBuilding.City.TrimString();
+                buildingToUpdate.Postcode = dataBuilding.Postcode.TrimString();
+                buildingToUpdate.Country = dataBuilding.Country.TrimString();
             }
 
             return colection;

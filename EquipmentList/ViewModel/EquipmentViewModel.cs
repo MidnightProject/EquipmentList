@@ -232,7 +232,7 @@ namespace EquipmentList.ViewModel
         }
         private void CopyStringToClipboard(string pararameters)
         {
-            Clipboard.SetData(DataFormats.Text, pararameters);
+            System.Windows.Clipboard.SetData(DataFormats.Text, pararameters);
         }
 
         public EquipmentViewModel(List<EmployeeStatus> employeeStatus, DataTable equipment, SolidColorBrush alarmColor, SolidColorBrush postedWorkerColor, SolidColorBrush activeEmployeeColor , SolidColorBrush nullEmployeeColor, SolidColorBrush incorrectReviewDateColor, SolidColorBrush incorrectLegalizationDateColor)

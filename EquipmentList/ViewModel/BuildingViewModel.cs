@@ -50,11 +50,6 @@ namespace EquipmentList.ViewModel
 
 
         public DataBuilding SelectedBuilding { get; set; }
-        
-        public void RemoveBuilding(string name)
-        {
-            DataBuildings.Remove(name);
-        }
 
         private string group;
         public string Group
@@ -100,9 +95,19 @@ namespace EquipmentList.ViewModel
 
         }
 
+        public void RemoveBuilding(string name)
+        {
+            DataBuildings.Remove(name);
+        }
+
         public void AddBuilding(DataBuilding building)
         {
             DataBuildings.Add(building);
+        }
+
+        public void UpdateBuilding(DataBuilding building)
+        {
+            DataBuildings.Update(SelectedBuilding.Name, building);
         }
     }
 }

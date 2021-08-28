@@ -18,7 +18,8 @@ using WpfMessageBoxLibrary;
 using static EquipmentList.View.Views;
 using EquipmentList.Windows;
 using System.Collections.ObjectModel;
-
+using EquipmentList.Helpers;
+using Clipboard = EquipmentList.Model.Clipboard;
 
 namespace EquipmentList.ViewModel
 {
@@ -179,7 +180,7 @@ namespace EquipmentList.ViewModel
         }
         private void AddBuilding()
         {
-            BuildingWindow buildingWindow = new BuildingWindow(new DataBuilding(), GetBuildingsNames(), new DataBuilding(), "Add new building", "Add");
+            BuildingWindow buildingWindow = new BuildingWindow(new DataBuilding(), GetBuildingsNames(), Clipboard, "Add new building", "Add");
             buildingWindow.ShowDialog();
 
             if (buildingWindow.Result == MessageBoxResult.OK)
@@ -208,6 +209,85 @@ namespace EquipmentList.ViewModel
                     });
                     messageBox.ShowDialog();
                 } 
+            }
+        }
+
+        private RelayCommand editCommand;
+        public RelayCommand EditCommand
+        {
+            get
+            {
+                return editCommand = new RelayCommand(() => Edit());
+            }
+        }
+        private void Edit()
+        {
+            switch (View)
+            {
+                case DefinedViews.BuildingView:
+                    EditBuilding();
+                    break;
+            }
+        }
+        private void EditBuilding()
+        {
+            DataBuilding editedBuilding = ((BuildingViewModel)ViewModel).SelectedBuilding;
+            DataBuilding building = new DataBuilding()
+            {
+                Name = editedBuilding.Name,
+                Address = editedBuilding.Address,
+                City = editedBuilding.City,
+                Country = editedBuilding.Country,
+                Postcode = editedBuilding.Postcode
+            };
+            
+            BuildingWindow buildingWindow = new BuildingWindow(building, GetBuildingsNames(), Clipboard, "Edit building", "Edit");
+            buildingWindow.ShowDialog();
+
+            if (buildingWindow.Result == MessageBoxResult.OK)
+            {
+                try
+                {
+                    if (building.Name == buildingWindow.OldName)
+                    {
+                        string updateBuildingSql = "UPDATE BUILDING SET ADDRESS=@Address, CITY=@City, POSTCODE=@Postcode, COUNTRY=@Country WHERE NAME=@Name";
+
+                        FbTransaction transaction = connection.BeginTransaction();
+                        FbCommand command = new FbCommand(updateBuildingSql, connection, transaction);
+                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimString();
+                        command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimString();
+                        command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimString();
+                        command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimString();
+                        command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimString();
+                        command.ExecuteNonQuery();
+                        transaction.Commit();
+                    }
+                    else
+                    {
+                        string updateBuildingSql = "UPDATE BUILDING SET NAME=@Name, ADDRESS=@Address, CITY=@City, POSTCODE=@Postcode, COUNTRY=@Country WHERE NAME=@OldName";
+
+                        FbTransaction transaction = connection.BeginTransaction();
+                        FbCommand command = new FbCommand(updateBuildingSql, connection, transaction);
+                        command.Parameters.Add("@OldName", FbDbType.VarChar).Value = buildingWindow.OldName;
+                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimString();
+                        command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimString();
+                        command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimString();
+                        command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimString();
+                        command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimString();
+                        command.ExecuteNonQuery();
+                        transaction.Commit();
+                    }
+
+                    ((BuildingViewModel)ViewModel).UpdateBuilding(buildingWindow.Building);
+                }
+                catch (Exception e)
+                {
+                    WpfMessageBox messageBox = new WpfMessageBox("Error #0002", "Error editing building.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                    {
+                        Details = "Error #0002" + '\n' + '\n' + e.ToString(),
+                    });
+                    messageBox.ShowDialog();
+                }
             }
         }
 
@@ -587,6 +667,8 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private Clipboard Clipboard { get; set; }
+
         private FbDataAdapter buildingAdapter;
         private DataTable buildingTable;
 
@@ -658,7 +740,7 @@ namespace EquipmentList.ViewModel
 
             Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetSelectedIndex);
 
-
+            Clipboard = new Clipboard();
 
 
         }
@@ -676,19 +758,6 @@ namespace EquipmentList.ViewModel
             }
 
             return BuildingsNames;
-        }
-    }
-
-    public static class StringExtended
-    {
-        public static string TrimString(this string s)
-        {
-            if (String.IsNullOrEmpty(s))
-            {
-                return s;
-            }
-
-            return s.TrimEnd();
         }
     }
 }

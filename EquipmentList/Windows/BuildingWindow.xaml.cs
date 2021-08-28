@@ -1,10 +1,13 @@
-﻿using EquipmentList.Model;
+﻿using EquipmentList.Messages;
+using EquipmentList.Model;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Clipboard = EquipmentList.Model.Clipboard;
 
 namespace EquipmentList.Windows
 {
@@ -18,22 +21,24 @@ namespace EquipmentList.Windows
         public string ButtonOKText { get; set; }
 
         public DataBuilding Building { get; set; }
+        public string OldName { get; set; }
 
-        public DataBuilding BuildingClipboard { get; set; }
+        public Clipboard Clipboard { get; set; }
 
-        public BuildingWindow(DataBuilding building, ObservableCollection<string> buildingsNames, DataBuilding buildingClipboard, string title, string buttonOKText)
+        public BuildingWindow(DataBuilding building, ObservableCollection<string> buildingsNames, Clipboard clipboard, string title, string buttonOKText)
         {
             InitializeComponent();
             DataContext = this;
 
             Building = building;
+            OldName = Building.Name;
 
             if (String.IsNullOrEmpty(Building.Name))
             {
                 Building.Name = "Add new bulding";
             }
 
-            BuildingClipboard = buildingClipboard;
+            Clipboard = clipboard;
 
             TitleText = title;
             ButtonOKText = buttonOKText;
@@ -91,38 +96,38 @@ namespace EquipmentList.Windows
         {
             if (String.IsNullOrEmpty(Building.Address))
             {
-                BuildingClipboard.Address = String.Empty;
+                Clipboard.Building.Address = String.Empty;
             }
             else
             {
-                BuildingClipboard.Address = Building.Address;
+                Clipboard.Building.Address = Building.Address;
             }
 
             if (String.IsNullOrEmpty(Building.City))
             {
-                BuildingClipboard.City = String.Empty;
+                Clipboard.Building.City = String.Empty;
             }
             else
             {
-                BuildingClipboard.City = Building.City;
+                Clipboard.Building.City = Building.City;
             }
 
             if (String.IsNullOrEmpty(Building.Postcode))
             {
-                BuildingClipboard.Postcode = String.Empty;
+                Clipboard.Building.Postcode = String.Empty;
             }
             else
             {
-                BuildingClipboard.Postcode = Building.Postcode;
+                Clipboard.Building.Postcode = Building.Postcode;
             }
 
             if (String.IsNullOrEmpty(Building.Country))
             {
-                BuildingClipboard.Country = String.Empty;
+                Clipboard.Building.Country = String.Empty;
             }
             else
             {
-                BuildingClipboard.Country = Building.Country;
+                Clipboard.Building.Country = Building.Country;
             }
         }
 
@@ -136,10 +141,10 @@ namespace EquipmentList.Windows
         }
         private void PasteAddress()
         {
-            Building.Address = BuildingClipboard.Address;
-            Building.City = BuildingClipboard.City;
-            Building.Postcode = BuildingClipboard.Postcode;
-            Building.Country = BuildingClipboard.Country;
+            Building.Address = Clipboard.Building.Address;
+            Building.City = Clipboard.Building.City;
+            Building.Postcode = Clipboard.Building.Postcode;
+            Building.Country = Clipboard.Building.Country;
         }
 
         private RelayCommand clearAddressCommand;
