@@ -1,15 +1,33 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace EquipmentList.Model
 {
-    public class DataEmployee
+    public class DataEmployee : ViewModelBase
     {
         public string Name { get; set; }
         public string Job { get; set; }
         public string Phone { get; set; }
-        public string Email { get; set; }
+
+        private string email;
+        public string Email
+        {
+            get
+            {
+                return email;
+            }
+
+            set
+            {
+                if (email != value)
+                {
+                    email = value;
+                    RaisePropertyChanged("Email");
+                }
+            }
+        }    
         public string Building { get; set; }
         public string Country { get; set; }
         public string City { get; set; }

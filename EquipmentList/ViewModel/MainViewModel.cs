@@ -742,7 +742,8 @@ namespace EquipmentList.ViewModel
 
             Clipboard = new Clipboard();
 
-
+            EmployeeWindow w = new EmployeeWindow();
+            w.ShowDialog();
         }
 
         ObservableCollection<string> GetBuildingsNames()

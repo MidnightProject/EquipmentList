@@ -157,6 +157,8 @@
     <Compile Include="Model\EmployeeStatus.cs" />
     <Compile Include="Property\SelectTextOnFocus.cs" />
     <Compile Include="Validations\BuildingNameValidationRule.cs" />
+    <Compile Include="Validations\EmailValidationRule.cs" />
+    <Compile Include="Validations\Wrapper.cs" />
     <Compile Include="ViewModel\EquipmentViewModel.cs" />
     <Compile Include="View\Equipment.xaml.cs">
       <DependentUpon>Equipment.xaml</DependentUpon>
@@ -169,6 +171,9 @@
     <Compile Include="Windows\BindingProxy.cs" />
     <Compile Include="Windows\BuildingWindow.xaml.cs">
       <DependentUpon>BuildingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EmployeeWindow.xaml.cs">
+      <DependentUpon>EmployeeWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\DateFilterWithPopupControl.xaml">
       <SubType>Designer</SubType>
@@ -227,6 +232,10 @@
     <Page Include="Windows\BuildingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\EmployeeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
