@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
 namespace EquipmentList.Validations
@@ -20,12 +21,14 @@ namespace EquipmentList.Validations
                 return ValidationResult.ValidResult;
             }
 
-            try
+            string pattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|" + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)" + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
+            var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+
+            if (regex.IsMatch((string)value))
             {
-                new System.Net.Mail.MailAddress((string)value);
                 return ValidationResult.ValidResult;
             }
-            catch
+            else
             {
                 return new ValidationResult(false, $"Invalid email address");
             }

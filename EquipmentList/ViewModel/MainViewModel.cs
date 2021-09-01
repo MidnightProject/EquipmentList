@@ -681,6 +681,9 @@ namespace EquipmentList.ViewModel
         private FbDataAdapter employeeNameAdapter;
         private DataTable employeeNameTable;
 
+        private FbDataAdapter employeeJobAdapter;
+        private DataTable employeeJobTable;
+
         private FbDataAdapter buildingNameAdapter;
         private DataTable buildingNameTable;
 
@@ -706,10 +709,12 @@ namespace EquipmentList.ViewModel
             connection = new FbConnection(stringConnection.ToString());
             connection.Open();
 
-            buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
-            employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEEVIEW", connection);
             equipmentAdapter = new FbDataAdapter("SELECT * FROM EQUIPMENTVIEW", connection);
+            employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEEVIEW", connection);
             employeeNameAdapter = new FbDataAdapter("SELECT NAME FROM EMPLOYEE", connection);
+            employeeJobAdapter = new FbDataAdapter("SELECT TITLE FROM JOB", connection);
+
+            buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
             buildingNameAdapter = new FbDataAdapter("SELECT NAME FROM BUILDING", connection);
 
             employeeNameTable = new DataTable();
@@ -742,13 +747,13 @@ namespace EquipmentList.ViewModel
 
             Clipboard = new Clipboard();
 
-            EmployeeWindow w = new EmployeeWindow();
+            EmployeeWindow w = new EmployeeWindow(new DataEmployee(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Add new employee", "Add");
             w.ShowDialog();
         }
 
         ObservableCollection<string> GetBuildingsNames()
         {
-            ObservableCollection<string>  BuildingsNames = new ObservableCollection<string>();
+            ObservableCollection<string> BuildingsNames = new ObservableCollection<string>();
 
             buildingNameTable = new DataTable();
             buildingAdapter.Fill(buildingNameTable);
@@ -759,6 +764,21 @@ namespace EquipmentList.ViewModel
             }
 
             return BuildingsNames;
+        }
+
+        ObservableCollection<string> GetJobTitles()
+        {
+            ObservableCollection<string> JobTitles = new ObservableCollection<string>();
+
+            employeeJobTable = new DataTable();
+            employeeJobAdapter.Fill(employeeJobTable);
+            
+            foreach (DataRow row in employeeJobTable.Rows)
+            {
+                JobTitles.Add(row["Title"].ToString());
+            }
+
+            return JobTitles;
         }
     }
 }

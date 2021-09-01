@@ -8,7 +8,7 @@ namespace EquipmentList.Helpers
         {
             if (String.IsNullOrEmpty(s))
             {
-                return s;
+                return null;
             }
 
             return s.TrimEnd();
