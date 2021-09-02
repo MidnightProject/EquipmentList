@@ -156,7 +156,7 @@
     <Compile Include="Model\DataTableExtensions.cs" />
     <Compile Include="Model\EmployeeStatus.cs" />
     <Compile Include="Property\SelectTextOnFocus.cs" />
-    <Compile Include="Validations\BuildingNameValidationRule.cs" />
+    <Compile Include="Validations\NameValidationRule.cs" />
     <Compile Include="Validations\EmailValidationRule.cs" />
     <Compile Include="Validations\Wrapper.cs" />
     <Compile Include="ViewModel\EquipmentViewModel.cs" />

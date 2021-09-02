@@ -15,6 +15,7 @@ namespace EquipmentList.Windows
         public List<string> StatusList { get { return new List<string>() { "ENABLED", "DISABLED" }; } }
         public ObservableCollection<string> JobTitleList { get; set; }
         public ObservableCollection<string> BuildingsList { get; set; }
+        public ObservableCollection<string> EmployeesNames { get; set; }
 
         public DataEmployee Employee { get; set; }
         public string OldName { get; set; }
@@ -50,9 +51,9 @@ namespace EquipmentList.Windows
         public string TitleText { get; set; }
         public string ButtonOKText { get; set; }
 
-        public EmployeeWindow(DataEmployee employee, ObservableCollection<string> jobTitles, ObservableCollection<string> buildingsNames, Clipboard clipboard, string title, string buttonOKText)
+        public EmployeeWindow(DataEmployee employee, ObservableCollection<string> employeesNames, ObservableCollection<string> jobTitles, ObservableCollection<string> buildingsNames, Clipboard clipboard, string title, string buttonOKText)
         {
-            Employee = new DataEmployee();
+            Employee = employee;
             OldName = Employee.Name;
 
             InitializeComponent();
@@ -68,6 +69,8 @@ namespace EquipmentList.Windows
 
             JobTitleList = jobTitles;
             JobTitleList.Insert(0, String.Empty);
+
+            EmployeesNames = employeesNames;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

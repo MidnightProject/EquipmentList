@@ -5,9 +5,9 @@ using System.Windows.Controls;
 
 namespace EquipmentList.Validations
 {
-    public class BuildingNameValidationRule : ValidationRule
+    public class NameValidationRule : ValidationRule
     {
-        public BuildingNameValidationRule()
+        public NameValidationRule()
         {
 
         }
@@ -21,7 +21,7 @@ namespace EquipmentList.Validations
                 return new ValidationResult(false, $"Name cannot be empty");
             }
 
-            if (Wrapper.BuildingsNames.Contains(name, StringComparer.OrdinalIgnoreCase))
+            if (Wrapper.Names.Contains(name, StringComparer.OrdinalIgnoreCase))
             {
                 return new ValidationResult(false, $"The name must be unique");
             }

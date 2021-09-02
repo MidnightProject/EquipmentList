@@ -747,7 +747,7 @@ namespace EquipmentList.ViewModel
 
             Clipboard = new Clipboard();
 
-            EmployeeWindow w = new EmployeeWindow(new DataEmployee(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Add new employee", "Add");
+            EmployeeWindow w = new EmployeeWindow(new DataEmployee(), GetEmployeesNames(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Add new employee", "Add");
             w.ShowDialog();
         }
 
@@ -779,6 +779,21 @@ namespace EquipmentList.ViewModel
             }
 
             return JobTitles;
+        }
+
+        ObservableCollection<string> GetEmployeesNames()
+        {
+            ObservableCollection<string> EmployeesNames = new ObservableCollection<string>();
+
+            employeeNameTable = new DataTable();
+            employeeNameAdapter.Fill(employeeNameTable);
+
+            foreach (DataRow row in employeeNameTable.Rows)
+            {
+                EmployeesNames.Add(row["Name"].ToString());
+            }
+
+            return EmployeesNames;
         }
     }
 }

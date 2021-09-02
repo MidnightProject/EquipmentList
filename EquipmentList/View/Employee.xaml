@@ -247,6 +247,9 @@
                                                     </CheckBox.IsChecked>
                                                     <TextBlock Text="PRINT" />
                                                 </CheckBox>
+                                                <CheckBox IsChecked="True">
+                                                    <TextBlock Text="VIEW" />
+                                                </CheckBox>
                                             </WrapPanel>
                                         </GroupBox>
                                         <GroupBox Header="OWN EQUIPMENT" Margin="10,5,0,5" FontWeight="Normal">

@@ -68,11 +68,11 @@
                 <TextBox.Text>
                     <Binding Path="Building.Name" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <validations:BuildingNameValidationRule>
-                                <validations:BuildingNameValidationRule.Wrapper>
-                                    <validations:Wrapper BuildingsNames="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
-                                </validations:BuildingNameValidationRule.Wrapper>
-                            </validations:BuildingNameValidationRule>
+                            <validations:NameValidationRule>
+                                <validations:NameValidationRule.Wrapper>
+                                    <validations:Wrapper Names="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
+                                </validations:NameValidationRule.Wrapper>
+                            </validations:NameValidationRule>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
