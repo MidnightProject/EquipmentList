@@ -13,13 +13,28 @@ namespace EquipmentList.Converters
             {
                 if (value != null)
                 {
-                    if (String.IsNullOrWhiteSpace((string)value) || String.IsNullOrEmpty((string)value))
+                    if (value.GetType().Equals(typeof(string)))
                     {
-                        
+                        if (String.IsNullOrWhiteSpace((string)value) || String.IsNullOrEmpty((string)value))
+                        {
+
+                        }
+                        else
+                        {
+                            return Visibility.Visible;
+                        }
                     }
-                    else
+
+                    if (value.GetType().Equals(typeof(bool)))
                     {
-                        return Visibility.Visible; 
+                        if ((bool)value)
+                        {
+                            return Visibility.Visible;
+                        }
+                        else
+                        {
+                            
+                        }
                     }
                 }
             }

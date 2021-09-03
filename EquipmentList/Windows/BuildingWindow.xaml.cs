@@ -1,4 +1,5 @@
-﻿using EquipmentList.Model;
+﻿using EquipmentList.Helpers;
+using EquipmentList.Model;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.ObjectModel;
@@ -92,41 +93,10 @@ namespace EquipmentList.Windows
         }
         private void CopyAddress()
         {
-            if (String.IsNullOrEmpty(Building.Address))
-            {
-                Clipboard.Building.Address = String.Empty;
-            }
-            else
-            {
-                Clipboard.Building.Address = Building.Address;
-            }
-
-            if (String.IsNullOrEmpty(Building.City))
-            {
-                Clipboard.Building.City = String.Empty;
-            }
-            else
-            {
-                Clipboard.Building.City = Building.City;
-            }
-
-            if (String.IsNullOrEmpty(Building.Postcode))
-            {
-                Clipboard.Building.Postcode = String.Empty;
-            }
-            else
-            {
-                Clipboard.Building.Postcode = Building.Postcode;
-            }
-
-            if (String.IsNullOrEmpty(Building.Country))
-            {
-                Clipboard.Building.Country = String.Empty;
-            }
-            else
-            {
-                Clipboard.Building.Country = Building.Country;
-            }
+            Clipboard.Building.Address = Building.Address;
+            Clipboard.Building.City = Building.City;
+            Clipboard.Building.Postcode = Building.Postcode;
+            Clipboard.Building.Country = Building.Country;
         }
 
         private RelayCommand pasteAddressCommand;
@@ -139,10 +109,10 @@ namespace EquipmentList.Windows
         }
         private void PasteAddress()
         {
-            Building.Address = Clipboard.Building.Address;
-            Building.City = Clipboard.Building.City;
-            Building.Postcode = Clipboard.Building.Postcode;
-            Building.Country = Clipboard.Building.Country;
+            Building.Address = Clipboard.Building.Address.IsNullGetEmpty();
+            Building.City = Clipboard.Building.City.IsNullGetEmpty();
+            Building.Postcode = Clipboard.Building.Postcode.IsNullGetEmpty();
+            Building.Country = Clipboard.Building.Country.IsNullGetEmpty();
         }
 
         private RelayCommand clearAddressCommand;

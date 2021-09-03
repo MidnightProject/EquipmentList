@@ -13,5 +13,15 @@ namespace EquipmentList.Helpers
 
             return s.TrimEnd();
         }
+
+        public static string IsNullGetEmpty(this string s)
+        {
+            if (String.IsNullOrEmpty(s))
+            {
+                return String.Empty;
+            }
+
+            return s;
+        }
     }
 }

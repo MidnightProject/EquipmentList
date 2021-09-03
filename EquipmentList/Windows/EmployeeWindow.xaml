@@ -166,14 +166,14 @@
                              MaxLength="10"
                              VerticalContentAlignment="Center"
                              property:SelectTextOnFocus.Active = "True"
-                             Text="{Binding Building.Postcode, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding Employee.Room, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Row="2" Grid.Column="0" Content="Phone:" Grid.ColumnSpan="2"/>
                     <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" MinWidth="50"
                              MaxLength="20"
                              VerticalContentAlignment="Center"
                              property:SelectTextOnFocus.Active = "True"
-                             Text="{Binding Building.Country, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding Employee.Phone, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Row="3" Grid.Column="0" Content="Email:" Grid.ColumnSpan="2"/>
                     <TextBox x:Name="emailTextBox"
@@ -203,6 +203,15 @@
             </Expander>
             <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0">
                 <Image Source="/Images/block_blue.png" ToolTip="Clear" MaxHeight="16" Margin="5,0,0,0">
+                    <Image.Visibility>
+                        <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                            <Binding Path="Employee.Job"/>
+                            <Binding Path="Employee.Building"/>
+                            <Binding Path="Employee.Room"/>
+                            <Binding Path="Employee.Phone"/>
+                            <Binding Path="Employee.Email"/>
+                        </MultiBinding>
+                    </Image.Visibility>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
                             <i:InvokeCommandAction Command="{Binding ClearEmployeeCommand}"/>
@@ -210,6 +219,15 @@
                     </i:Interaction.Triggers>
                 </Image>
                 <Image Source="/Images/copy.png" ToolTip="Copy" MaxHeight="16" Margin="5,0,0,0">
+                    <Image.Visibility>
+                        <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                            <Binding Path="Employee.Job"/>
+                            <Binding Path="Employee.Building"/>
+                            <Binding Path="Employee.Room"/>
+                            <Binding Path="Employee.Phone"/>
+                            <Binding Path="Employee.Email"/>
+                        </MultiBinding>
+                    </Image.Visibility>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
                             <i:InvokeCommandAction Command="{Binding CopyEmployeeCommand}"/>
@@ -217,6 +235,15 @@
                     </i:Interaction.Triggers>
                 </Image>
                 <Image Source="/Images/paste.png" ToolTip="Paste" MaxHeight="16" Margin="5,0,0,0">
+                    <Image.Visibility>
+                        <MultiBinding Converter="{StaticResource visibilityPasteConverter}">
+                            <Binding Path="Clipboard.Employee.Job"/>
+                            <Binding Path="Clipboard.Employee.Building"/>
+                            <Binding Path="Clipboard.Employee.Room"/>
+                            <Binding Path="Clipboard.Employee.Phone"/>
+                            <Binding Path="Clipboard.Employee.Email"/>
+                        </MultiBinding>
+                    </Image.Visibility>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
                             <i:InvokeCommandAction Command="{Binding PasteEmployeeCommand}"/>
@@ -272,6 +299,21 @@
             </Expander>
             <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0">
                 <Image Source="/Images/block_blue.png" ToolTip="Clear" MaxHeight="16" Margin="5,0,0,0">
+                    <Image.Visibility>
+                        <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                            <Binding Path="Employee.AddUser"/>
+                            <Binding Path="Employee.EditUser"/>
+                            <Binding Path="Employee.DeleteUser"/>
+                            <Binding Path="Employee.PrintUser"/>
+                            <Binding Path="Employee.AddOwnEquipment"/>
+                            <Binding Path="Employee.DeleteOwnEquipment"/>
+                            <Binding Path="Employee.AddOtherEquipment"/>
+                            <Binding Path="Employee.DeleteOtherEquipment"/>
+                            <Binding Path="Employee.EditOtherEquipment"/>
+                            <Binding Path="Employee.ViewOtherEquipment"/>
+                            <Binding Path="Employee.PrintOtherEquipment"/>
+                        </MultiBinding>
+                    </Image.Visibility>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
                             <i:InvokeCommandAction Command="{Binding ClearPermissionsCommand}"/>
@@ -279,6 +321,21 @@
                     </i:Interaction.Triggers>
                 </Image>
                 <Image Source="/Images/copy.png" ToolTip="Copy" MaxHeight="16" Margin="5,0,0,0">
+                    <Image.Visibility>
+                        <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                            <Binding Path="Employee.AddUser"/>
+                            <Binding Path="Employee.EditUser"/>
+                            <Binding Path="Employee.DeleteUser"/>
+                            <Binding Path="Employee.PrintUser"/>
+                            <Binding Path="Employee.AddOwnEquipment"/>
+                            <Binding Path="Employee.DeleteOwnEquipment"/>
+                            <Binding Path="Employee.AddOtherEquipment"/>
+                            <Binding Path="Employee.DeleteOtherEquipment"/>
+                            <Binding Path="Employee.EditOtherEquipment"/>
+                            <Binding Path="Employee.ViewOtherEquipment"/>
+                            <Binding Path="Employee.PrintOtherEquipment"/>
+                        </MultiBinding>
+                    </Image.Visibility>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
                             <i:InvokeCommandAction Command="{Binding CopyPermissionsCommand}"/>
