@@ -286,7 +286,7 @@
                 </Button>
                 <Button ToolBar.OverflowMode="Never" Height="48" 
                         Command="{Binding RemoveCommand}">
-                    <Image Source="/Images/sub_blue_remove.png" ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Remove }">
+                    <Image Source="/Images/sub_blue_remove.png" ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Remove}">
                         <Image.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>

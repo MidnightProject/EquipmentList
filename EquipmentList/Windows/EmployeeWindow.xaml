@@ -343,6 +343,21 @@
                     </i:Interaction.Triggers>
                 </Image>
                 <Image Source="/Images/paste.png" ToolTip="Paste" MaxHeight="16" Margin="5,0,0,0">
+                    <Image.Visibility>
+                        <MultiBinding Converter="{StaticResource visibilityPasteConverter}">
+                            <Binding Path="Clipboard.Employee.AddUser"/>
+                            <Binding Path="Clipboard.Employee.EditUser"/>
+                            <Binding Path="Clipboard.Employee.DeleteUser"/>
+                            <Binding Path="Clipboard.Employee.PrintUser"/>
+                            <Binding Path="Clipboard.Employee.AddOwnEquipment"/>
+                            <Binding Path="Clipboard.Employee.DeleteOwnEquipment"/>
+                            <Binding Path="Clipboard.Employee.AddOtherEquipment"/>
+                            <Binding Path="Clipboard.Employee.DeleteOtherEquipment"/>
+                            <Binding Path="Clipboard.Employee.EditOtherEquipment"/>
+                            <Binding Path="Clipboard.Employee.ViewOtherEquipment"/>
+                            <Binding Path="Clipboard.Employee.PrintOtherEquipment"/>
+                        </MultiBinding>
+                    </Image.Visibility>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
                             <i:InvokeCommandAction Command="{Binding PastePermissionsCommand}"/>

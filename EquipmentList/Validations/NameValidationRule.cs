@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Controls;
 
 namespace EquipmentList.Validations
@@ -21,9 +20,12 @@ namespace EquipmentList.Validations
                 return new ValidationResult(false, $"Name cannot be empty");
             }
 
-            if (Wrapper.Names.Contains(name, StringComparer.OrdinalIgnoreCase))
+            foreach(string s in Wrapper.Names)
             {
-                return new ValidationResult(false, $"The name must be unique");
+                if (name.ToUpper() == s.ToUpper())
+                {
+                    return new ValidationResult(false, $"The name must be unique");
+                }
             }
 
             return ValidationResult.ValidResult;

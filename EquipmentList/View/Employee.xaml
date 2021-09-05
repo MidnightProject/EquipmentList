@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
              xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:EquipmentList.View"
              xmlns:converters="clr-namespace:EquipmentList.Converters"
              mc:Ignorable="d" 
@@ -21,6 +22,7 @@
             <converters:ListToTextConverter x:Key="columnTextConverter"/>
             <converters:ListToCheckConverter x:Key="columnCheckConverter"/>
             <converters:SystemUserToRowVisibility x:Key="hiddenRowConverter"/>
+            <converters:SelectedIndexesToRowDetailsVisibilityConverter x:Key="rowDetailsVisibilityConverter"/>
 
             <ControlTemplate x:Key="ComboboxFilter">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
@@ -100,10 +102,11 @@
                       dgx:DataGridFilter.IsAutoFilterEnabled="True" 
                       AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" 
                       SelectedIndex="{Binding SelectedIndex}" 
-                      IsReadOnly="True" SelectionMode="Single" 
+                      IsReadOnly="True" SelectionMode="Extended" 
                       AutoGenerateColumns="False" 
-                      RowDetailsVisibilityMode="VisibleWhenSelected"
-                      FontSize="16">
+                      RowDetailsVisibilityMode="{Binding Path=SelectedItems.Count, RelativeSource={RelativeSource Self}, Converter={StaticResource rowDetailsVisibilityConverter} }"
+                      FontSize="16"
+                      SelectedItem="{Binding SelectedEmployee}">
                 <DataGrid.Style>
                     <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                         <Setter Property="ItemsSource" Value="{Binding DataEmployees}"/>
@@ -131,6 +134,7 @@
                 </DataGrid.GroupStyle>
                 <DataGrid.RowStyle>
                     <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="IsSelected" Value="{Binding Path=Properties.IsSelected, Mode=TwoWay}"/>
                         <Setter Property="Visibility">
                             <Setter.Value>
                                 <MultiBinding Converter="{StaticResource hiddenRowConverter}">
@@ -151,7 +155,13 @@
                     <DataGridTextColumn Header="Room" Binding="{Binding Room}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                     <DataGridTextColumn x:Name="columnStatus" Header="Status" Binding="{Binding Status}" dgx:DataGridFilterColumn.Filter="{Binding ColumnStatusFilter}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 </DataGrid.Columns>
-                
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{Binding DataContext.SelectedIndexCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
                         <Border BorderThickness="0" Background="White" >

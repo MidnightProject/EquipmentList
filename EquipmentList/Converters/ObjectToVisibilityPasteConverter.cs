@@ -13,7 +13,18 @@ namespace EquipmentList.Converters
             {
                 if (value != null)
                 {
-                    return Visibility.Visible;
+                    if (value.GetType().Equals(typeof(string)))
+                    {
+                        return Visibility.Visible;
+                    }
+
+                    if (value.GetType().Equals(typeof(bool)))
+                    {
+                        if ((bool)value)
+                        {
+                            return Visibility.Visible;
+                        }
+                    }
                 }
             }
 

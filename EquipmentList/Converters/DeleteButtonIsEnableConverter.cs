@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace EquipmentList.Converters
@@ -9,7 +8,7 @@ namespace EquipmentList.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((int)values[0] != -1)
+            if ((int)values[0] >= 1)
             {
                 return true;
             }

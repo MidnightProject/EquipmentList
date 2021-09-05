@@ -100,8 +100,8 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WpfMessageBox, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MidnightProject.WpfMessageBox.1.1.0\lib\net40\WpfMessageBox.dll</HintPath>
+    <Reference Include="WpfMessageBox, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MidnightProject.WpfMessageBox.1.1.1\lib\net40\WpfMessageBox.dll</HintPath>
     </Reference>
     <Reference Include="WpfScreenHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WpfScreenHelper.1.0.0\lib\net40\WpfScreenHelper.dll</HintPath>
@@ -140,6 +140,7 @@
     <Compile Include="Converters\ObjectToVisibilityPasteConverter.cs" />
     <Compile Include="Converters\PostedWorkerToColorConverter.cs" />
     <Compile Include="Converters\PostedWorkerToWarningVisibilityConverter.cs" />
+    <Compile Include="Converters\SelectedIndexesToRowDetailsVisibilityConverter.cs" />
     <Compile Include="Converters\SystemUserToRowVisibility.cs" />
     <Compile Include="Converters\BackgroundToForegroundConverter.cs" />
     <Compile Include="Converters\ViewToEnableConverter.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Model\DataEquipment.cs" />
     <Compile Include="Model\DataTableExtensions.cs" />
     <Compile Include="Model\EmployeeStatus.cs" />
+    <Compile Include="Model\Properties.cs" />
     <Compile Include="Property\SelectTextOnFocus.cs" />
     <Compile Include="Validations\NameValidationRule.cs" />
     <Compile Include="Validations\EmailValidationRule.cs" />

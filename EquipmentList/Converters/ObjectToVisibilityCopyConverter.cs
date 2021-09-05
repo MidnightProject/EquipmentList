@@ -31,10 +31,6 @@ namespace EquipmentList.Converters
                         {
                             return Visibility.Visible;
                         }
-                        else
-                        {
-                            
-                        }
                     }
                 }
             }

@@ -121,6 +121,11 @@ namespace EquipmentList.ViewModel
                 case DefinedViews.BuildingView:
                     RemoveBuilding();
                     break;
+                case DefinedViews.EmployeeView:
+                    RemoveEmployee();
+                    break;
+                case DefinedViews.EquipmentView:
+                    break;
             }
         }
         private void RemoveBuilding()
@@ -158,6 +163,55 @@ namespace EquipmentList.ViewModel
                     });
                     messageBox.ShowDialog();
                 }
+            }
+        }
+
+        private void RemoveEmployee()
+        {
+            foreach (DataEmployee employee in ((EmployeeViewModel)ViewModel).SelectedEmployees)
+            {
+                string deleteEmployeeSql = "DELETE FROM EMPLOYEE WHERE NAME = @Name";
+                string name = employee.Name;
+
+                WpfMessageBox messageBox;
+
+                if (name == "Guest" || name == "Admin")
+                {
+                    messageBox = new WpfMessageBox("Information", "The system user cannot be removed.", MessageBoxButton.OK, MessageBoxImage.Information);
+                    messageBox.ShowDialog();
+                }
+                else
+                {
+                    messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
+                    {
+                        Header = "Remove '" + name + "' employee ?",
+                        ButtonYesText = "Yes, remove employee",
+                        ButtonNoText = "Cancel, keep employee",
+                    });
+                    messageBox.ShowDialog();
+
+                    if (messageBox.Result == WpfMessageBoxResult.Yes)
+                    {
+                        try
+                        {
+                            FbTransaction transaction = connection.BeginTransaction();
+                            FbCommand command = new FbCommand(deleteEmployeeSql, connection, transaction);
+                            command.Parameters.Add("@Name", FbDbType.VarChar).Value = name;
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+
+                            ((EmployeeViewModel)ViewModel).RemoveEmployee(name);
+                        }
+                        catch (Exception e)
+                        {
+                            messageBox = new WpfMessageBox("Error #0003", "Error removing employee from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                            {
+                                Details = "Error #0003" + '\n' + '\n' + e.ToString(),
+                            });
+                            messageBox.ShowDialog();
+                        }
+                    }
+                } 
             }
         }
 

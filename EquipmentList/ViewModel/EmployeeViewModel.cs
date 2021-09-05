@@ -1,8 +1,13 @@
-﻿using EquipmentList.Model;
+﻿using EquipmentList.Messages;
+using EquipmentList.Model;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Linq;
 using static EquipmentList.View.Views;
 
 namespace EquipmentList.ViewModel
@@ -24,8 +29,8 @@ namespace EquipmentList.ViewModel
             }
         }
 
-        private Collection<DataEmployee> dataEmployees;
-        public Collection<DataEmployee> DataEmployees
+        private ObservableCollection<DataEmployee> dataEmployees;
+        public ObservableCollection<DataEmployee> DataEmployees
         {
             get
             {
@@ -69,6 +74,38 @@ namespace EquipmentList.ViewModel
                     selectedIndex = value;
                     RaisePropertyChanged("SelectedIndex");
                 }
+            }
+        }
+
+
+        public int SelectedIndexes { get; set; }
+
+        private RelayCommand selectedIndexCommand;
+        public RelayCommand SelectedIndexCommand
+        {
+            get
+            {
+                return selectedIndexCommand = new RelayCommand(() => GetSelectedIndexes());
+            }
+        }
+        private void GetSelectedIndexes()
+        {
+            SelectedIndexes = DataEmployees.Where(i => i.Properties.IsSelected).Count();
+
+            Messenger.Default.Send<SelectedIndexMessage>(new SelectedIndexMessage
+            {
+                View = DefinedViews.EmployeeView,
+                Index = SelectedIndexes,
+
+            }, MessageType.PropertyChangedMessage);
+        }
+
+        public DataEmployee SelectedEmployee { get; set; }
+        public List<DataEmployee> SelectedEmployees
+        {
+            get
+            {
+                return DataEmployees.Where(i => i.Properties.IsSelected).ToList();
             }
         }
 
@@ -129,7 +166,7 @@ namespace EquipmentList.ViewModel
 
             HiddenSystemUser = true;
 
-            DataEmployees = new Collection<DataEmployee>();
+            DataEmployees = new ObservableCollection<DataEmployee>();
             foreach (DataRow row in dt.Rows)
             {
                 DataEmployees.Add(new DataEmployee()
@@ -159,6 +196,21 @@ namespace EquipmentList.ViewModel
                     PrintOtherEquipment = row["PRINT_OTHER_EQUIPMENT"].ToBoolean(),
                 });
             }
+        }
+
+        public void RemoveEmployee(string name)
+        {
+            DataEmployees.Remove(name);
+        }
+
+        public void AddBuilding(DataEmployee employee)
+        {
+            DataEmployees.Add(employee);
+        }
+
+        public void UpdateBuilding(DataEmployee employee)
+        {
+            DataEmployees.Update(SelectedEmployee.Name, employee);
         }
     }
 }

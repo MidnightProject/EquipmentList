@@ -1,12 +1,16 @@
-﻿using GalaSoft.MvvmLight;
+﻿using EquipmentList.Helpers;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace EquipmentList.Model
 {
     public class DataEmployee : ViewModelBase
     {
+        public Properties Properties { get; set; }
+
         private string name;
         public string Name
         {
@@ -420,6 +424,11 @@ namespace EquipmentList.Model
                 }
             }
         }
+
+        public DataEmployee()
+        {
+            Properties = new Properties();
+        }
     }
 
     public static class DataEmployeeExtensions
@@ -429,6 +438,44 @@ namespace EquipmentList.Model
             var dataEmployee = list.FirstOrDefault(emmployee => emmployee.Name == name);
 
             return dataEmployee;
+        }
+
+        public static Collection<DataEmployee> Remove(this Collection<DataEmployee> colection, string name)
+        {
+            var employeeToRemove = colection.SingleOrDefault(employee => employee.Name == name);
+            if (employeeToRemove != null)
+            {
+                colection.Remove(employeeToRemove);
+            }
+
+            return colection;
+        }
+
+        public static Collection<DataEmployee> Update(this Collection<DataEmployee> colection, string name, DataEmployee dataEmployee)
+        {
+            var employeeToUpdate = colection.SingleOrDefault(employee => employee.Name == name);
+            if (employeeToUpdate != null)
+            {
+                employeeToUpdate.Job = dataEmployee.Job.TrimString();
+                employeeToUpdate.Building = dataEmployee.Building.TrimString();
+                employeeToUpdate.Room = dataEmployee.Room.TrimString();
+                employeeToUpdate.Phone = dataEmployee.Phone.TrimString();
+                employeeToUpdate.Email = dataEmployee.Email.TrimString();
+
+                employeeToUpdate.AddUser = dataEmployee.AddUser;
+                employeeToUpdate.EditUser = dataEmployee.EditUser;
+                employeeToUpdate.DeleteUser = dataEmployee.DeleteUser;
+                employeeToUpdate.PrintUser = dataEmployee.PrintUser;
+                employeeToUpdate.AddOwnEquipment = dataEmployee.AddOwnEquipment;
+                employeeToUpdate.DeleteOwnEquipment = dataEmployee.DeleteOwnEquipment;
+                employeeToUpdate.AddOtherEquipment = dataEmployee.AddOtherEquipment;
+                employeeToUpdate.DeleteOtherEquipment = dataEmployee.DeleteOtherEquipment;
+                employeeToUpdate.EditOtherEquipment = dataEmployee.EditOtherEquipment;
+                employeeToUpdate.ViewOtherEquipment = dataEmployee.ViewOtherEquipment;
+                employeeToUpdate.PrintOtherEquipment = dataEmployee.PrintOtherEquipment;
+            }
+
+            return colection;
         }
     }
 }
