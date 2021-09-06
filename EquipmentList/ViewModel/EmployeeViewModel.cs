@@ -77,7 +77,6 @@ namespace EquipmentList.ViewModel
             }
         }
 
-
         public int SelectedIndexes { get; set; }
 
         private RelayCommand selectedIndexCommand;
