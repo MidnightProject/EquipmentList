@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace EquipmentList.Converters
 {
-    class ObjectToVisibilityCopyConverter : IMultiValueConverter
+    class ObjectToVisibilityClearConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -18,10 +18,6 @@ namespace EquipmentList.Converters
                         if (String.IsNullOrWhiteSpace((string)value) || String.IsNullOrEmpty((string)value))
                         {
 
-                        }
-                        else if ((string)value == "[...]")
-                        {
-                            return Visibility.Collapsed;
                         }
                         else
                         {

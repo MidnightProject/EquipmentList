@@ -135,7 +135,9 @@
     <Compile Include="Converters\NullEmployeeToColorConverter.cs" />
     <Compile Include="Converters\EmployeeToForegroundConverter.cs" />
     <Compile Include="Converters\NullEmployeeToWarningVisibilityConverter.cs" />
+    <Compile Include="Converters\NullToIsThreeStateConverter.cs" />
     <Compile Include="Converters\ObjectToIsEnablePasteConverter.cs" />
+    <Compile Include="Converters\ObjectToVisibilityClearConverter.cs" />
     <Compile Include="Converters\ObjectToVisibilityCopyConverter.cs" />
     <Compile Include="Converters\ObjectToVisibilityPasteConverter.cs" />
     <Compile Include="Converters\PostedWorkerToColorConverter.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="Converters\ViewToTextConverter.cs" />
     <Compile Include="Converters\VisibilityToIsCheckedConverter.cs" />
     <Compile Include="Converters\ActiveEmployeeToColorConverter.cs" />
+    <Compile Include="Helpers\IEnumerableExtended.cs" />
     <Compile Include="Helpers\StringExtended.cs" />
     <Compile Include="Messages\MessageType.cs" />
     <Compile Include="Messages\SelectedIndexMessage.cs" />

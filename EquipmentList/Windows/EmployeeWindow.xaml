@@ -13,6 +13,26 @@
     <Window.Resources>
         <converters:ObjectToVisibilityPasteConverter x:Key="visibilityPasteConverter"/>
         <converters:ObjectToVisibilityCopyConverter x:Key="visibilityCopyConverter"/>
+        <converters:ObjectToVisibilityClearConverter x:Key="visibilityClearConverter"/>
+        <converters:NullToIsThreeStateConverter x:Key="isThreeStateConverter"/>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="Text" Value="[...]">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="SelectedIndex" Value="-1">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
         <ControlTemplate x:Key="validationTemplate">
             <DockPanel>
@@ -22,7 +42,11 @@
         </ControlTemplate>
 
         <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="White"/>
             <Style.Triggers>
+                <Trigger Property="Text" Value="[...]">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
                 <Trigger Property="Validation.HasError" Value="true">
                     <Setter Property="ToolTip"
                         Value="{Binding RelativeSource={x:Static RelativeSource.Self},
@@ -51,9 +75,9 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Content="Name:"/>
@@ -84,10 +108,10 @@
             <WrapPanel Grid.Row="1" Grid.Column="2" Margin="0,5,0,0" Orientation="Horizontal"
                                VerticalAlignment="Center">
                 <ComboBox MinWidth="50"
-                                  IsEditable="False"
-                                  VerticalContentAlignment="Center"
-                                  ItemsSource="{Binding StatusList, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectedItem="{Binding Status}"/>
+                          IsEditable="False"
+                          VerticalContentAlignment="Center"
+                          ItemsSource="{Binding StatusList, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Employee.Status}"/>
             </WrapPanel>
 
             <Expander Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Header="Employee" Margin="0,10,0,0">
@@ -204,7 +228,7 @@
             <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0">
                 <Image Source="/Images/block_blue.png" ToolTip="Clear" MaxHeight="16" Margin="5,0,0,0">
                     <Image.Visibility>
-                        <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                        <MultiBinding Converter="{StaticResource visibilityClearConverter}">
                             <Binding Path="Employee.Job"/>
                             <Binding Path="Employee.Building"/>
                             <Binding Path="Employee.Room"/>
@@ -270,11 +294,11 @@
 
                     <GroupBox Grid.Row="0" Grid.Column="0" Header="USER" Margin="10,5,0,0">
                         <WrapPanel>
-                            <CheckBox Content="ADD" IsChecked="{Binding Employee.AddUser}"></CheckBox>
-                            <CheckBox Content="REMOVE" IsChecked="{Binding Employee.DeleteUser}"></CheckBox>
-                            <CheckBox Content="EDIT" IsChecked="{Binding Employee.EditUser}"></CheckBox>
-                            <CheckBox Content="PRINT" IsChecked="{Binding Employee.PrintUser}"></CheckBox>
-                            <CheckBox Content="VIEW" IsChecked="True" IsEnabled="False"></CheckBox>
+                            <CheckBox Content="ADD" IsThreeState="{Binding Employee.AddUser, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.AddUser}"></CheckBox>
+                            <CheckBox Content="REMOVE" IsThreeState="True" IsChecked="{Binding Employee.DeleteUser}"></CheckBox>
+                            <CheckBox Content="EDIT" IsThreeState="True" IsChecked="{Binding Employee.EditUser}"></CheckBox>
+                            <CheckBox Content="PRINT" IsThreeState="True" IsChecked="{Binding Employee.PrintUser}"></CheckBox>
+                            <CheckBox Content="VIEW" IsThreeState="True" IsChecked="True" IsEnabled="False"></CheckBox>
                         </WrapPanel>
                     </GroupBox>
                     <GroupBox Grid.Row="1" Grid.Column="0" Header="OWN EQUIPMENT" Margin="10,0,0,0">

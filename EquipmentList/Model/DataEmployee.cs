@@ -11,6 +11,8 @@ namespace EquipmentList.Model
     {
         public Properties Properties { get; set; }
 
+        public string ID { get; set; }
+
         private string name;
         public string Name
         {
@@ -223,12 +225,21 @@ namespace EquipmentList.Model
                 {
                     status = value;
                     RaisePropertyChanged("Status");
+
+                    if (status == "Enabled")
+                    {
+                        Active = true;
+                    }
+                    else
+                    {
+                        Active = false;
+                    }
                 }
             }
         }
 
-        private Boolean addUser;
-        public Boolean AddUser
+        private Boolean? addUser;
+        public Boolean? AddUser
         {
             get
             {
@@ -440,9 +451,9 @@ namespace EquipmentList.Model
             return dataEmployee;
         }
 
-        public static Collection<DataEmployee> Remove(this Collection<DataEmployee> colection, string name)
+        public static Collection<DataEmployee> Remove(this Collection<DataEmployee> colection, string id)
         {
-            var employeeToRemove = colection.SingleOrDefault(employee => employee.Name == name);
+            var employeeToRemove = colection.SingleOrDefault(employee => employee.ID == id);
             if (employeeToRemove != null)
             {
                 colection.Remove(employeeToRemove);
@@ -476,6 +487,94 @@ namespace EquipmentList.Model
             }
 
             return colection;
+        }
+
+        public static DataEmployee Values(this List<DataEmployee> colection)
+        {
+            DataEmployee dataEmployee = new DataEmployee();
+
+            if (colection.IsSameValue(i => i.Name))
+            {
+                dataEmployee.Name = colection[0].Name;
+            }
+            else
+            {
+                dataEmployee.Name = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Status))
+            {
+                dataEmployee.Status = colection[0].Status;
+            }
+            else
+            {
+                dataEmployee.Status = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Job))
+            {
+                dataEmployee.Job = colection[0].Job;
+            }
+            else
+            {
+                dataEmployee.Job = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Building))
+            {
+                dataEmployee.Building = colection[0].Building;
+            }
+            else
+            {
+                dataEmployee.Building = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Room))
+            {
+                dataEmployee.Room = colection[0].Room;
+            }
+            else
+            {
+                dataEmployee.Room = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Phone))
+            {
+                dataEmployee.Phone = colection[0].Phone;
+            }
+            else
+            {
+                dataEmployee.Phone = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Email))
+            {
+                dataEmployee.Email = colection[0].Email;
+            }
+            else
+            {
+                dataEmployee.Email = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Status))
+            {
+                dataEmployee.Status = colection[0].Status;
+            }
+            else
+            {
+                dataEmployee.Status = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.AddUser))
+            {
+                dataEmployee.AddUser = colection[0].AddUser;
+            }
+            else
+            {
+                dataEmployee.AddUser = null;
+            }
+
+            return dataEmployee;
         }
     }
 }

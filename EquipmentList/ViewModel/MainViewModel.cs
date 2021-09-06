@@ -165,11 +165,11 @@ namespace EquipmentList.ViewModel
                 }
             }
         }
-
         private void RemoveEmployee()
         {
-            string deleteEmployeeSql = "DELETE FROM EMPLOYEE WHERE NAME = @Name";
-            string name = ((EmployeeViewModel)ViewModel).SelectedEmployee.Name;
+            string deleteEmployeeSql = "DELETE FROM EMPLOYEE WHERE ID = @ID";
+            string id = ((EmployeeViewModel)ViewModel).SelectedEmployee.ID;
+            string name = ((EmployeeViewModel) ViewModel).SelectedEmployee.Name;
 
             WpfMessageBox messageBox;
 
@@ -196,11 +196,11 @@ namespace EquipmentList.ViewModel
                         {
                             FbTransaction transaction = connection.BeginTransaction();
                             FbCommand command = new FbCommand(deleteEmployeeSql, connection, transaction);
-                            command.Parameters.Add("@Name", FbDbType.VarChar).Value = name;
+                            command.Parameters.Add("@ID", FbDbType.VarChar).Value = id;
                             command.ExecuteNonQuery();
                             transaction.Commit();
 
-                            ((EmployeeViewModel)ViewModel).RemoveEmployee(name);
+                            ((EmployeeViewModel)ViewModel).RemoveEmployee(id);
                         }
                         catch (Exception e)
                         {
@@ -225,36 +225,35 @@ namespace EquipmentList.ViewModel
 
                 if (messageBox.Result == WpfMessageBoxResult.Yes)
                 {
-
-                }
-
-                foreach (DataEmployee employee in ((EmployeeViewModel)ViewModel).SelectedEmployees)
-                {
-                    name = employee.Name;
-
-                    if (name == "Guest" || name == "Admin")
+                    foreach (DataEmployee employee in ((EmployeeViewModel)ViewModel).SelectedEmployees)
                     {
-                        
-                    }
-                    else
-                    {
-                        try
+                        id = employee.ID;
+                        name = employee.Name;
+
+                        if (name == "Guest" || name == "Admin")
                         {
-                            FbTransaction transaction = connection.BeginTransaction();
-                            FbCommand command = new FbCommand(deleteEmployeeSql, connection, transaction);
-                            command.Parameters.Add("@Name", FbDbType.VarChar).Value = name;
-                            command.ExecuteNonQuery();
-                            transaction.Commit();
 
-                            ((EmployeeViewModel)ViewModel).RemoveEmployee(name);
                         }
-                        catch (Exception e)
+                        else
                         {
-                            messageBox = new WpfMessageBox("Error #0003", "Error removing employee from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                            try
                             {
-                                Details = "Error #0003" + '\n' + '\n' + e.ToString(),
-                            });
-                            messageBox.ShowDialog();
+                                FbTransaction transaction = connection.BeginTransaction();
+                                FbCommand command = new FbCommand(deleteEmployeeSql, connection, transaction);
+                                command.Parameters.Add("@ID", FbDbType.VarChar).Value = id;
+                                command.ExecuteNonQuery();
+                                transaction.Commit();
+
+                                ((EmployeeViewModel)ViewModel).RemoveEmployee(id);
+                            }
+                            catch (Exception e)
+                            {
+                                messageBox = new WpfMessageBox("Error #0003", "Error removing employee from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                                {
+                                    Details = "Error #0003" + '\n' + '\n' + e.ToString(),
+                                });
+                                messageBox.ShowDialog();
+                            }
                         }
                     }
                 }
@@ -327,6 +326,9 @@ namespace EquipmentList.ViewModel
                 case DefinedViews.BuildingView:
                     EditBuilding();
                     break;
+                case DefinedViews.EmployeeView:
+                    EditEmployee();
+                    break;
             }
         }
         private void EditBuilding()
@@ -389,6 +391,13 @@ namespace EquipmentList.ViewModel
                     messageBox.ShowDialog();
                 }
             }
+        }
+        private void EditEmployee()
+        {
+            DataEmployee employee = (((EmployeeViewModel)ViewModel).SelectedEmployees).Values();
+
+            EmployeeWindow w = new EmployeeWindow(employee, GetEmployeesNames(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Edit employees", "Edit");
+            w.ShowDialog();
         }
 
         private RelayCommand<string> colorOfWarningCommand;
@@ -846,9 +855,6 @@ namespace EquipmentList.ViewModel
             Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetSelectedIndex);
 
             Clipboard = new Clipboard();
-
-            EmployeeWindow w = new EmployeeWindow(new DataEmployee(), GetEmployeesNames(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Add new employee", "Add");
-            w.ShowDialog();
         }
 
         ObservableCollection<string> GetBuildingsNames()

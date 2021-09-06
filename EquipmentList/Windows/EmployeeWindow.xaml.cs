@@ -13,40 +13,14 @@ namespace EquipmentList.Windows
 {
     public partial class EmployeeWindow : Window
     {
-        public List<string> StatusList { get { return new List<string>() { "ENABLED", "DISABLED" }; } }
+        public ObservableCollection<string> StatusList { get { return new ObservableCollection<string>() { "Enabled", "Disabled" }; } }
         public ObservableCollection<string> JobTitleList { get; set; }
         public ObservableCollection<string> BuildingsList { get; set; }
         public ObservableCollection<string> EmployeesNames { get; set; }
 
         public DataEmployee Employee { get; set; }
         public string OldName { get; set; }
-
-        private string status;
-        public string Status
-        {
-            get
-            {
-                return status;
-            }
-
-            set
-            {
-                if (status != value)
-                {
-                    status = value;
-
-                    if (status == "ENABLED")
-                    {
-                        Employee.Active = true;
-                    }
-                    else
-                    {
-                        Employee.Active = false;
-                    }
-                }
-            }
-        }
-
+                
         public MessageBoxResult Result { get; set; }
 
         public string TitleText { get; set; }
@@ -64,8 +38,6 @@ namespace EquipmentList.Windows
 
             TitleText = title;
             ButtonOKText = buttonOKText;
-
-            Status = "ENABLED";
 
             BuildingsList = buildingsNames;
             BuildingsList.Insert(0, String.Empty);

@@ -170,6 +170,7 @@ namespace EquipmentList.ViewModel
             {
                 DataEmployees.Add(new DataEmployee()
                 {
+                    ID = row["ID"].ToString(),
                     Name = row["NAME"].ToString(),
                     Job = row["JOB"].ToString(),
                     Phone = row["PHONE"].ToString(),
@@ -197,9 +198,9 @@ namespace EquipmentList.ViewModel
             }
         }
 
-        public void RemoveEmployee(string name)
+        public void RemoveEmployee(string id)
         {
-            DataEmployees.Remove(name);
+            DataEmployees.Remove(id);
         }
 
         public void AddBuilding(DataEmployee employee)
