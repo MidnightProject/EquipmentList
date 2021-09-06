@@ -295,16 +295,16 @@
                     <GroupBox Grid.Row="0" Grid.Column="0" Header="USER" Margin="10,5,0,0">
                         <WrapPanel>
                             <CheckBox Content="ADD" IsThreeState="{Binding Employee.AddUser, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.AddUser}"></CheckBox>
-                            <CheckBox Content="REMOVE" IsThreeState="True" IsChecked="{Binding Employee.DeleteUser}"></CheckBox>
-                            <CheckBox Content="EDIT" IsThreeState="True" IsChecked="{Binding Employee.EditUser}"></CheckBox>
-                            <CheckBox Content="PRINT" IsThreeState="True" IsChecked="{Binding Employee.PrintUser}"></CheckBox>
-                            <CheckBox Content="VIEW" IsThreeState="True" IsChecked="True" IsEnabled="False"></CheckBox>
+                            <CheckBox Content="REMOVE" IsThreeState="{Binding Employee.DeleteUser, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.DeleteUser}"></CheckBox>
+                            <CheckBox Content="EDIT" IsThreeState="{Binding Employee.EditUser, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.EditUser}"></CheckBox>
+                            <CheckBox Content="PRINT" IsThreeState="{Binding Employee.PrintUser, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.PrintUser}"></CheckBox>
+                            <CheckBox Content="VIEW" IsChecked="True" IsEnabled="False"></CheckBox>
                         </WrapPanel>
                     </GroupBox>
                     <GroupBox Grid.Row="1" Grid.Column="0" Header="OWN EQUIPMENT" Margin="10,0,0,0">
                         <WrapPanel>
-                            <CheckBox Content="ADD" IsChecked="{Binding Employee.AddOwnEquipment}"></CheckBox>
-                            <CheckBox Content="REMOVE" IsChecked="{Binding Employee.DeleteOwnEquipment}"></CheckBox>
+                            <CheckBox Content="ADD" IsThreeState="{Binding Employee.AddOwnEquipment, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.AddOwnEquipment}"></CheckBox>
+                            <CheckBox Content="REMOVE" IsThreeState="{Binding Employee.DeleteOwnEquipment, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.DeleteOwnEquipment}"></CheckBox>
                             <CheckBox Content="EDIT" IsChecked="True" IsEnabled="False"></CheckBox>
                             <CheckBox Content="PRINT" IsChecked="True" IsEnabled="False"></CheckBox>
                             <CheckBox Content="VIEW" IsChecked="True" IsEnabled="False"></CheckBox>
@@ -312,11 +312,11 @@
                     </GroupBox>
                     <GroupBox Grid.Row="2" Grid.Column="0" Header="OTHER EQUIPMENT" Margin="10,0,0,0">
                         <WrapPanel>
-                            <CheckBox Content="ADD" IsChecked="{Binding Employee.AddOtherEquipment}"></CheckBox>
-                            <CheckBox Content="REMOVE" IsChecked="{Binding Employee.DeleteOtherEquipment}"></CheckBox>
-                            <CheckBox Content="EDIT" IsChecked="{Binding Employee.EditOtherEquipment}"></CheckBox>
-                            <CheckBox Content="PRINT" IsChecked="{Binding Employee.PrintOtherEquipment}"></CheckBox>
-                            <CheckBox Content="VIEW" IsChecked="{Binding Employee.ViewOtherEquipment}"></CheckBox>
+                            <CheckBox Content="ADD" IsThreeState="{Binding Employee.AddOtherEquipment, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.AddOtherEquipment}"></CheckBox>
+                            <CheckBox Content="REMOVE" IsThreeState="{Binding Employee.DeleteOtherEquipment, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.DeleteOtherEquipment}"></CheckBox>
+                            <CheckBox Content="EDIT" IsThreeState="{Binding Employee.EditOtherEquipment, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.EditOtherEquipment}"></CheckBox>
+                            <CheckBox Content="PRINT" IsThreeState="{Binding Employee.PrintOtherEquipment, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.PrintOtherEquipment}"></CheckBox>
+                            <CheckBox Content="VIEW" IsThreeState="{Binding Employee.ViewOtherEquipment, Converter={StaticResource isThreeStateConverter}}" IsChecked="{Binding Employee.ViewOtherEquipment}"></CheckBox>
                         </WrapPanel>
                     </GroupBox>
                 </Grid>
@@ -324,7 +324,7 @@
             <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0">
                 <Image Source="/Images/block_blue.png" ToolTip="Clear" MaxHeight="16" Margin="5,0,0,0">
                     <Image.Visibility>
-                        <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                        <MultiBinding Converter="{StaticResource visibilityClearConverter}">
                             <Binding Path="Employee.AddUser"/>
                             <Binding Path="Employee.EditUser"/>
                             <Binding Path="Employee.DeleteUser"/>

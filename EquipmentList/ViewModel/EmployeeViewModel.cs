@@ -203,14 +203,14 @@ namespace EquipmentList.ViewModel
             DataEmployees.Remove(id);
         }
 
-        public void AddBuilding(DataEmployee employee)
+        public void AddEmployee(DataEmployee employee)
         {
             DataEmployees.Add(employee);
         }
 
-        public void UpdateBuilding(DataEmployee employee)
+        public void UpdateEmployee(DataEmployee employee)
         {
-            DataEmployees.Update(SelectedEmployee.Name, employee);
+            DataEmployees.Update(employee);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace EquipmentList.Model
             {
                 if (name != value)
                 {
-                    name = value.TrimStart();
+                    name = value.TrimStartString();
                     RaisePropertyChanged("Name");
                 }
             }
@@ -43,7 +43,7 @@ namespace EquipmentList.Model
             {
                 if (job != value)
                 {
-                    job = value.TrimStart();
+                    job = value.TrimStartString();
                     RaisePropertyChanged("Job");
                 }
             }
@@ -61,7 +61,7 @@ namespace EquipmentList.Model
             {
                 if (phone != value)
                 {
-                    phone = value.TrimStart();
+                    phone = value.TrimStartString();
                     RaisePropertyChanged("Phone");
                 }
             }
@@ -79,7 +79,7 @@ namespace EquipmentList.Model
             {
                 if (email != value)
                 {
-                    email = value.TrimStart();
+                    email = value.TrimStartString();
                     RaisePropertyChanged("Email");
                 }
             }
@@ -97,7 +97,7 @@ namespace EquipmentList.Model
             {
                 if (building != value)
                 {
-                    building = value.TrimStart();
+                    building = value.TrimStartString();
                     RaisePropertyChanged("Building");
                 }
             }
@@ -115,7 +115,7 @@ namespace EquipmentList.Model
             {
                 if (country != value)
                 {
-                    country = value.TrimStart();
+                    country = value.TrimStartString();
                     RaisePropertyChanged("Country");
                 }
             }
@@ -133,7 +133,7 @@ namespace EquipmentList.Model
             {
                 if (city != value)
                 {
-                    city = value.TrimStart();
+                    city = value.TrimStartString();
                     RaisePropertyChanged("City");
                 }
             }
@@ -151,7 +151,7 @@ namespace EquipmentList.Model
             {
                 if (address != value)
                 {
-                    address = value.TrimStart();
+                    address = value.TrimStartString();
                     RaisePropertyChanged("Address");
                 }
             }
@@ -169,7 +169,7 @@ namespace EquipmentList.Model
             {
                 if (postcode != value)
                 {
-                    postcode = value.TrimStart();
+                    postcode = value.TrimStartString();
                     RaisePropertyChanged("Postcode");
                 }
             }
@@ -187,7 +187,7 @@ namespace EquipmentList.Model
             {
                 if (room != value)
                 {
-                    room = value.TrimStart();
+                    room = value.TrimStartString();
                     RaisePropertyChanged("Room");
                 }
             }
@@ -256,8 +256,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private Boolean editUser;
-        public Boolean EditUser
+        private Boolean? editUser;
+        public Boolean? EditUser
         {
             get
             {
@@ -274,8 +274,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private Boolean deleteUser;
-        public Boolean DeleteUser
+        private Boolean? deleteUser;
+        public Boolean? DeleteUser
         {
             get
             {
@@ -292,8 +292,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private Boolean printUser;
-        public Boolean PrintUser
+        private Boolean? printUser;
+        public Boolean? PrintUser
         {
             get
             {
@@ -310,8 +310,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private Boolean addOwnEquipment;
-        public Boolean AddOwnEquipment
+        private Boolean? addOwnEquipment;
+        public Boolean? AddOwnEquipment
         {
             get
             {
@@ -328,8 +328,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private Boolean deleteOwnEquipment;
-        public Boolean DeleteOwnEquipment
+        private Boolean? deleteOwnEquipment;
+        public Boolean? DeleteOwnEquipment
         {
             get
             {
@@ -346,8 +346,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private Boolean addOtherEquipment;
-        public Boolean AddOtherEquipment
+        private Boolean? addOtherEquipment;
+        public Boolean? AddOtherEquipment
         {
             get
             {
@@ -364,8 +364,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private Boolean deleteOtherEquipment;
-        public Boolean DeleteOtherEquipment
+        private Boolean? deleteOtherEquipment;
+        public Boolean? DeleteOtherEquipment
         {
             get
             {
@@ -382,8 +382,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private Boolean editOtherEquipment;
-        public Boolean EditOtherEquipment
+        private Boolean? editOtherEquipment;
+        public Boolean? EditOtherEquipment
         {
             get
             {
@@ -400,8 +400,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private Boolean viewOtherEquipment;
-        public Boolean ViewOtherEquipment
+        private Boolean? viewOtherEquipment;
+        public Boolean? ViewOtherEquipment
         {
             get
             {
@@ -418,8 +418,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private Boolean printOtherEquipment;
-        public Boolean PrintOtherEquipment
+        private Boolean? printOtherEquipment;
+        public Boolean? PrintOtherEquipment
         {
             get
             {
@@ -462,16 +462,17 @@ namespace EquipmentList.Model
             return colection;
         }
 
-        public static Collection<DataEmployee> Update(this Collection<DataEmployee> colection, string name, DataEmployee dataEmployee)
+        public static Collection<DataEmployee> Update(this Collection<DataEmployee> colection, DataEmployee dataEmployee)
         {
-            var employeeToUpdate = colection.SingleOrDefault(employee => employee.Name == name);
+            var employeeToUpdate = colection.SingleOrDefault(employee => employee.ID == dataEmployee.ID);
             if (employeeToUpdate != null)
             {
-                employeeToUpdate.Job = dataEmployee.Job.TrimString();
-                employeeToUpdate.Building = dataEmployee.Building.TrimString();
-                employeeToUpdate.Room = dataEmployee.Room.TrimString();
-                employeeToUpdate.Phone = dataEmployee.Phone.TrimString();
-                employeeToUpdate.Email = dataEmployee.Email.TrimString();
+                employeeToUpdate.Name = dataEmployee.Name.TrimEndString();
+                employeeToUpdate.Job = dataEmployee.Job.TrimEndString();
+                employeeToUpdate.Building = dataEmployee.Building.TrimEndString();
+                employeeToUpdate.Room = dataEmployee.Room.TrimEndString();
+                employeeToUpdate.Phone = dataEmployee.Phone.TrimEndString();
+                employeeToUpdate.Email = dataEmployee.Email.TrimEndString();
 
                 employeeToUpdate.AddUser = dataEmployee.AddUser;
                 employeeToUpdate.EditUser = dataEmployee.EditUser;
@@ -574,6 +575,96 @@ namespace EquipmentList.Model
                 dataEmployee.AddUser = null;
             }
 
+            if(colection.IsSameValue(i => i.EditUser))
+            {
+                dataEmployee.EditUser = colection[0].EditUser;
+            }
+            else
+            {
+                dataEmployee.EditUser = null;
+            }
+
+            if (colection.IsSameValue(i => i.DeleteUser))
+            {
+                dataEmployee.DeleteUser = colection[0].DeleteUser;
+            }
+            else
+            {
+                dataEmployee.DeleteUser = null;
+            }
+
+            if (colection.IsSameValue(i => i.PrintUser))
+            {
+                dataEmployee.PrintUser = colection[0].PrintUser;
+            }
+            else
+            {
+                dataEmployee.PrintUser = null;
+            }
+
+            if (colection.IsSameValue(i => i.AddOwnEquipment))
+            {
+                dataEmployee.AddOwnEquipment = colection[0].AddOwnEquipment;
+            }
+            else
+            {
+                dataEmployee.AddOwnEquipment = null;
+            }
+
+            if (colection.IsSameValue(i => i.DeleteOwnEquipment))
+            {
+                dataEmployee.DeleteOwnEquipment = colection[0].DeleteOwnEquipment;
+            }
+            else
+            {
+                dataEmployee.DeleteOwnEquipment = null;
+            }
+
+            if (colection.IsSameValue(i => i.AddOtherEquipment))
+            {
+                dataEmployee.AddOtherEquipment = colection[0].AddOtherEquipment;
+            }
+            else
+            {
+                dataEmployee.AddOtherEquipment = null;
+            }
+
+            if (colection.IsSameValue(i => i.DeleteOtherEquipment))
+            {
+                dataEmployee.DeleteOtherEquipment = colection[0].DeleteOtherEquipment;
+            }
+            else
+            {
+                dataEmployee.DeleteOtherEquipment = null;
+            }
+
+            if (colection.IsSameValue(i => i.EditOtherEquipment))
+            {
+                dataEmployee.EditOtherEquipment = colection[0].EditOtherEquipment;
+            }
+            else
+            {
+                dataEmployee.EditOtherEquipment = null;
+            }
+
+            if (colection.IsSameValue(i => i.ViewOtherEquipment))
+            {
+                dataEmployee.ViewOtherEquipment = colection[0].ViewOtherEquipment;
+            }
+            else
+            {
+                dataEmployee.ViewOtherEquipment = null;
+            }
+
+            if (colection.IsSameValue(i => i.PrintOtherEquipment))
+            {
+                dataEmployee.PrintOtherEquipment = colection[0].PrintOtherEquipment;
+            }
+            else
+            {
+                dataEmployee.PrintOtherEquipment = null;
+            }
+            
             return dataEmployee;
         }
     }

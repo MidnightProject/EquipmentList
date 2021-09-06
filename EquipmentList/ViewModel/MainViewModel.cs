@@ -20,6 +20,7 @@ using EquipmentList.Windows;
 using System.Collections.ObjectModel;
 using EquipmentList.Helpers;
 using Clipboard = EquipmentList.Model.Clipboard;
+using System.Text;
 
 namespace EquipmentList.ViewModel
 {
@@ -290,11 +291,11 @@ namespace EquipmentList.ViewModel
                 {
                     FbTransaction transaction = connection.BeginTransaction();
                     FbCommand command = new FbCommand(addBuildingSql, connection, transaction);
-                    command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimString();
-                    command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimString();
-                    command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimString();
-                    command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimString();
-                    command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimString();
+                    command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimEndString();
+                    command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimEndString();
+                    command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimEndString();
+                    command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimEndString();
+                    command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
                     command.ExecuteNonQuery();
                     transaction.Commit();
 
@@ -356,11 +357,11 @@ namespace EquipmentList.ViewModel
 
                         FbTransaction transaction = connection.BeginTransaction();
                         FbCommand command = new FbCommand(updateBuildingSql, connection, transaction);
-                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimString();
-                        command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimString();
-                        command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimString();
-                        command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimString();
-                        command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimString();
+                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimEndString();
+                        command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimEndString();
+                        command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimEndString();
+                        command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimEndString();
+                        command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
                         command.ExecuteNonQuery();
                         transaction.Commit();
                     }
@@ -371,11 +372,11 @@ namespace EquipmentList.ViewModel
                         FbTransaction transaction = connection.BeginTransaction();
                         FbCommand command = new FbCommand(updateBuildingSql, connection, transaction);
                         command.Parameters.Add("@OldName", FbDbType.VarChar).Value = buildingWindow.OldName;
-                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimString();
-                        command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimString();
-                        command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimString();
-                        command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimString();
-                        command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimString();
+                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimEndString();
+                        command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimEndString();
+                        command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimEndString();
+                        command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimEndString();
+                        command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
                         command.ExecuteNonQuery();
                         transaction.Commit();
                     }
@@ -394,10 +395,100 @@ namespace EquipmentList.ViewModel
         }
         private void EditEmployee()
         {
-            DataEmployee employee = (((EmployeeViewModel)ViewModel).SelectedEmployees).Values();
+            string id = ((EmployeeViewModel)ViewModel).SelectedEmployee.ID;
+            string name;
+            string updateEmployeeSql;
 
-            EmployeeWindow w = new EmployeeWindow(employee, GetEmployeesNames(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Edit employees", "Edit");
-            w.ShowDialog();
+            DataEmployee employeeToEdit = (((EmployeeViewModel)ViewModel).SelectedEmployees).Values();
+
+            WpfMessageBox messageBox;
+
+            if (((EmployeeViewModel)ViewModel).SelectedIndexes == 1)
+            {
+
+            }
+            else
+            {
+                EmployeeWindow employeeWindow = new EmployeeWindow(employeeToEdit, GetEmployeesNames(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Edit employees", "Edit");
+                employeeWindow.ShowDialog();
+
+                if (employeeWindow.Result == MessageBoxResult.OK)
+                {
+                    foreach (DataEmployee employee in ((EmployeeViewModel)ViewModel).SelectedEmployees)
+                    {
+                        name = employee.Name;
+                        id = employee.ID;
+
+                        StringBuilder sbEmployee = new StringBuilder("UPDATE EMPLOYEE SET ");
+
+                        if (employeeWindow.Employee.Name != "[...]" && name != "Guest" && name != "Admin")
+                        {
+                            sbEmployee.Append("NAME=@Name, ");
+                            employee.Name = employeeWindow.Employee.Name;
+                        }
+
+                        if (employeeWindow.Employee.Job != "[...]")
+                        {
+                            sbEmployee.Append("JOB=@Job, ");
+                            employee.Job = employeeWindow.Employee.Job;
+                        }
+
+                        if (employeeWindow.Employee.Building != "[...]")
+                        {
+                            sbEmployee.Append("BUILDING=@Building, ");
+                            employee.Building = employeeWindow.Employee.Building;
+                        }
+
+                        if (employeeWindow.Employee.Room != "[...]")
+                        {
+                            sbEmployee.Append("ROOM=@Room, ");
+                            employee.Room = employeeWindow.Employee.Room;
+                        }
+                        if (employeeWindow.Employee.Phone != "[...]")
+                        {
+                            sbEmployee.Append("PHONE=@Phone, ");
+                            employee.Phone = employeeWindow.Employee.Phone;
+                        }
+
+                        if (employeeWindow.Employee.Email != "[...]")
+                        {
+                            sbEmployee.Append("EMAIL=@Email, ");
+                            employee.Email = employeeWindow.Employee.Email;
+                        }
+
+                        if (sbEmployee.ToString() == "UPDATE EMPLOYEE SET ")
+                        {
+                            return;
+                        }
+
+                        sbEmployee.Remove(sbEmployee.Length - 2, 1);
+                        sbEmployee.Append("WHERE ID = @Id");
+
+                        updateEmployeeSql = sbEmployee.ToString();
+
+                        try
+                        {
+                            FbTransaction transaction = connection.BeginTransaction();
+                            FbCommand command = new FbCommand(updateEmployeeSql, connection, transaction);
+                            command.Parameters.Add("@Id", FbDbType.VarChar).Value = id;
+                            command.Parameters.Add("@Name", FbDbType.VarChar).Value = employeeWindow.Employee.Name.TrimEndString();
+                            command.Parameters.Add("@Job", FbDbType.VarChar).Value = employeeWindow.Employee.Job.TrimEndString();
+                            command.Parameters.Add("@Building", FbDbType.VarChar).Value = employeeWindow.Employee.Building.TrimEndString();
+                            command.Parameters.Add("@Room", FbDbType.VarChar).Value = employeeWindow.Employee.Room.TrimEndString();
+                            command.Parameters.Add("@Phone", FbDbType.VarChar).Value = employeeWindow.Employee.Phone.TrimEndString();
+                            command.Parameters.Add("@Email", FbDbType.VarChar).Value = employeeWindow.Employee.Email.TrimEndString();
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                        catch
+                        {
+
+                        }
+
+                        ((EmployeeViewModel)ViewModel).UpdateEmployee(employee);
+                    }
+                }
+            }  
         }
 
         private RelayCommand<string> colorOfWarningCommand;

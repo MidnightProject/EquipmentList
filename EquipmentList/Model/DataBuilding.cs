@@ -138,11 +138,11 @@ namespace EquipmentList.Model
             var buildingToUpdate = colection.SingleOrDefault(building => building.Name == name);
             if (buildingToUpdate != null)
             {
-                buildingToUpdate.Name = dataBuilding.Name.TrimString();
-                buildingToUpdate.Address = dataBuilding.Address.TrimString();
-                buildingToUpdate.City = dataBuilding.City.TrimString();
-                buildingToUpdate.Postcode = dataBuilding.Postcode.TrimString();
-                buildingToUpdate.Country = dataBuilding.Country.TrimString();
+                buildingToUpdate.Name = dataBuilding.Name.TrimEndString();
+                buildingToUpdate.Address = dataBuilding.Address.TrimEndString();
+                buildingToUpdate.City = dataBuilding.City.TrimEndString();
+                buildingToUpdate.Postcode = dataBuilding.Postcode.TrimEndString();
+                buildingToUpdate.Country = dataBuilding.Country.TrimEndString();
             }
 
             return colection;
