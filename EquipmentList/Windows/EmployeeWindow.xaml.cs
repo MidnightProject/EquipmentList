@@ -16,7 +16,6 @@ namespace EquipmentList.Windows
         public ObservableCollection<string> StatusList { get { return new ObservableCollection<string>() { "Enabled", "Disabled" }; } }
         public ObservableCollection<string> JobTitleList { get; set; }
         public ObservableCollection<string> BuildingsList { get; set; }
-        public ObservableCollection<string> EmployeesNames { get; set; }
 
         public DataEmployee Employee { get; set; }
         public string OldName { get; set; }
@@ -28,7 +27,7 @@ namespace EquipmentList.Windows
 
         public Clipboard Clipboard { get; set; }
 
-        public EmployeeWindow(DataEmployee employee, ObservableCollection<string> employeesNames, ObservableCollection<string> jobTitles, ObservableCollection<string> buildingsNames, Clipboard clipboard, string title, string buttonOKText)
+        public EmployeeWindow(DataEmployee employee, ObservableCollection<string> jobTitles, ObservableCollection<string> buildingsNames, Clipboard clipboard, string title, string buttonOKText)
         {
             Employee = employee;
             OldName = Employee.Name;
@@ -44,8 +43,6 @@ namespace EquipmentList.Windows
 
             JobTitleList = jobTitles;
             JobTitleList.Insert(0, String.Empty);
-
-            EmployeesNames = employeesNames;
 
             Clipboard = clipboard;
         }

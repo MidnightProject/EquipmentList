@@ -318,7 +318,7 @@ namespace EquipmentList.ViewModel
         }
         private void AddEmployee()
         {
-            EmployeeWindow employeeWindow = new EmployeeWindow(new DataEmployee(), GetEmployeesNames(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Add employee", "Add");
+            EmployeeWindow employeeWindow = new EmployeeWindow(new DataEmployee(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Add employee", "Add");
             employeeWindow.ShowDialog();
 
             if (employeeWindow.Result == MessageBoxResult.OK)
@@ -384,7 +384,7 @@ namespace EquipmentList.ViewModel
                     return;
                 }
 
-                ((EmployeeViewModel)ViewModel).AddEmployee(employeeWindow.Employee);
+                View = DefinedViews.EmployeeView;
             }
         }
 
@@ -478,7 +478,7 @@ namespace EquipmentList.ViewModel
 
             DataEmployee employeeToEdit = (((EmployeeViewModel)ViewModel).SelectedEmployees).Values();
 
-            EmployeeWindow employeeWindow = new EmployeeWindow(employeeToEdit, GetEmployeesNames(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Edit employee", "Edit");
+            EmployeeWindow employeeWindow = new EmployeeWindow(employeeToEdit, GetJobTitles(), GetBuildingsNames(), Clipboard, "Edit employee", "Edit");
             employeeWindow.ShowDialog();
 
             if (employeeWindow.Result == MessageBoxResult.OK)

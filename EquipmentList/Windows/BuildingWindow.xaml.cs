@@ -32,11 +32,6 @@ namespace EquipmentList.Windows
             Building = building;
             OldName = Building.Name;
 
-            if (String.IsNullOrEmpty(Building.Name))
-            {
-                Building.Name = "Add new bulding";
-            }
-
             Clipboard = clipboard;
 
             TitleText = title;

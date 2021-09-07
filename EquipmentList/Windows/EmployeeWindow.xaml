@@ -93,13 +93,6 @@
                 </TextBox.Resources>
                 <TextBox.Text>
                     <Binding Path="Employee.Name" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <validations:NameValidationRule>
-                                <validations:NameValidationRule.Wrapper>
-                                    <validations:Wrapper Names="{Binding Data.EmployeesNames, Source={StaticResource proxy}}"/>
-                                </validations:NameValidationRule.Wrapper>
-                            </validations:NameValidationRule>
-                        </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
             </TextBox>

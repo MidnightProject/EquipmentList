@@ -96,6 +96,11 @@ namespace EquipmentList.Model
                 }
             }
         }
+
+        public DataBuilding()
+        {
+            Name = "New bulding";
+        }
     }
 
     public static class DataBuildingExtensions
