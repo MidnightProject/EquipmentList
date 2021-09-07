@@ -439,6 +439,21 @@ namespace EquipmentList.Model
         public DataEmployee()
         {
             Properties = new Properties();
+
+            Name = "New employee";
+            Status = "Enabled";
+
+            AddUser = false;
+            EditUser = false;
+            DeleteUser = false;
+            PrintUser = false;
+            AddOwnEquipment = false;
+            DeleteOwnEquipment = false;
+            AddOtherEquipment = false;
+            DeleteOtherEquipment = false;
+            EditOtherEquipment = false;
+            ViewOtherEquipment = false;
+            PrintOtherEquipment = false;
         }
     }
 

@@ -276,6 +276,9 @@ namespace EquipmentList.ViewModel
                 case DefinedViews.BuildingView:
                     AddBuilding();
                     break;
+                case DefinedViews.EmployeeView:
+                    AddEmployee();
+                    break;
             }
         }
         private void AddBuilding()
@@ -298,8 +301,6 @@ namespace EquipmentList.ViewModel
                     command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
                     command.ExecuteNonQuery();
                     transaction.Commit();
-
-                    ((BuildingViewModel)ViewModel).AddBuilding(buildingWindow.Building);
                 }
                 catch (Exception e)
                 {
@@ -308,7 +309,82 @@ namespace EquipmentList.ViewModel
                         Details = "Error #0002" + '\n' + '\n' + e.ToString(),
                     });
                     messageBox.ShowDialog();
-                } 
+
+                    return;
+                }
+
+                ((BuildingViewModel)ViewModel).AddBuilding(buildingWindow.Building);
+            }
+        }
+        private void AddEmployee()
+        {
+            EmployeeWindow employeeWindow = new EmployeeWindow(new DataEmployee(), GetEmployeesNames(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Add employee", "Add");
+            employeeWindow.ShowDialog();
+
+            if (employeeWindow.Result == MessageBoxResult.OK)
+            {
+                string addEmployeeSql = "INSERT INTO EMPLOYEE(ID, NAME, JOB, BUILDING, ROOM, PHONE, EMAIL) VALUES(@Id, @Name, @Job, @Building, @Room, @Phone, @Email)";
+                string addEmployeePermissionsSql = "INSERT INTO PERMISSIONS(ID, ACTIVE, ADD_USER, DELETE_USER, EDIT_USER, PRINT_USER, ADD_OWN_EQUIPMENT, DELETE_OWN_EQUIPMENT, ADD_OTHER_EQUIPMENT, DELETE_OTHER_EQUIPMENT, EDIT_OTHER_EQUIPMENT, VIEW_OTHER_EQUIPMENT, PRINT_OTHER_EQUIPMENT) VALUES(@Id, @Active, @AddUser, @DeleteUser, @EditUser, @PrintUser, @AddOwnEquipment, @DeleteOwnEquipment, @AddOtherEquipment, @DeleteOtherEquipment, @EditOtherEquipment, @ViewOtherEquipment, @PrintOtherEquipment)";
+
+                employeeWindow.Employee.ID = Guid.NewGuid().ToString("D");
+
+                try
+                {
+                    FbTransaction transaction = connection.BeginTransaction();
+                    FbCommand command = new FbCommand(addEmployeeSql, connection, transaction);
+                    command.Parameters.Add("@Id", FbDbType.VarChar).Value = employeeWindow.Employee.ID;
+                    command.Parameters.Add("@Name", FbDbType.VarChar).Value = employeeWindow.Employee.Name.TrimEndString();
+                    command.Parameters.Add("@Job", FbDbType.VarChar).Value = employeeWindow.Employee.Job.TrimEndString();
+                    command.Parameters.Add("@Building", FbDbType.VarChar).Value = employeeWindow.Employee.Building.TrimEndString();
+                    command.Parameters.Add("@Room", FbDbType.VarChar).Value = employeeWindow.Employee.Room.TrimEndString();
+                    command.Parameters.Add("@Phone", FbDbType.VarChar).Value = employeeWindow.Employee.Phone.TrimEndString();
+                    command.Parameters.Add("@Email", FbDbType.VarChar).Value = employeeWindow.Employee.Email.TrimEndString();
+                    command.ExecuteNonQuery();
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    WpfMessageBox messageBox = new WpfMessageBox("Error #0006", "Error adding employee to list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                    {
+                        Details = "Error #0006" + '\n' + '\n' + e.ToString(),
+                    });
+                    messageBox.ShowDialog();
+
+                    return;
+                }
+
+                try
+                {
+                    FbTransaction transaction = connection.BeginTransaction();
+                    FbCommand command = new FbCommand(addEmployeePermissionsSql, connection, transaction);
+                    command.Parameters.Add("@Id", FbDbType.VarChar).Value = employeeWindow.Employee.ID;
+                    command.Parameters.Add("@Active", FbDbType.Boolean).Value = employeeWindow.Employee.Active;
+                    command.Parameters.Add("@AddUser", FbDbType.Boolean).Value = employeeWindow.Employee.AddUser;
+                    command.Parameters.Add("@EditUser", FbDbType.Boolean).Value = employeeWindow.Employee.EditUser;
+                    command.Parameters.Add("@DeleteUser", FbDbType.Boolean).Value = employeeWindow.Employee.DeleteUser;
+                    command.Parameters.Add("@PrintUser", FbDbType.Boolean).Value = employeeWindow.Employee.PrintUser;
+                    command.Parameters.Add("@AddOwnEquipment", FbDbType.Boolean).Value = employeeWindow.Employee.AddOwnEquipment;
+                    command.Parameters.Add("@DeleteOwnEquipment", FbDbType.Boolean).Value = employeeWindow.Employee.DeleteOwnEquipment;
+                    command.Parameters.Add("@AddOtherEquipment", FbDbType.Boolean).Value = employeeWindow.Employee.AddOtherEquipment;
+                    command.Parameters.Add("@DeleteOtherEquipment", FbDbType.Boolean).Value = employeeWindow.Employee.DeleteOtherEquipment;
+                    command.Parameters.Add("@EditOtherEquipment", FbDbType.Boolean).Value = employeeWindow.Employee.EditOtherEquipment;
+                    command.Parameters.Add("@ViewOtherEquipment", FbDbType.Boolean).Value = employeeWindow.Employee.ViewOtherEquipment;
+                    command.Parameters.Add("@PrintOtherEquipment", FbDbType.Boolean).Value = employeeWindow.Employee.PrintOtherEquipment;
+                    command.ExecuteNonQuery();
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    WpfMessageBox messageBox = new WpfMessageBox("Error #0006", "Error adding employee to list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                    {
+                        Details = "Error #0006" + '\n' + '\n' + e.ToString(),
+                    });
+                    messageBox.ShowDialog();
+
+                    return;
+                }
+
+                ((EmployeeViewModel)ViewModel).AddEmployee(employeeWindow.Employee);
             }
         }
 
@@ -398,11 +474,11 @@ namespace EquipmentList.ViewModel
             string id = ((EmployeeViewModel)ViewModel).SelectedEmployee.ID;
             string name = ((EmployeeViewModel)ViewModel).SelectedEmployee.Name;
             string updateEmployeeSql = "UPDATE EMPLOYEE SET NAME=@Name, JOB=@Job, BUILDING=@Building, ROOM=@Room, PHONE=@Phone, EMAIL=@Email WHERE ID = @Id";
-            string updateEmployeeermissionsSql = "UPDATE PERMISSIONS SET ADD_USER=@AddUser, EDIT_USER=@EditUser, PRINT_USER=@PrintUser, ADD_OWN_EQUIPMENT=@AddOwnEquipment, DELETE_OWN_EQUIPMENT=@DeleteOwnEquipment, ADD_OTHER_EQUIPMENT=@AddOtherEquipment, DELETE_OTHER_EQUIPMENT=@DeleteOtherEquipment, EDIT_OTHER_EQUIPMENT=@EditOtherEquipment, VIEW_OTHER_EQUIPMENT=@ViewOtherEquipment, PRINT_OTHER_EQUIPMENT=@PrintOtherEquipment WHERE ID = @Id";
+            string updateEmployeePermissionsSql = "UPDATE PERMISSIONS SET ADD_USER=@AddUser, DELETE_USER=@DeleteUser, EDIT_USER=@EditUser, PRINT_USER=@PrintUser, ADD_OWN_EQUIPMENT=@AddOwnEquipment, DELETE_OWN_EQUIPMENT=@DeleteOwnEquipment, ADD_OTHER_EQUIPMENT=@AddOtherEquipment, DELETE_OTHER_EQUIPMENT=@DeleteOtherEquipment, EDIT_OTHER_EQUIPMENT=@EditOtherEquipment, VIEW_OTHER_EQUIPMENT=@ViewOtherEquipment, PRINT_OTHER_EQUIPMENT=@PrintOtherEquipment WHERE ID = @Id";
 
             DataEmployee employeeToEdit = (((EmployeeViewModel)ViewModel).SelectedEmployees).Values();
 
-            EmployeeWindow employeeWindow = new EmployeeWindow(employeeToEdit, GetEmployeesNames(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Edit employees", "Edit");
+            EmployeeWindow employeeWindow = new EmployeeWindow(employeeToEdit, GetEmployeesNames(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Edit employee", "Edit");
             employeeWindow.ShowDialog();
 
             if (employeeWindow.Result == MessageBoxResult.OK)
@@ -439,7 +515,7 @@ namespace EquipmentList.ViewModel
                     try
                     {
                         FbTransaction transaction = connection.BeginTransaction();
-                        FbCommand command = new FbCommand(updateEmployeeermissionsSql, connection, transaction);
+                        FbCommand command = new FbCommand(updateEmployeePermissionsSql, connection, transaction);
                         command.Parameters.Add("@Id", FbDbType.VarChar).Value = id;
                         command.Parameters.Add("@Active", FbDbType.Boolean).Value = employeeWindow.Employee.Active;
                         command.Parameters.Add("@AddUser", FbDbType.Boolean).Value = employeeWindow.Employee.AddUser;
@@ -633,12 +709,12 @@ namespace EquipmentList.ViewModel
                             sbEmployeePermissions.Remove(sbEmployeePermissions.Length - 2, 1);
                             sbEmployeePermissions.Append("WHERE ID = @Id");
 
-                            updateEmployeeermissionsSql = sbEmployeePermissions.ToString();
+                            updateEmployeePermissionsSql = sbEmployeePermissions.ToString();
 
                             try
                             {
                                 FbTransaction transaction = connection.BeginTransaction();
-                                FbCommand command = new FbCommand(updateEmployeeermissionsSql, connection, transaction);
+                                FbCommand command = new FbCommand(updateEmployeePermissionsSql, connection, transaction);
                                 command.Parameters.Add("@Id", FbDbType.VarChar).Value = id;
                                 command.Parameters.Add("@Active", FbDbType.Boolean).Value = employeeWindow.Employee.Active;
                                 command.Parameters.Add("@AddUser", FbDbType.Boolean).Value = employeeWindow.Employee.AddUser;
