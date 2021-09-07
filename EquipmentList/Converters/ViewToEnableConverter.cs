@@ -10,6 +10,8 @@ namespace EquipmentList.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            return true;
+
             DefinedViews view = (DefinedViews)values[0];
 
             if (view == DefinedViews.EquipmentView && parameter.ToString() == DefinedViews.EquipmentView.ToString())

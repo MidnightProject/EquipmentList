@@ -485,6 +485,15 @@ namespace EquipmentList.Model
                 employeeToUpdate.EditOtherEquipment = dataEmployee.EditOtherEquipment;
                 employeeToUpdate.ViewOtherEquipment = dataEmployee.ViewOtherEquipment;
                 employeeToUpdate.PrintOtherEquipment = dataEmployee.PrintOtherEquipment;
+
+                if (dataEmployee.Active)
+                {
+                    employeeToUpdate.Status = "Enabled";
+                }
+                else
+                {
+                    employeeToUpdate.Status = "Disabled";
+                }
             }
 
             return colection;
