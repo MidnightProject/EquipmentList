@@ -1,10 +1,13 @@
 ﻿using EquipmentList.Messages;
 using EquipmentList.Model;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Linq;
 using static EquipmentList.View.Views;
 
 namespace EquipmentList.ViewModel
@@ -36,20 +39,44 @@ namespace EquipmentList.ViewModel
 
             set
             {
-                selectedIndex = value;
-                RaisePropertyChanged("SelectedIndex");
-
-                Messenger.Default.Send<SelectedIndexMessage>(new SelectedIndexMessage
+                if (selectedIndex != value)
                 {
-                    View = DefinedViews.BuildingView,
-                    Index = SelectedIndex,
-
-                }, MessageType.PropertyChangedMessage);
+                    selectedIndex = value;
+                    RaisePropertyChanged("SelectedIndex");
+                }
             }
         }
 
+        public int SelectedIndexes { get; set; }
+
+        private RelayCommand selectedIndexCommand;
+        public RelayCommand SelectedIndexCommand
+        {
+            get
+            {
+                return selectedIndexCommand = new RelayCommand(() => GetSelectedIndexes());
+            }
+        }
+        private void GetSelectedIndexes()
+        {
+            SelectedIndexes = DataBuildings.Where(i => i.Properties.IsSelected).Count();
+
+            Messenger.Default.Send<SelectedIndexMessage>(new SelectedIndexMessage
+            {
+                View = DefinedViews.BuildingView,
+                Index = SelectedIndexes,
+
+            }, MessageType.PropertyChangedMessage);
+        }
 
         public DataBuilding SelectedBuilding { get; set; }
+        public List<DataBuilding> SelectedBuildins
+        {
+            get
+            {
+                return DataBuildings.Where(i => i.Properties.IsSelected).ToList();
+            }
+        }
 
         private string group;
         public string Group

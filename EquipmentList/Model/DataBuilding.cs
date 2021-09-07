@@ -9,6 +9,8 @@ namespace EquipmentList.Model
 {
     public class DataBuilding : ViewModelBase
     {
+        public Properties Properties { get; set; }
+
         private string name;
         public string Name
         {
@@ -100,6 +102,8 @@ namespace EquipmentList.Model
 
         public DataBuilding()
         {
+            Properties = new Properties();
+
             Name = "New bulding";
             Address = String.Empty;
             City = String.Empty;
@@ -156,6 +160,58 @@ namespace EquipmentList.Model
             }
 
             return colection;
+        }
+
+        public static DataBuilding Values(this List<DataBuilding> colection)
+        {
+            DataBuilding dataBuilding = new DataBuilding();
+
+            if (colection.IsSameValue(i => i.Name))
+            {
+                dataBuilding.Name = colection[0].Name;
+            }
+            else
+            {
+                dataBuilding.Name = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Address))
+            {
+                dataBuilding.Address = colection[0].Address;
+            }
+            else
+            {
+                dataBuilding.Address = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Postcode))
+            {
+                dataBuilding.Postcode = colection[0].Postcode;
+            }
+            else
+            {
+                dataBuilding.Postcode = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.City))
+            {
+                dataBuilding.City = colection[0].City;
+            }
+            else
+            {
+                dataBuilding.City = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Country))
+            {
+                dataBuilding.Country = colection[0].Country;
+            }
+            else
+            {
+                dataBuilding.Country = "[...]";
+            }
+
+            return dataBuilding;
         }
     }
 }

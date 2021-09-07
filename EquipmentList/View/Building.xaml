@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
              xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:EquipmentList.View"
              xmlns:converters="clr-namespace:EquipmentList.Converters"
              mc:Ignorable="d" 
@@ -61,7 +62,7 @@
         <DataGrid Name="DataGrid"
                   dgx:DataGridFilter.IsAutoFilterEnabled="True"
                   AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" 
-                  IsReadOnly="True" SelectionMode="Single" 
+                  IsReadOnly="True" SelectionMode="Extended" 
                   AutoGenerateColumns="False" 
                   SelectedIndex="{Binding SelectedIndex}"
                   FontSize="16"
@@ -79,6 +80,7 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.Style>
+            
             <DataGrid.GroupStyle>
                 <GroupStyle ContainerStyle="{StaticResource GroupHeaderStyle}">
                     <GroupStyle.Panel>
@@ -88,6 +90,19 @@
                     </GroupStyle.Panel>
                 </GroupStyle>
             </DataGrid.GroupStyle>
+            
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="IsSelected" Value="{Binding Path=Properties.IsSelected, Mode=TwoWay}"/>
+                </Style>
+            </DataGrid.RowStyle>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonUp">
+                    <i:InvokeCommandAction Command="{Binding DataContext.SelectedIndexCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Country" Binding="{Binding Country}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
