@@ -500,7 +500,7 @@ namespace EquipmentList.ViewModel
             string id = ((EmployeeViewModel)ViewModel).SelectedEmployee.ID;
             string name = ((EmployeeViewModel)ViewModel).SelectedEmployee.Name;
             string updateEmployeeSql = "UPDATE EMPLOYEE SET NAME=@Name, JOB=@Job, BUILDING=@Building, ROOM=@Room, PHONE=@Phone, EMAIL=@Email WHERE ID = @Id";
-            string updateEmployeePermissionsSql = "UPDATE PERMISSIONS SET ADD_USER=@AddUser, DELETE_USER=@DeleteUser, EDIT_USER=@EditUser, PRINT_USER=@PrintUser, ADD_OWN_EQUIPMENT=@AddOwnEquipment, DELETE_OWN_EQUIPMENT=@DeleteOwnEquipment, ADD_OTHER_EQUIPMENT=@AddOtherEquipment, DELETE_OTHER_EQUIPMENT=@DeleteOtherEquipment, EDIT_OTHER_EQUIPMENT=@EditOtherEquipment, VIEW_OTHER_EQUIPMENT=@ViewOtherEquipment, PRINT_OTHER_EQUIPMENT=@PrintOtherEquipment WHERE ID = @Id";
+            string updateEmployeePermissionsSql = "UPDATE PERMISSIONS SET ACTIVE=@Active, ADD_USER=@AddUser, DELETE_USER=@DeleteUser, EDIT_USER=@EditUser, PRINT_USER=@PrintUser, ADD_OWN_EQUIPMENT=@AddOwnEquipment, DELETE_OWN_EQUIPMENT=@DeleteOwnEquipment, ADD_OTHER_EQUIPMENT=@AddOtherEquipment, DELETE_OTHER_EQUIPMENT=@DeleteOtherEquipment, EDIT_OTHER_EQUIPMENT=@EditOtherEquipment, VIEW_OTHER_EQUIPMENT=@ViewOtherEquipment, PRINT_OTHER_EQUIPMENT=@PrintOtherEquipment WHERE ID = @Id";
 
             DataEmployee employeeToEdit = (((EmployeeViewModel)ViewModel).SelectedEmployees).Values();
 
