@@ -384,7 +384,33 @@ namespace EquipmentList.ViewModel
                     return;
                 }
 
-                View = DefinedViews.EmployeeView;
+                if (String.IsNullOrEmpty(employeeWindow.Employee.Building))
+                {
+                    employeeWindow.Employee.Country = String.Empty;
+                    employeeWindow.Employee.City = String.Empty;
+                    employeeWindow.Employee.Postcode = String.Empty;
+                    employeeWindow.Employee.Address = String.Empty;
+                }
+                else
+                {
+                    buildingTable = new DataTable();
+                    buildingAdapter.Fill(buildingTable);
+
+                    foreach(DataRow row in buildingTable.Rows)
+                    {
+                        if (row["NAME"].ToString() == employeeWindow.Employee.Building)
+                        {
+                            employeeWindow.Employee.Country = row["COUNTRY"].ToString();
+                            employeeWindow.Employee.City = row["CITY"].ToString();
+                            employeeWindow.Employee.Postcode = row["POSTCODE"].ToString();
+                            employeeWindow.Employee.Address = row["ADDRESS"].ToString();
+
+                            break;
+                        }
+                    }
+                }
+
+                ((EmployeeViewModel)ViewModel).AddEmployee(employeeWindow.Employee);
             }
         }
 
@@ -541,6 +567,32 @@ namespace EquipmentList.ViewModel
                         messageBox.ShowDialog();
 
                         return;
+                    }
+
+                    if (String.IsNullOrEmpty(employeeWindow.Employee.Building))
+                    {
+                        employeeWindow.Employee.Country = String.Empty;
+                        employeeWindow.Employee.City = String.Empty;
+                        employeeWindow.Employee.Postcode = String.Empty;
+                        employeeWindow.Employee.Address = String.Empty;
+                    }
+                    else
+                    {
+                        buildingTable = new DataTable();
+                        buildingAdapter.Fill(buildingTable);
+
+                        foreach (DataRow row in buildingTable.Rows)
+                        {
+                            if (row["NAME"].ToString() == employeeWindow.Employee.Building)
+                            {
+                                employeeWindow.Employee.Country = row["COUNTRY"].ToString();
+                                employeeWindow.Employee.City = row["CITY"].ToString();
+                                employeeWindow.Employee.Postcode = row["POSTCODE"].ToString();
+                                employeeWindow.Employee.Address = row["ADDRESS"].ToString();
+
+                                break;
+                            }
+                        }
                     }
 
                     ((EmployeeViewModel)ViewModel).UpdateEmployee(employeeWindow.Employee);
@@ -1191,7 +1243,6 @@ namespace EquipmentList.ViewModel
 
 
             View = DefinedViews.EquipmentView;
-            //View = DefinedViews.EmployeeView;
 
             ActiveEmployeeColor = Brushes.Transparent;
             NullEmployeeColor = Brushes.Transparent;

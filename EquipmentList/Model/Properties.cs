@@ -18,5 +18,10 @@ namespace EquipmentList.Model
                 RaisePropertyChanged("IsSelected");
             }
         }
+
+        public Properties()
+        {
+            IsSelected = false;
+        }
     }
 }

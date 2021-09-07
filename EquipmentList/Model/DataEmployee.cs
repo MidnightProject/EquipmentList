@@ -442,6 +442,16 @@ namespace EquipmentList.Model
 
             Name = "New employee";
             Status = "Enabled";
+            Job = String.Empty;
+            Building = String.Empty;
+            Room = String.Empty;
+            Phone = String.Empty;
+            Email = String.Empty;
+
+            Postcode = String.Empty;
+            Address = String.Empty;
+            City = String.Empty;
+            Country = String.Empty;
 
             AddUser = false;
             EditUser = false;
@@ -488,6 +498,11 @@ namespace EquipmentList.Model
                 employeeToUpdate.Room = dataEmployee.Room.TrimEndString();
                 employeeToUpdate.Phone = dataEmployee.Phone.TrimEndString();
                 employeeToUpdate.Email = dataEmployee.Email.TrimEndString();
+
+                employeeToUpdate.Address = dataEmployee.Address.TrimEndString();
+                employeeToUpdate.Postcode = dataEmployee.Postcode.TrimEndString();
+                employeeToUpdate.City = dataEmployee.City.TrimEndString();
+                employeeToUpdate.Country = dataEmployee.Country.TrimEndString();
 
                 employeeToUpdate.AddUser = dataEmployee.AddUser;
                 employeeToUpdate.EditUser = dataEmployee.EditUser;

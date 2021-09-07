@@ -1,5 +1,6 @@
 ﻿using EquipmentList.Helpers;
 using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -100,6 +101,10 @@ namespace EquipmentList.Model
         public DataBuilding()
         {
             Name = "New bulding";
+            Address = String.Empty;
+            City = String.Empty;
+            Postcode = String.Empty;
+            Country = String.Empty;
         }
     }
 
