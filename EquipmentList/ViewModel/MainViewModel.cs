@@ -1465,7 +1465,6 @@ namespace EquipmentList.ViewModel
                 });
             }
 
-
             View = DefinedViews.EquipmentView;
 
             ActiveEmployeeColor = Brushes.Transparent;
@@ -1479,6 +1478,9 @@ namespace EquipmentList.ViewModel
             Messenger.Default.Register<EditDatabaseMessage>(this, MessageType.NotificationMessageAction, EditDatabase);
 
             Clipboard = new Clipboard();
+
+            EquipmentWindow w = new EquipmentWindow();
+            w.ShowDialog();
         }
 
         ObservableCollection<string> GetBuildingsNames()

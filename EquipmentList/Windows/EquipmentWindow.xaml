@@ -1,0 +1,725 @@
+﻿<Window x:Class="EquipmentList.Windows.EquipmentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EquipmentList.Windows"
+        xmlns:property="clr-namespace:EquipmentList.Property"
+        xmlns:validations="clr-namespace:EquipmentList.Validations"
+        xmlns:converters="clr-namespace:EquipmentList.Converters"
+        mc:Ignorable="d"
+        Title="{Binding TitleText}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" MinWidth="350" MaxHeight="500" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/ErrorTextBoxStyle.xaml"/>
+                <ResourceDictionary Source="/Styles/MultiValueTextBoxStyle.xaml"/>
+                <ResourceDictionary Source="/Styles/MultiValueComboBoxStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:ObjectToVisibilityPasteConverter x:Key="visibilityPasteConverter"/>
+            <converters:ObjectToVisibilityCopyConverter x:Key="visibilityCopyConverter"/>
+            <converters:ObjectToVisibilityClearConverter x:Key="visibilityClearConverter"/>
+
+            <ControlTemplate x:Key="validationTemplate">
+                <DockPanel>
+                    <Image Source="/Images/warning_blue.png" Height="20" Margin="0,0,5,0"></Image>
+                    <AdornedElementPlaceholder/>
+                </DockPanel>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*" MaxWidth="700"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="Index:"/>
+                <TextBox x:Name="indexTextBox" 
+                     Grid.Row="0" Grid.Column="2" MinWidth="50"
+                     MaxLength="25"
+                     VerticalContentAlignment="Center"
+                     IsEnabled="{Binding NameIsEnabled}"
+                     property:SelectTextOnFocus.Active = "True"
+                     Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                     Style="{StaticResource ErrorTextBoxStyle}">
+                    <TextBox.Resources>
+                        <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                    </TextBox.Resources>
+                    <TextBox.Text>
+                        <Binding Path="Equipment.ID" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validations:NameValidationRule>
+                                    <validations:NameValidationRule.Wrapper>
+                                        <validations:Wrapper Names="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
+                                    </validations:NameValidationRule.Wrapper>
+                                </validations:NameValidationRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <Label Grid.Row="1" Grid.Column="0" Content="Name:"/>
+                <TextBox x:Name="nameTextBox" 
+                     Grid.Row="1" Grid.Column="2" MinWidth="50"
+                     MaxLength="25"
+                     VerticalContentAlignment="Center"
+                     IsEnabled="{Binding NameIsEnabled}"
+                     property:SelectTextOnFocus.Active = "True"
+                     Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                     Style="{StaticResource ErrorTextBoxStyle}">
+                    <TextBox.Resources>
+                        <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                    </TextBox.Resources>
+                    <TextBox.Text>
+                        <Binding Path="Equipment.Name" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validations:NameValidationRule>
+                                    <validations:NameValidationRule.Wrapper>
+                                        <validations:Wrapper Names="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
+                                    </validations:NameValidationRule.Wrapper>
+                                </validations:NameValidationRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <Label Grid.Row="2" Grid.Column="0" Content="Description:"/>
+                <ScrollViewer
+                            Grid.Row="2" Grid.Column="2" MinWidth="50" MaxWidth="700" MaxHeight="100"
+                            VerticalScrollBarVisibility="Auto">
+                    <TextBox x:Name="DescriptionTextBox" 
+                         MaxLength="250"
+                         VerticalContentAlignment="Center"
+                         IsEnabled="{Binding NameIsEnabled}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         property:SelectTextOnFocus.Active = "True"
+                         Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                         Style="{StaticResource ErrorTextBoxStyle}">
+                        <TextBox.Resources>
+                            <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                        </TextBox.Resources>
+                        <TextBox.Text>
+                            <Binding Path="Equipment.Name" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validations:NameValidationRule>
+                                        <validations:NameValidationRule.Wrapper>
+                                            <validations:Wrapper Names="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
+                                        </validations:NameValidationRule.Wrapper>
+                                    </validations:NameValidationRule>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </ScrollViewer>
+
+                <Expander Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Header="Equipment" Margin="0,10,0,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Content="Condition:" Grid.ColumnSpan="2"/>
+                            <WrapPanel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Orientation="Horizontal"
+                               VerticalAlignment="Center" Margin="0,2">
+                                <ComboBox 
+                            MinWidth="50"
+                                  VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Add"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/sub_blue_remove.png" ToolTip="Remove" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Remove"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/pencil.png" ToolTip="Edit" MaxHeight="16" Margin="5,0,0,0">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Edit"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                            </WrapPanel>
+
+                            <Label Grid.Row="1" Grid.Column="0" Content="Group:" Grid.ColumnSpan="2"/>
+                            <WrapPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Orientation="Horizontal"
+                               VerticalAlignment="Center" Margin="0,2">
+                                <ComboBox 
+                            MinWidth="50"
+                                  VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Add"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/sub_blue_remove.png" ToolTip="Remove" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Remove"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/pencil.png" ToolTip="Edit" MaxHeight="16" Margin="5,0,0,0">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Edit"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                            </WrapPanel>
+
+                            <Label Grid.Row="2" Grid.Column="0" Content="Norm:" Grid.ColumnSpan="2"/>
+                            <WrapPanel Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Orientation="Horizontal"
+                               VerticalAlignment="Center" Margin="0,2">
+                                <ComboBox 
+                            MinWidth="50"
+                                  VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Add"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/sub_blue_remove.png" ToolTip="Remove" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Remove"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/pencil.png" ToolTip="Edit" MaxHeight="16" Margin="5,0,0,0">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Edit"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                            </WrapPanel>
+
+                            <Label Grid.Row="3" Grid.Column="0" Content="Serial number:" Grid.ColumnSpan="2"/>
+                            <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" MinWidth="50"
+                             MaxLength="25"
+                             VerticalContentAlignment="Center"
+                             property:SelectTextOnFocus.Active = "True"
+                             Text="{Binding Employee.Phone, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Label Grid.Row="4" Grid.Column="0" Content="Building:" Grid.ColumnSpan="2"/>
+                            <WrapPanel Grid.Row="4" Grid.Column="2" Orientation="Horizontal"
+                               VerticalAlignment="Center" Margin="0,2">
+                                <ComboBox MinWidth="50"
+                                  VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding BuildingsList, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedItem="{Binding Employee.Building}"/>
+                            </WrapPanel>
+
+                            <Label Grid.Row="4" Grid.Column="3" Content="Room:" HorizontalAlignment="Right"/>
+                            <TextBox Grid.Row="4" Grid.Column="4" MinWidth="50"
+                             MaxLength="10"
+                             VerticalContentAlignment="Center"
+                             property:SelectTextOnFocus.Active = "True"
+                             Text="{Binding Employee.Room, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Label Grid.Row="5" Grid.Column="0" Content="Production date:"/>
+
+                            <Label Grid.Row="6" Grid.Column="0" Content="Warranty expiration date:"/>
+
+                            <Label Grid.Row="7" Grid.Column="0" Content="Comments:"/>
+                            <ScrollViewer
+                            Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="4" MinWidth="50" MaxWidth="700" MaxHeight="0"
+                            VerticalScrollBarVisibility="Auto">
+
+                                <TextBox  
+                                 MaxLength="250"
+                                 VerticalContentAlignment="Center"
+                                 IsEnabled="{Binding NameIsEnabled}"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                 property:SelectTextOnFocus.Active = "True"
+                                 Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                                 Style="{StaticResource ErrorTextBoxStyle}">
+                                    <TextBox.Resources>
+                                        <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                                    </TextBox.Resources>
+                                    <TextBox.Text>
+                                        <Binding Path="Equipment.Name" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <validations:NameValidationRule>
+                                                    <validations:NameValidationRule.Wrapper>
+                                                        <validations:Wrapper Names="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
+                                                    </validations:NameValidationRule.Wrapper>
+                                                </validations:NameValidationRule>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </ScrollViewer>
+                        </Grid>
+                    </ScrollViewer>
+                </Expander>
+                <WrapPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0">
+                    <Image Source="/Images/block_blue.png" ToolTip="Clear" MaxHeight="16" Margin="5,0,0,0">
+                        <Image.Visibility>
+                            <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                                <Binding Path="Building.Address"/>
+                                <Binding Path="Building.City"/>
+                                <Binding Path="Building.Postcode"/>
+                                <Binding Path="Building.Country"/>
+                            </MultiBinding>
+                        </Image.Visibility>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <i:InvokeCommandAction Command="{Binding ClearAddressCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Image>
+                    <Image Source="/Images/copy.png" ToolTip="Copy" MaxHeight="16" Margin="5,0,0,0">
+                        <Image.Visibility>
+                            <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                                <Binding Path="Building.Address"/>
+                                <Binding Path="Building.City"/>
+                                <Binding Path="Building.Postcode"/>
+                                <Binding Path="Building.Country"/>
+                            </MultiBinding>
+                        </Image.Visibility>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <i:InvokeCommandAction Command="{Binding CopyAddressCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Image>
+                    <Image Source="/Images/paste.png" ToolTip="Paste" MaxHeight="16" Margin="5,0,0,0">
+                        <Image.Visibility>
+                            <MultiBinding Converter="{StaticResource visibilityPasteConverter}">
+                                <Binding Path="Clipboard.Building.Address" />
+                                <Binding Path="Clipboard.Building.City"/>
+                                <Binding Path="Clipboard.Building.Postcode"/>
+                                <Binding Path="Clipboard.Building.Country"/>
+                            </MultiBinding>
+                        </Image.Visibility>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <i:InvokeCommandAction Command="{Binding PasteAddressCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Image>
+                </WrapPanel>
+
+                <Expander Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Header="Employee" Margin="0,10,0,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Content="Condition:" Grid.ColumnSpan="2"/>
+                            <WrapPanel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Orientation="Horizontal"
+                               VerticalAlignment="Center" Margin="0,2">
+                                <ComboBox 
+                            MinWidth="50"
+                                  VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Add"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/sub_blue_remove.png" ToolTip="Remove" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Remove"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/pencil.png" ToolTip="Edit" MaxHeight="16" Margin="5,0,0,0">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Edit"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                            </WrapPanel>
+
+                            <Label Grid.Row="1" Grid.Column="0" Content="Group:" Grid.ColumnSpan="2"/>
+                            <WrapPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Orientation="Horizontal"
+                               VerticalAlignment="Center" Margin="0,2">
+                                <ComboBox 
+                            MinWidth="50"
+                                  VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Add"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/sub_blue_remove.png" ToolTip="Remove" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Remove"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/pencil.png" ToolTip="Edit" MaxHeight="16" Margin="5,0,0,0">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Edit"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                            </WrapPanel>
+
+                            <Label Grid.Row="2" Grid.Column="0" Content="Norm:" Grid.ColumnSpan="2"/>
+                            <WrapPanel Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Orientation="Horizontal"
+                               VerticalAlignment="Center" Margin="0,2">
+                                <ComboBox 
+                            MinWidth="50"
+                                  VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Add"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/sub_blue_remove.png" ToolTip="Remove" MaxHeight="16" Margin="5,0,0,0">
+                                    <Image.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="-5" Y="-2"/>
+                                        </TransformGroup>
+                                    </Image.RenderTransform>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Remove"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                                <Image Source="/Images/pencil.png" ToolTip="Edit" MaxHeight="16" Margin="5,0,0,0">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDown">
+                                            <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Edit"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </Image>
+                            </WrapPanel>
+
+                            <Label Grid.Row="3" Grid.Column="0" Content="Serial number:" Grid.ColumnSpan="2"/>
+                            <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" MinWidth="50"
+                             MaxLength="25"
+                             VerticalContentAlignment="Center"
+                             property:SelectTextOnFocus.Active = "True"
+                             Text="{Binding Employee.Phone, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Label Grid.Row="4" Grid.Column="0" Content="Building:" Grid.ColumnSpan="2"/>
+                            <WrapPanel Grid.Row="4" Grid.Column="2" Orientation="Horizontal"
+                               VerticalAlignment="Center" Margin="0,2">
+                                <ComboBox MinWidth="50"
+                                  VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding BuildingsList, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedItem="{Binding Employee.Building}"/>
+                            </WrapPanel>
+
+                            <Label Grid.Row="4" Grid.Column="3" Content="Room:" HorizontalAlignment="Right"/>
+                            <TextBox Grid.Row="4" Grid.Column="4" MinWidth="50"
+                             MaxLength="10"
+                             VerticalContentAlignment="Center"
+                             property:SelectTextOnFocus.Active = "True"
+                             Text="{Binding Employee.Room, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Label Grid.Row="5" Grid.Column="0" Content="Production date:"/>
+
+                            <Label Grid.Row="6" Grid.Column="0" Content="Warranty expiration date:"/>
+
+                            <Label Grid.Row="7" Grid.Column="0" Content="Comments:"/>
+                            <ScrollViewer
+                            Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="4" MinWidth="50" MaxWidth="700" MaxHeight="200"
+                            VerticalScrollBarVisibility="Auto">
+
+                                <TextBox  
+                                 MaxLength="250"
+                                 VerticalContentAlignment="Center"
+                                 IsEnabled="{Binding NameIsEnabled}"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                 property:SelectTextOnFocus.Active = "True"
+                                 Validation.ErrorTemplate="{StaticResource validationTemplate}"
+                                 Style="{StaticResource ErrorTextBoxStyle}">
+                                    <TextBox.Resources>
+                                        <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                                    </TextBox.Resources>
+                                    <TextBox.Text>
+                                        <Binding Path="Equipment.Name" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <validations:NameValidationRule>
+                                                    <validations:NameValidationRule.Wrapper>
+                                                        <validations:Wrapper Names="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
+                                                    </validations:NameValidationRule.Wrapper>
+                                                </validations:NameValidationRule>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </ScrollViewer>
+                        </Grid>
+                    </ScrollViewer>
+                </Expander>
+                <WrapPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,0,0">
+                    <Image Source="/Images/block_blue.png" ToolTip="Clear" MaxHeight="16" Margin="5,0,0,0">
+                        <Image.Visibility>
+                            <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                                <Binding Path="Building.Address"/>
+                                <Binding Path="Building.City"/>
+                                <Binding Path="Building.Postcode"/>
+                                <Binding Path="Building.Country"/>
+                            </MultiBinding>
+                        </Image.Visibility>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <i:InvokeCommandAction Command="{Binding ClearAddressCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Image>
+                    <Image Source="/Images/copy.png" ToolTip="Copy" MaxHeight="16" Margin="5,0,0,0">
+                        <Image.Visibility>
+                            <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
+                                <Binding Path="Building.Address"/>
+                                <Binding Path="Building.City"/>
+                                <Binding Path="Building.Postcode"/>
+                                <Binding Path="Building.Country"/>
+                            </MultiBinding>
+                        </Image.Visibility>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <i:InvokeCommandAction Command="{Binding CopyAddressCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Image>
+                    <Image Source="/Images/paste.png" ToolTip="Paste" MaxHeight="16" Margin="5,0,0,0">
+                        <Image.Visibility>
+                            <MultiBinding Converter="{StaticResource visibilityPasteConverter}">
+                                <Binding Path="Clipboard.Building.Address" />
+                                <Binding Path="Clipboard.Building.City"/>
+                                <Binding Path="Clipboard.Building.Postcode"/>
+                                <Binding Path="Clipboard.Building.Country"/>
+                            </MultiBinding>
+                        </Image.Visibility>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDown">
+                                <i:InvokeCommandAction Command="{Binding PasteAddressCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Image>
+                </WrapPanel>
+            </Grid>
+
+            <GroupBox
+                Grid.Column="0" 
+                Grid.ColumnSpan="3"
+                Grid.Row="2"
+                Margin="0,0,0,0"
+                Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+
+                <WrapPanel 
+                Grid.Row="1" 
+                Grid.Column="0" 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Right" 
+                Margin="5">
+
+                    <Button Content="{Binding ButtonOKText}" 
+                        Height="24"
+                        MinWidth="80"
+                        Margin="10,0,0,0"
+                        Padding="10,0"
+                        Command="{Binding Button_OK}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=nameTextBox}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Content="Cancel"
+                        Height="24"
+                        MinWidth="80"
+                        Margin="10,0,0,0"
+                        Padding="10,0"
+                        Command="{Binding Button_Cancel}"/>
+                </WrapPanel>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>
