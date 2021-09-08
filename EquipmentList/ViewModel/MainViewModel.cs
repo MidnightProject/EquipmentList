@@ -1280,6 +1280,117 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        private void EditDatabase(EditDatabaseMessage message)
+        {
+            switch (message.Table)
+            {
+                case TableType.Job:
+                    JobAction(message);
+                    break;
+            }
+        }
+        private void JobAction(EditDatabaseMessage message)
+        {
+            switch (message.Command)
+            {
+                case Messages.CommandType.Insert:
+                    AddJob(message);
+                    break;
+                case Messages.CommandType.Delete:
+                    RemoveJob(message);
+                    break;
+                case Messages.CommandType.Update:
+                    EditJob(message);
+                    break;
+            }
+        }
+        private void AddJob(EditDatabaseMessage message)
+        {
+            string addJobSql = "INSERT INTO JOB(TITLE) VALUES(@Title)";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(addJobSql, connection, transaction);
+                command.Parameters.Add("@Title", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0007", "Error adding job title to list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0007" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Job,
+                Command = Messages.CommandType.Insert,
+                Value = message.Value.TrimEndString(),
+
+            }, MessageType.PropertyChangedMessage);
+        }
+        private void RemoveJob(EditDatabaseMessage message)
+        {
+            string deleteJobSql = "DELETE FROM JOB WHERE TITLE = @Title";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(deleteJobSql, connection, transaction);
+                command.Parameters.Add("@Title", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0007", "Error removing job title from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0008" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Job,
+                Command = Messages.CommandType.Delete,
+                Value = message.Value.TrimEndString(),
+
+            }, MessageType.PropertyChangedMessage);
+        }
+        private void EditJob(EditDatabaseMessage message)
+        {
+            string updateJobSql = "UPDATE JOB SET TITLE=@Title WHERE Title=@OldTitle";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(updateJobSql, connection, transaction);
+                command.Parameters.Add("@Title", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.Parameters.Add("@OldTitle", FbDbType.VarChar).Value = message.OldValue;
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0007", "Error removing job title from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0009" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+        }
+
         private Clipboard Clipboard { get; set; }
 
         private FbDataAdapter buildingAdapter;
@@ -1356,6 +1467,7 @@ namespace EquipmentList.ViewModel
             AlarmColor = Brushes.MistyRose;
 
             Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetSelectedIndex);
+            Messenger.Default.Register<EditDatabaseMessage>(this, MessageType.NotificationMessageAction, EditDatabase);
 
             Clipboard = new Clipboard();
         }

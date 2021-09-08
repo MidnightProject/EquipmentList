@@ -1,12 +1,16 @@
 ﻿using EquipmentList.Helpers;
+using EquipmentList.Messages;
 using EquipmentList.Model;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using WpfMessageBoxLibrary;
 using Clipboard = EquipmentList.Model.Clipboard;
 
 namespace EquipmentList.Windows
@@ -43,6 +47,8 @@ namespace EquipmentList.Windows
             JobTitleList.Insert(0, String.Empty);
 
             Clipboard = clipboard;
+
+            Messenger.Default.Register<EditDatabaseMessage>(this, MessageType.PropertyChangedMessage, PropertyChanged);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -67,6 +73,153 @@ namespace EquipmentList.Windows
         {
             Result = MessageBoxResult.OK;
             this.Close();
+        }
+
+        private RelayCommand<string> jobCommand;
+        public RelayCommand<string> JobCommand
+        {
+            get
+            {
+                return jobCommand = new RelayCommand<string>((pararameters) => JobAction(pararameters));
+            }
+        }
+        private void JobAction(string pararameters)
+        {
+            switch (pararameters)
+            {
+                case "Add":
+                    AddJob();
+                    break;
+                case "Remove":
+                    RemoveJob();
+                    break;
+                case "Edit":
+                    EditJob();
+                    break;
+            }
+        }
+        private void AddJob()
+        {
+            WpfMessageBox messageBox = new WpfMessageBox("Add job title", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
+            {
+                TextBoxText = "New job title",
+                IsTextBoxVisible = true,
+                TextBoxMaxLength = 25,
+                TextValidationRule = new Validation()
+                {
+                    TextExclusionList = JobTitleList.ToList(),
+
+                    Rule = new Rule()
+                    {
+                        StringIsEmpty = true,
+                        StringIsExcluded = true,
+                        StringIsWhiteSpace = true,
+                        IgnoreCase = true,
+                    },
+                },
+
+                ButtonOkText = "Add",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.OK)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Job,
+                    Command = CommandType.Insert,
+                    Value = messageBox.TextBoxText,
+
+                }, MessageType.NotificationMessageAction);
+            }
+        }
+        private void RemoveJob()
+        {
+            if (Employee.Job == String.Empty)
+            {
+                return;
+            }
+
+            WpfMessageBox messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
+            {
+                Header = "Remove '" + Employee.Job + "' job title ?",
+                ButtonYesText = "Yes, remove job title",
+                ButtonNoText = "Cancel, keep job title",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.Yes)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Job,
+                    Command = CommandType.Delete,
+                    Value = Employee.Job,
+
+                }, MessageType.NotificationMessageAction);
+            }
+        }
+        private void EditJob()
+        {
+            if (Employee.Job == String.Empty)
+            {
+                return;
+            }
+
+            WpfMessageBox messageBox = new WpfMessageBox("Edit job title", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
+            {
+                TextBoxText = Employee.Job,
+                IsTextBoxVisible = true,
+                TextBoxMaxLength = 25,
+                TextValidationRule = new Validation()
+                {
+                    TextExclusionList = JobTitleList.ToList(),
+
+                    Rule = new Rule()
+                    {
+                        StringIsEmpty = true,
+                        StringIsExcluded = true,
+                        StringIsWhiteSpace = true,
+                        IgnoreCase = true,
+                    },
+                },
+
+                ButtonOkText = "Edit",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.OK)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Job,
+                    Command = CommandType.Update,
+                    Value = messageBox.TextBoxText,
+                    OldValue = Employee.Job,
+
+                }, MessageType.NotificationMessageAction);
+            }
+        }
+
+        private void PropertyChanged(EditDatabaseMessage message)
+        {
+            if (message.Table == TableType.Job)
+            {
+                switch (message.Command)
+                {
+                    case CommandType.Insert:
+                        JobTitleList.Add(message.Value);
+                        Employee.Job = message.Value;
+                        break;
+                    case CommandType.Delete:
+                        Employee.Job = String.Empty;
+                        JobTitleList.Remove(message.Value);
+                        break;
+                    
+                }
+
+                return;
+            }
         }
 
         private RelayCommand button_Cancel;

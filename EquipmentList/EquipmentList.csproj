@@ -151,6 +151,7 @@
     <Compile Include="Converters\ActiveEmployeeToColorConverter.cs" />
     <Compile Include="Helpers\IEnumerableExtended.cs" />
     <Compile Include="Helpers\StringExtended.cs" />
+    <Compile Include="Messages\EditDatabaseMessage.cs" />
     <Compile Include="Messages\MessageType.cs" />
     <Compile Include="Messages\SelectedIndexMessage.cs" />
     <Compile Include="Model\Clipboard.cs" />

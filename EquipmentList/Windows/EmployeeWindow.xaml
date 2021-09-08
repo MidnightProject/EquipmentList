@@ -102,10 +102,12 @@
                     <Label Grid.Row="0" Grid.Column="0" Content="Job Title:" Grid.ColumnSpan="2"/>
                     <WrapPanel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Orientation="Horizontal"
                                VerticalAlignment="Center" Margin="0,2">
-                        <ComboBox MinWidth="50"
+                        <ComboBox 
+                            x:Name="jobComboBox"
+                            MinWidth="50"
                                   VerticalContentAlignment="Center"
                                   ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectedItem="{Binding Employee.Job}"/>
+                                  SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
                         <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
                             <Image.RenderTransform>
                                 <TransformGroup>
@@ -117,7 +119,7 @@
                             </Image.RenderTransform>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseDown">
-                                    <i:InvokeCommandAction Command="{Binding ClearAddressCommand}"/>
+                                    <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Add"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Image>
@@ -132,14 +134,14 @@
                             </Image.RenderTransform>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseDown">
-                                    <i:InvokeCommandAction Command="{Binding ClearAddressCommand}"/>
+                                    <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Remove"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Image>
                         <Image Source="/Images/pencil.png" ToolTip="Edit" MaxHeight="16" Margin="5,0,0,0">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseDown">
-                                    <i:InvokeCommandAction Command="{Binding ClearAddressCommand}"/>
+                                    <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Edit"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Image>
