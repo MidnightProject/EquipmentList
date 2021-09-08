@@ -54,6 +54,7 @@
                      Grid.Row="0" Grid.Column="2" MinWidth="50"
                      MaxLength="50"
                      VerticalContentAlignment="Center"
+                     IsEnabled="{Binding NameIsEnabled}"
                      property:SelectTextOnFocus.Active = "True"
                      Validation.ErrorTemplate="{StaticResource validationTemplate}"
                      Style="{StaticResource ErrorTextBoxStyle}">

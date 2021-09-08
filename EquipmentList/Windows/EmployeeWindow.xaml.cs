@@ -18,7 +18,6 @@ namespace EquipmentList.Windows
         public ObservableCollection<string> BuildingsList { get; set; }
 
         public DataEmployee Employee { get; set; }
-        public string OldName { get; set; }
                 
         public MessageBoxResult Result { get; set; }
 
@@ -30,7 +29,6 @@ namespace EquipmentList.Windows
         public EmployeeWindow(DataEmployee employee, ObservableCollection<string> jobTitles, ObservableCollection<string> buildingsNames, Clipboard clipboard, string title, string buttonOKText)
         {
             Employee = employee;
-            OldName = Employee.Name;
 
             InitializeComponent();
             DataContext = this;

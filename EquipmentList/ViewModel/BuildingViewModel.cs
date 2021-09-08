@@ -132,9 +132,9 @@ namespace EquipmentList.ViewModel
             DataBuildings.Add(building);
         }
 
-        public void UpdateBuilding(DataBuilding building)
+        public void UpdateBuilding(DataBuilding building, String name)
         {
-            DataBuildings.Update(SelectedBuilding.Name, building);
+            DataBuildings.Update(building, name);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace EquipmentList.Model
             {
                 if (name != value)
                 {
-                    name = value.TrimStart();
+                    name = value.TrimStartString();
                     RaisePropertyChanged("Name");
                 }   
             }
@@ -41,7 +41,7 @@ namespace EquipmentList.Model
             {
                 if (country != value)
                 {
-                    country = value.TrimStart();
+                    country = value.TrimStartString();
                     RaisePropertyChanged("Country");
                 }
             }
@@ -59,7 +59,7 @@ namespace EquipmentList.Model
             {
                 if (city != value)
                 {
-                    city = value.TrimStart();
+                    city = value.TrimStartString();
                     RaisePropertyChanged("City");
                 }
             }
@@ -76,7 +76,7 @@ namespace EquipmentList.Model
             {
                 if (address != value)
                 {
-                    address = value.TrimStart();
+                    address = value.TrimStartString();
                     RaisePropertyChanged("Address");
                 }    
             }
@@ -94,7 +94,7 @@ namespace EquipmentList.Model
             {
                 if (postcode != value)
                 {
-                    postcode = value.TrimStart();
+                    postcode = value.TrimStartString();
                     RaisePropertyChanged("Postcode");
                 }
             }
@@ -147,7 +147,7 @@ namespace EquipmentList.Model
             return colection;
         }
 
-        public static Collection<DataBuilding> Update(this Collection<DataBuilding> colection, string name, DataBuilding dataBuilding)
+        public static Collection<DataBuilding> Update(this Collection<DataBuilding> colection, DataBuilding dataBuilding, string name)
         {
             var buildingToUpdate = colection.SingleOrDefault(building => building.Name == name);
             if (buildingToUpdate != null)

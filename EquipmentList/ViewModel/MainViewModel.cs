@@ -107,6 +107,7 @@ namespace EquipmentList.ViewModel
             }
         }
 
+        #region RemoveCommand
         private RelayCommand removeCommand;
         public RelayCommand RemoveCommand
         {
@@ -136,33 +137,73 @@ namespace EquipmentList.ViewModel
 
             WpfMessageBox messageBox;
 
-            messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
+            if (((BuildingViewModel)ViewModel).SelectedIndexes == 1)
             {
-                Header = "Remove '" + name + "' building ?",
-                ButtonYesText = "Yes, remove building",
-                ButtonNoText = "Cancel, keep building",
-            });
-            messageBox.ShowDialog();
-
-            if (messageBox.Result == WpfMessageBoxResult.Yes)
-            {
-                try
+                messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
                 {
-                    FbTransaction transaction = connection.BeginTransaction();
-                    FbCommand command = new FbCommand(deleteBuildingSql, connection, transaction);
-                    command.Parameters.Add("@Name", FbDbType.VarChar).Value = name;
-                    command.ExecuteNonQuery();
-                    transaction.Commit();
+                    Header = "Remove '" + name + "' building ?",
+                    ButtonYesText = "Yes, remove building",
+                    ButtonNoText = "Cancel, keep building",
+                });
+                messageBox.ShowDialog();
 
-                    ((BuildingViewModel)ViewModel).RemoveBuilding(name);
-                }
-                catch (Exception e)
+                if (messageBox.Result == WpfMessageBoxResult.Yes)
                 {
-                    messageBox = new WpfMessageBox("Error #0001", "Error removing building from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                    try
                     {
-                        Details = "Error #0001" + '\n' + '\n' + e.ToString(),
-                    });
-                    messageBox.ShowDialog();
+                        FbTransaction transaction = connection.BeginTransaction();
+                        FbCommand command = new FbCommand(deleteBuildingSql, connection, transaction);
+                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = name;
+                        command.ExecuteNonQuery();
+                        transaction.Commit();
+
+                        ((BuildingViewModel)ViewModel).RemoveBuilding(name);
+                    }
+                    catch (Exception e)
+                    {
+                        messageBox = new WpfMessageBox("Error #0001", "Error removing building from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                        {
+                            Details = "Error #0001" + '\n' + '\n' + e.ToString(),
+                        });
+                        messageBox.ShowDialog();
+                    }
+                }
+            }  
+            else
+            {
+                messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
+                {
+                    Header = "Remove buildings ?",
+                    ButtonYesText = "Yes, remove buildings",
+                    ButtonNoText = "Cancel, keep buildings",
+                });
+                messageBox.ShowDialog();
+
+                if (messageBox.Result == WpfMessageBoxResult.Yes)
+                {
+                    foreach (DataBuilding building in ((BuildingViewModel)ViewModel).SelectedBuildins)
+                    {
+                        name = building.Name;
+
+                        try
+                        {
+                            FbTransaction transaction = connection.BeginTransaction();
+                            FbCommand command = new FbCommand(deleteBuildingSql, connection, transaction);
+                            command.Parameters.Add("@Name", FbDbType.VarChar).Value = name;
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+
+                            ((BuildingViewModel)ViewModel).RemoveBuilding(name);
+                        }
+                        catch (Exception e)
+                        {
+                            messageBox = new WpfMessageBox("Error #0001", "Error removing building from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                            {
+                                Details = "Error #0001" + '\n' + '\n' + e.ToString(),
+                            });
+                            messageBox.ShowDialog();
+                        }
+                    }
                 }
             }
         }
@@ -260,7 +301,9 @@ namespace EquipmentList.ViewModel
                 }
             }            
         }
+        #endregion
 
+        #region AddCommand
         private RelayCommand addCommand;
         public RelayCommand AddCommand
         {
@@ -413,7 +456,9 @@ namespace EquipmentList.ViewModel
                 ((EmployeeViewModel)ViewModel).AddEmployee(employeeWindow.Employee);
             }
         }
+        #endregion
 
+        #region EditCommand
         private RelayCommand editCommand;
         public RelayCommand EditCommand
         {
@@ -436,63 +481,121 @@ namespace EquipmentList.ViewModel
         }
         private void EditBuilding()
         {
-            DataBuilding editedBuilding = ((BuildingViewModel)ViewModel).SelectedBuilding;
-            DataBuilding building = new DataBuilding()
-            {
-                Name = editedBuilding.Name,
-                Address = editedBuilding.Address,
-                City = editedBuilding.City,
-                Country = editedBuilding.Country,
-                Postcode = editedBuilding.Postcode
-            };
-            
-            BuildingWindow buildingWindow = new BuildingWindow(building, GetBuildingsNames(), Clipboard, "Edit building", "Edit");
+            string name = ((BuildingViewModel)ViewModel).SelectedBuilding.Name;
+            string updateBuildingSql = "UPDATE BUILDING SET ADDRESS=@Address, CITY=@City, POSTCODE=@Postcode, COUNTRY=@Country WHERE NAME=@Name";
+            string updateBuildingNewNameSql = "UPDATE BUILDING SET NAME=@Name, ADDRESS=@Address, CITY=@City, POSTCODE=@Postcode, COUNTRY=@Country WHERE NAME=@OldName";
+
+            DataBuilding buildingToEdit = (((BuildingViewModel)ViewModel).SelectedBuildins).Values();
+
+            BuildingWindow buildingWindow = new BuildingWindow(buildingToEdit, GetBuildingsNames(), Clipboard, "Edit building", "Edit");
             buildingWindow.ShowDialog();
 
             if (buildingWindow.Result == MessageBoxResult.OK)
             {
-                try
+                if (((BuildingViewModel)ViewModel).SelectedIndexes == 1)
                 {
-                    if (building.Name == buildingWindow.OldName)
+                    try
                     {
-                        string updateBuildingSql = "UPDATE BUILDING SET ADDRESS=@Address, CITY=@City, POSTCODE=@Postcode, COUNTRY=@Country WHERE NAME=@Name";
+                        if (name == buildingWindow.OldName)
+                        {
+                            FbTransaction transaction = connection.BeginTransaction();
+                            FbCommand command = new FbCommand(updateBuildingSql, connection, transaction);
+                            command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimEndString();
+                            command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimEndString();
+                            command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimEndString();
+                            command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimEndString();
+                            command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                        else
+                        {
+                            FbTransaction transaction = connection.BeginTransaction();
+                            FbCommand command = new FbCommand(updateBuildingNewNameSql, connection, transaction);
+                            command.Parameters.Add("@OldName", FbDbType.VarChar).Value = buildingWindow.OldName;
+                            command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimEndString();
+                            command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimEndString();
+                            command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimEndString();
+                            command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimEndString();
+                            command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
 
-                        FbTransaction transaction = connection.BeginTransaction();
-                        FbCommand command = new FbCommand(updateBuildingSql, connection, transaction);
-                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimEndString();
-                        command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimEndString();
-                        command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimEndString();
-                        command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimEndString();
-                        command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
-                        command.ExecuteNonQuery();
-                        transaction.Commit();
+                        ((BuildingViewModel)ViewModel).UpdateBuilding(buildingWindow.Building, name);
                     }
-                    else
+                    catch (Exception e)
                     {
-                        string updateBuildingSql = "UPDATE BUILDING SET NAME=@Name, ADDRESS=@Address, CITY=@City, POSTCODE=@Postcode, COUNTRY=@Country WHERE NAME=@OldName";
-
-                        FbTransaction transaction = connection.BeginTransaction();
-                        FbCommand command = new FbCommand(updateBuildingSql, connection, transaction);
-                        command.Parameters.Add("@OldName", FbDbType.VarChar).Value = buildingWindow.OldName;
-                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimEndString();
-                        command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimEndString();
-                        command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimEndString();
-                        command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimEndString();
-                        command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
-                        command.ExecuteNonQuery();
-                        transaction.Commit();
+                        WpfMessageBox messageBox = new WpfMessageBox("Error #0003", "Error editing building.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                        {
+                            Details = "Error #0003" + '\n' + '\n' + e.ToString(),
+                        });
+                        messageBox.ShowDialog();
                     }
-
-                    ((BuildingViewModel)ViewModel).UpdateBuilding(buildingWindow.Building);
                 }
-                catch (Exception e)
+                else
                 {
-                    WpfMessageBox messageBox = new WpfMessageBox("Error #0002", "Error editing building.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                    foreach (DataBuilding building in ((BuildingViewModel)ViewModel).SelectedBuildins)
                     {
-                        Details = "Error #0003" + '\n' + '\n' + e.ToString(),
-                    });
-                    messageBox.ShowDialog();
+                        StringBuilder sbBuilding = new StringBuilder("UPDATE BUILDING SET ");
+
+                        if (buildingWindow.Building.Address != "[...]")
+                        {
+                            sbBuilding.Append("ADDRESS=@Address, ");
+                            building.Address = buildingWindow.Building.Address;
+                        }
+
+                        if (buildingWindow.Building.City != "[...]")
+                        {
+                            sbBuilding.Append("CITY=@City, ");
+                            building.City = buildingWindow.Building.City;
+                        }
+
+                        if (buildingWindow.Building.Postcode != "[...]")
+                        {
+                            sbBuilding.Append("POSTCODE=@Postcode, ");
+                            building.Postcode = buildingWindow.Building.Postcode;
+                        }
+
+                        if (buildingWindow.Building.Country != "[...]")
+                        {
+                            sbBuilding.Append("COUNTRY=@Country, ");
+                            building.Country = buildingWindow.Building.Country;
+                        }
+
+                        if (sbBuilding.ToString() != "UPDATE BUILDING SET ")
+                        {
+                            sbBuilding.Remove(sbBuilding.Length - 2, 1);
+                            sbBuilding.Append("WHERE NAME = @Name");
+
+                            updateBuildingSql = sbBuilding.ToString();
+
+                            try
+                            {
+                                FbTransaction transaction = connection.BeginTransaction();
+                                FbCommand command = new FbCommand(updateBuildingSql, connection, transaction);
+                                command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimEndString();
+                                command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimEndString();
+                                command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimEndString();
+                                command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimEndString();
+                                command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
+                                command.ExecuteNonQuery();
+                                transaction.Commit();
+                            }
+                            catch (Exception e)
+                            {
+                                WpfMessageBox messageBox = new WpfMessageBox("Error #0003", "Error editing building.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                                {
+                                    Details = "Error #0003" + '\n' + '\n' + e.ToString(),
+                                });
+                                messageBox.ShowDialog();
+                            }
+
+                            ((BuildingViewModel)ViewModel).UpdateBuilding(building, building.Name);
+                        }
+                    }
                 }
+                
             }
         }
         private void EditEmployee()
@@ -799,6 +902,7 @@ namespace EquipmentList.ViewModel
 
             }
         }
+        #endregion
 
         private RelayCommand<string> colorOfWarningCommand;
         public RelayCommand<string> ColorOfWarningCommand
