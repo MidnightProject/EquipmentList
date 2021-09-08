@@ -15,7 +15,14 @@ namespace EquipmentList.Converters
                 {
                     if (value.GetType().Equals(typeof(string)))
                     {
-                        return Visibility.Visible;
+                        if (String.IsNullOrEmpty((string)value))
+                        {
+
+                        }
+                        else
+                        {
+                            return Visibility.Visible;
+                        }
                     }
 
                     if (value.GetType().Equals(typeof(bool)))

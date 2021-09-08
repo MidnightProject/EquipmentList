@@ -11,28 +11,23 @@
         mc:Ignorable="d"
         Title="{Binding TitleText}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" MinWidth="350" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
-        <converters:ObjectToVisibilityPasteConverter x:Key="visibilityPasteConverter"/>
-        <converters:ObjectToVisibilityCopyConverter x:Key="visibilityCopyConverter"/>
-        
-        <ControlTemplate x:Key="validationTemplate">
-            <DockPanel>
-                <Image Source="/Images/warning_blue.png" Height="20" Margin="0,0,5,0"></Image>
-                <AdornedElementPlaceholder/>
-            </DockPanel>
-        </ControlTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/ErrorTextBoxStyle.xaml"/>
+                <ResourceDictionary Source="/Styles/MultiValueTextBoxStyle.xaml"/>
+                <ResourceDictionary Source="/Styles/MultiValueComboBoxStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-        <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip"
-                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
-                        Path=(Validation.Errors)/ErrorContent}"/>
-                    <Setter Property="Foreground" Value="Red"/>
-                    <Setter Property="BorderBrush" Value="Red"/>
-                    <Setter Property="BorderThickness" Value="2"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+            <converters:ObjectToVisibilityPasteConverter x:Key="visibilityPasteConverter"/>
+            <converters:ObjectToVisibilityCopyConverter x:Key="visibilityCopyConverter"/>
+
+            <ControlTemplate x:Key="validationTemplate">
+                <DockPanel>
+                    <Image Source="/Images/warning_blue.png" Height="20" Margin="0,0,5,0"></Image>
+                    <AdornedElementPlaceholder/>
+                </DockPanel>
+            </ControlTemplate>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -61,7 +56,7 @@
                      VerticalContentAlignment="Center"
                      property:SelectTextOnFocus.Active = "True"
                      Validation.ErrorTemplate="{StaticResource validationTemplate}"
-                     Style="{StaticResource textBoxInError}">
+                     Style="{StaticResource ErrorTextBoxStyle}">
                 <TextBox.Resources>
                     <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
                 </TextBox.Resources>

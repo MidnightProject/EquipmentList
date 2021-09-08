@@ -20,11 +20,14 @@ namespace EquipmentList.Validations
                 return new ValidationResult(false, $"Name cannot be empty");
             }
 
-            foreach(string s in Wrapper.Names)
+            if (Wrapper != null)
             {
-                if (name.ToUpper() == s.ToUpper())
+                foreach (string s in Wrapper.Names)
                 {
-                    return new ValidationResult(false, $"The name must be unique");
+                    if (name.ToUpper() == s.ToUpper())
+                    {
+                        return new ValidationResult(false, $"The name must be unique");
+                    }
                 }
             }
 
