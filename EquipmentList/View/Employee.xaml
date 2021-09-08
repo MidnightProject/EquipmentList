@@ -87,10 +87,10 @@
             </CollectionViewSource>
             <CollectionViewSource x:Key="GroupActives" Source="{Binding DataEmployees}" IsLiveGroupingRequested="True">
                 <CollectionViewSource.LiveSortingProperties>
-                    <s:String>Active</s:String>
+                    <s:String>Status</s:String>
                 </CollectionViewSource.LiveSortingProperties>
                 <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="Active"/>
+                    <PropertyGroupDescription PropertyName="Status"/>
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
         </ResourceDictionary>
