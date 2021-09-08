@@ -1389,6 +1389,15 @@ namespace EquipmentList.ViewModel
 
                 return;
             }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Job,
+                Command = Messages.CommandType.Update,
+                Value = message.Value.TrimEndString(),
+                OldValue = message.OldValue,
+
+            }, MessageType.PropertyChangedMessage);
         }
 
         private Clipboard Clipboard { get; set; }

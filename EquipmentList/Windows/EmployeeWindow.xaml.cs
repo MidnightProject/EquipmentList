@@ -215,7 +215,11 @@ namespace EquipmentList.Windows
                         Employee.Job = String.Empty;
                         JobTitleList.Remove(message.Value);
                         break;
-                    
+                    case CommandType.Update:
+                        JobTitleList.Remove(message.OldValue);
+                        JobTitleList.Add(message.Value);
+                        Employee.Job = message.Value;
+                        break;
                 }
 
                 return;
