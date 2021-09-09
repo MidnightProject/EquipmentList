@@ -85,6 +85,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="TAlex.WPF.Controls, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TAlex.WPF.Controls.3.0.2\lib\net461\TAlex.WPF.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="TomsToolbox.Essentials, Version=2.7.0.0, Culture=neutral, PublicKeyToken=60b39f873a8e3fc2, processorArchitecture=MSIL">
       <HintPath>..\packages\TomsToolbox.Essentials.2.7.0\lib\net45\TomsToolbox.Essentials.dll</HintPath>
       <Private>True</Private>
@@ -189,14 +192,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ActionLabelStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\DefaultCalendar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\DefaultDatePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
