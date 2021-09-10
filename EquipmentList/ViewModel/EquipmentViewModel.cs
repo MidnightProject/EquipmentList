@@ -46,7 +46,7 @@ namespace EquipmentList.ViewModel
                 {
                     foreach(EmployeeStatus employee in EmployeesStatus)
                     {
-                        if (employee.Name == equipment.EmployeeName)
+                        if (employee.Name == equipment.Employee.Person.Name)
                         {
                             equipment.EmployeeActive = employee.Active;
                             break;
@@ -291,64 +291,122 @@ namespace EquipmentList.ViewModel
                     Description = row["DESCRIPTION"].ToString(),
                     Comments = row["COMMENTS"].ToString(),
                     Room = row["ROOM"].ToString(),
-                    Building = row["BUILDING"].ToString(),
-                    Country = row["EQUIPMENT_BUILDING_COUNTRY"].ToString(),
-                    City = row["EQUIPMENT_BUILDING_CITY"].ToString(),
-                    Address = row["EQUIPMENT_BUILDING_ADDRESS"].ToString(),
-                    Postcode = row["EQUIPMENT_BUILDING_POSTCODE"].ToString(),
+                    Building = new DataBuilding()
+                    {
+                        Name = row["BUILDING"].ToString(),
+                        Country = row["EQUIPMENT_BUILDING_COUNTRY"].ToString(),
+                        City = row["EQUIPMENT_BUILDING_CITY"].ToString(),
+                        Address = row["EQUIPMENT_BUILDING_ADDRESS"].ToString(),
+                        Postcode = row["EQUIPMENT_BUILDING_POSTCODE"].ToString(),
+                    },
                     Group = row["SUBGROUP"].ToString(),
-                    EmployeeName = employeeName,
                     PostedWorkerName = row["REPLACEMENT_EMPLOYEE_NAME"].ToString(),
                     EmployeesName = employeeName + "#" + replacementEmployeeName,
-                    EmployeeRoom = row["EMPLOYEE_ROOM"].ToString(),
-                    EmployeePhone = row["EMPLOYEE_PHONE"].ToString(),
-                    EmployeeEmail = row["EMPLOYEE_EMAIL"].ToString(),
-                    EmployeeBuilding = row["EMPLOYEE_BUILDING_NAME"].ToString(),
-                    EmployeeBuildingCountry = row["EMPLOYEE_BUILDING_COUNTRY"].ToString(),
-                    EmployeeBuildingCity = row["EMPLOYEE_BUILDING_CITY"].ToString(),
-                    EmployeeBuildingAddress = row["EMPLOYEE_BUILDING_ADDRESS"].ToString(),
-                    EmployeeBuildingPostcode = row["EMPLOYEE_BUILDING_POSTCODE"].ToString(),
+                    Employee = new DataEmployee()
+                    {
+                        Room = row["EMPLOYEE_ROOM"].ToString(),
+
+                        Person = new DataPerson()
+                        {
+                            Name = employeeName,
+                            Phone = row["EMPLOYEE_PHONE"].ToString(),
+                            Email = row["EMPLOYEE_EMAIL"].ToString(),
+                        },
+
+                       Building = new DataBuilding()
+                       {
+                           Name = row["EMPLOYEE_BUILDING_NAME"].ToString(),
+                           Country = row["EMPLOYEE_BUILDING_COUNTRY"].ToString(),
+                           City = row["EMPLOYEE_BUILDING_CITY"].ToString(),
+                           Address = row["EMPLOYEE_BUILDING_ADDRESS"].ToString(),
+                           Postcode = row["EMPLOYEE_BUILDING_POSTCODE"].ToString(),
+                       },
+                    },
                     EmployeeActive = active,
                     ProductionDate = row["PRODUCTION_DATE"].ToDateTime(),
                     WarrantyDate = row["WARRANTY_DATE"].ToDateTime(),
                     LegalizationDate = row["LEGALIZATION_DATE"].ToDateTime(),
                     ReviewDate = row["REVIEW_DATE"].ToDateTime(),
-                    ProducerName = row["PRODUCER"].ToString(),
-                    ProducerPerson = row["PRODUCER_PERSON"].ToString(),
-                    ProducerPhone = row["PRODUCER_PHONE"].ToString(),
-                    ProducerEmail = row["PRODUCER_EMAIL"].ToString(),
-                    ProducerWWW = row["PRODUCER_WWW"].ToString(),
-                    ProducerCountry = row["PRODUCER_COUNTRY"].ToString(),
-                    ProducerCity = row["PRODUCER_CITY"].ToString(),
-                    ProducerAddress = row["PRODUCER_ADDRESS"].ToString(),
-                    ProducerPostcode = row["PRODUCER_POSTCODE"].ToString(),
-                    ProviderName = row["PROVIDER"].ToString(),
-                    ProviderPerson = row["PROVIDER_PERSON"].ToString(),
-                    ProviderPhone = row["PROVIDER_PHONE"].ToString(),
-                    ProviderEmail = row["PROVIDER_EMAIL"].ToString(),
-                    ProviderWWW = row["PROVIDER_WWW"].ToString(),
-                    ProviderCountry = row["PROVIDER_COUNTRY"].ToString(),
-                    ProviderCity = row["PROVIDER_CITY"].ToString(),
-                    ProviderAddress = row["PROVIDER_ADDRESS"].ToString(),
-                    ProviderPostcode = row["PROVIDER_POSTCODE"].ToString(),
-                    ServiceName = row["SERVICE"].ToString(),
-                    ServicePerson = row["SERVICE_PERSON"].ToString(),
-                    ServicePhone = row["SERVICE_PHONE"].ToString(),
-                    ServiceEmail = row["SERVICE_EMAIL"].ToString(),
-                    ServiceWWW = row["SERVICE_WWW"].ToString(),
-                    ServiceCountry = row["SERVICE_COUNTRY"].ToString(),
-                    ServiceCity = row["SERVICE_CITY"].ToString(),
-                    ServiceAddress = row["SERVICE_ADDRESS"].ToString(),
-                    ServicePostcode = row["SERVICE_POSTCODE"].ToString(),
-                    AttestationName = row["ATTESTATION"].ToString(),
-                    AttestationPerson = row["ATTESTATION_PERSON"].ToString(),
-                    AttestationPhone = row["ATTESTATION_PHONE"].ToString(),
-                    AttestationEmail = row["ATTESTATION_EMAIL"].ToString(),
-                    AttestationWWW = row["ATTESTATION_WWW"].ToString(),
-                    AttestationCountry = row["ATTESTATION_COUNTRY"].ToString(),
-                    AttestationCity = row["ATTESTATION_CITY"].ToString(),
-                    AttestationAddress = row["ATTESTATION_ADDRESS"].ToString(),
-                    AttestationPostcode = row["ATTESTATION_POSTCODE"].ToString(),
+                    Producer = new DataContractor()
+                    {
+                        Name = row["PRODUCER"].ToString(),
+                        WWW = row["PRODUCER_WWW"].ToString(),
+
+                        Person = new DataPerson()
+                        {
+                            Name = row["PRODUCER_PERSON"].ToString(),
+                            Phone = row["PRODUCER_PHONE"].ToString(),
+                            Email = row["PRODUCER_EMAIL"].ToString(),
+                        },
+
+                        Building = new DataBuilding()
+                        {
+                            Address = row["PRODUCER_ADDRESS"].ToString(),
+                            City = row["PRODUCER_CITY"].ToString(),
+                            Postcode = row["PRODUCER_POSTCODE"].ToString(),
+                            Country = row["PRODUCER_COUNTRY"].ToString(),
+                        }
+                    },
+                    Provider = new DataContractor()
+                    {
+                        Name = row["PROVIDER"].ToString(),
+                        WWW = row["PROVIDER_WWW"].ToString(),
+
+                        Person = new DataPerson()
+                        {
+                            Name = row["PROVIDER_PERSON"].ToString(),
+                            Phone = row["PROVIDER_PHONE"].ToString(),
+                            Email = row["PROVIDER_EMAIL"].ToString(),
+                        },
+
+                        Building = new DataBuilding()
+                        {
+                            Address = row["PROVIDER_ADDRESS"].ToString(),
+                            City = row["PROVIDER_CITY"].ToString(),
+                            Postcode = row["PROVIDER_POSTCODE"].ToString(),
+                            Country = row["PROVIDER_COUNTRY"].ToString(),
+                        }
+                    },
+                    Service = new DataContractor()
+                    {
+                        Name = row["SERVICE"].ToString(),
+                        WWW = row["SERVICE_WWW"].ToString(),
+
+                        Person = new DataPerson()
+                        {
+                            Name = row["SERVICE_PERSON"].ToString(),
+                            Phone = row["SERVICE_PHONE"].ToString(),
+                            Email = row["SERVICE_EMAIL"].ToString(),
+                        },
+
+                        Building = new DataBuilding()
+                        {
+                            Address = row["SERVICE_ADDRESS"].ToString(),
+                            City = row["SERVICE_CITY"].ToString(),
+                            Postcode = row["SERVICE_POSTCODE"].ToString(),
+                            Country = row["SERVICE_COUNTRY"].ToString(),
+                        }
+                    },
+                    Attestation = new DataContractor()
+                    {
+                        Name = row["ATTESTATION"].ToString(),
+                        WWW = row["ATTESTATION_WWW"].ToString(),
+
+                        Person = new DataPerson()
+                        {
+                            Name = row["ATTESTATION_PERSON"].ToString(),
+                            Phone = row["ATTESTATION_PHONE"].ToString(),
+                            Email = row["ATTESTATION_EMAIL"].ToString(),
+                        },
+
+                        Building = new DataBuilding()
+                        {
+                            Address = row["ATTESTATION_ADDRESS"].ToString(),
+                            City = row["ATTESTATION_CITY"].ToString(),
+                            Postcode = row["ATTESTATION_POSTCODE"].ToString(),
+                            Country = row["ATTESTATION_COUNTRY"].ToString(),
+                        }
+                    },
                     Condition = row["CONDITION"].ToString(),
                     Norm = row["NORM"].ToString(),
                     CertificationNumber = row["CERTIFICATE_NUMBER"].ToString(),

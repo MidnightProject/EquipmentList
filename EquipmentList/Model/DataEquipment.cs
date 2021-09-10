@@ -1,12 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EquipmentList.Helpers;
 using GalaSoft.MvvmLight;
 
 namespace EquipmentList.Model 
 {
     public class DataEquipment : ViewModelBase
     {
+        public Properties Properties { get; set; }
+
+        public DataBuilding Building { get; set; }
+        public DataEmployee Employee { get; set; }
+        public DataContractor Producer { get; set; }
+        public DataContractor Provider { get; set; }
+        public DataContractor Service { get; set; }
+        public DataContractor Attestation { get; set; }
+
         private string id;
         public string ID
         {
@@ -19,7 +29,7 @@ namespace EquipmentList.Model
             {
                 if (id != value)
                 {
-                    id = value;
+                    id = value.TrimStartString();
                     RaisePropertyChanged("ID");
                 }
             }
@@ -37,7 +47,7 @@ namespace EquipmentList.Model
             {
                 if (name != value)
                 {
-                    name = value;
+                    name = value.TrimStartString();
                     RaisePropertyChanged("Name");
                 }
             }
@@ -55,7 +65,7 @@ namespace EquipmentList.Model
             {
                 if (sn != value)
                 {
-                    sn = value;
+                    sn = value.TrimStartString();
                     RaisePropertyChanged("SN");
                 }
             }
@@ -73,7 +83,7 @@ namespace EquipmentList.Model
             {
                 if (group != value)
                 {
-                    group = value;
+                    group = value.TrimStartString();
                     RaisePropertyChanged("Group");
                 }
             }
@@ -91,7 +101,7 @@ namespace EquipmentList.Model
             {
                 if (description != value)
                 {
-                    description = value;
+                    description = value.TrimStartString();
                     RaisePropertyChanged("Description");
                 }
             }
@@ -109,7 +119,7 @@ namespace EquipmentList.Model
             {
                 if (comments != value)
                 {
-                    comments = value;
+                    comments = value.TrimStartString();
                     RaisePropertyChanged("Comments");
                 }
             }
@@ -127,98 +137,8 @@ namespace EquipmentList.Model
             {
                 if (room != value)
                 {
-                    room = value;
+                    room = value.TrimStartString();
                     RaisePropertyChanged("Room");
-                }
-            }
-        }
-
-        private string building;
-        public string Building
-        {
-            get
-            {
-                return building;
-            }
-
-            set
-            {
-                if (building != value)
-                {
-                    building = value;
-                    RaisePropertyChanged("Building");
-                }
-            }
-        }
-
-        private string country;
-        public string Country
-        {
-            get
-            {
-                return country;
-            }
-
-            set
-            {
-                if (country != value)
-                {
-                    country = value;
-                    RaisePropertyChanged("Country");
-                }
-            }
-        }
-
-        private string city;
-        public string City
-        {
-            get
-            {
-                return city;
-            }
-
-            set
-            {
-                if (city != value)
-                {
-                    city = value;
-                    RaisePropertyChanged("City");
-                }
-            }
-        }
-
-        private string address;
-        public string Address
-        {
-            get
-            {
-                return address;
-            }
-
-            set
-            {
-                if (address != value)
-                {
-                    address = value;
-                    RaisePropertyChanged("Address");
-                }
-            }
-        }
-
-        private string postcode;
-        public string Postcode
-        {
-            get
-            {
-                return postcode;
-            }
-
-            set
-            {
-                if (postcode != value)
-                {
-                    postcode = value;
-                    RaisePropertyChanged("Postcode");
                 }
             }
         }
@@ -235,7 +155,7 @@ namespace EquipmentList.Model
             {
                 if (condition != value)
                 {
-                    condition = value;
+                    condition = value.TrimStartString();
                     RaisePropertyChanged("Condition");
                 }
             }
@@ -253,12 +173,11 @@ namespace EquipmentList.Model
             {
                 if (norm != value)
                 {
-                    norm = value;
+                    norm = value.TrimStartString();
                     RaisePropertyChanged("Norm");
                 }
             }
         }
-
 
         private string certificationNumber;
         public string CertificationNumber
@@ -272,174 +191,12 @@ namespace EquipmentList.Model
             {
                 if (certificationNumber != value)
                 {
-                    certificationNumber = value;
+                    certificationNumber = value.TrimStartString();
                     RaisePropertyChanged("CertificationNumber");
                 }
             }
         }
-
-        private string employeeName;
-        public string EmployeeName
-        {
-            get
-            {
-                return employeeName;
-            }
-
-            set
-            {
-                if (employeeName != value)
-                {
-                    employeeName = value;
-                    RaisePropertyChanged("EmployeeName");
-                }
-            }
-        }
-
-        private string employeeRoom;
-        public string EmployeeRoom
-        {
-            get
-            {
-                return employeeRoom;
-            }
-
-            set
-            {
-                if (employeeRoom != value)
-                {
-                    employeeRoom = value;
-                    RaisePropertyChanged("EmployeeRoom");
-                }
-            }
-        }
-
-        private string employeePhone;
-        public string EmployeePhone
-        {
-            get
-            {
-                return employeePhone;
-            }
-
-            set
-            {
-                if (employeePhone != value)
-                {
-                    employeePhone = value;
-                    RaisePropertyChanged("EmployeePhone");
-                }
-            }
-        }
-
-        private string employeeEmail;
-        public string EmployeeEmail
-        {
-            get
-            {
-                return employeeEmail;
-            }
-
-            set
-            {
-                if (employeeEmail != value)
-                {
-                    employeeEmail = value;
-                    RaisePropertyChanged("EmployeeEmail");
-                }
-            }
-        }
-
-        private string employeeBuilding;
-        public string EmployeeBuilding
-        {
-            get
-            {
-                return employeeBuilding;
-            }
-
-            set
-            {
-                if (employeeBuilding != value)
-                {
-                    employeeBuilding = value;
-                    RaisePropertyChanged("EmployeeBuilding");
-                }
-            }
-        }
-
-        private string employeeBuildingCountry;
-        public string EmployeeBuildingCountry
-        {
-            get
-            {
-                return employeeBuildingCountry;
-            }
-
-            set
-            {
-                if (employeeBuildingCountry != value)
-                {
-                    employeeBuildingCountry = value;
-                    RaisePropertyChanged("EmployeeBuildingCountry");
-                }
-            }
-        }
-
-        private string employeeBuildingCity;
-        public string EmployeeBuildingCity
-        {
-            get
-            {
-                return employeeBuildingCity;
-            }
-
-            set
-            {
-                if (employeeBuildingCity != value)
-                {
-                    employeeBuildingCity = value;
-                    RaisePropertyChanged("EmployeeBuildingCity");
-                }
-            }
-        }
-
-        private string employeeBuildingAddress;
-        public string EmployeeBuildingAddress
-        {
-            get
-            {
-                return employeeBuildingAddress;
-            }
-
-            set
-            {
-                if (employeeBuildingAddress != value)
-                {
-                    employeeBuildingAddress = value;
-                    RaisePropertyChanged("EmployeeBuildingAddress");
-                }
-            }
-        }
-
-        private string employeeBuildingPostcode;
-        public string EmployeeBuildingPostcode
-        {
-            get
-            {
-                return employeeBuildingPostcode;
-            }
-
-            set
-            {
-                if (employeeBuildingPostcode != value)
-                {
-                    employeeBuildingPostcode = value;
-                    RaisePropertyChanged("EmployeeBuildingPostcode");
-                }
-            }
-        }
-
+        
         private Boolean employeeActive;
         public Boolean EmployeeActive
         {
@@ -475,59 +232,153 @@ namespace EquipmentList.Model
                 }
             }
         }
-        public string PostedWorkerName { get; set; }
 
-        public string ProducerName { get; set; }
-        public string ProducerPerson { get; set; }
-        public string ProducerPhone { get; set; }
-        public string ProducerEmail { get; set; }
-        public string ProducerWWW { get; set; }
-        public string ProducerCountry { get; set; }
-        public string ProducerCity { get; set; }
-        public string ProducerAddress { get; set; }
-        public string ProducerPostcode { get; set; }
+        private string postedWorkerName;
+        public string PostedWorkerName
+        {
+            get
+            {
+                return postedWorkerName;
+            }
 
-        public string ProviderName { get; set; }
-        public string ProviderPerson { get; set; }
-        public string ProviderPhone { get; set; }
-        public string ProviderEmail { get; set; }
-        public string ProviderWWW { get; set; }
-        public string ProviderCountry { get; set; }
-        public string ProviderCity { get; set; }
-        public string ProviderAddress { get; set; }
-        public string ProviderPostcode { get; set; }
+            set
+            {
+                if (postedWorkerName != value)
+                {
+                    postedWorkerName = value.TrimStartString();
+                    RaisePropertyChanged("PostedWorkerName");
+                }
+            }
+        }
 
-        public string ServiceName { get; set; }
-        public string ServicePerson { get; set; }
-        public string ServicePhone { get; set; }
-        public string ServiceEmail { get; set; }
-        public string ServiceWWW { get; set; }
-        public string ServiceCountry { get; set; }
-        public string ServiceCity { get; set; }
-        public string ServiceAddress { get; set; }
-        public string ServicePostcode { get; set; }
+        private DateTime productionDate;
+        public DateTime ProductionDate
+        {
+            get
+            {
+                return productionDate;
+            }
 
-        public string AttestationName { get; set; }
-        public string AttestationPerson { get; set; }
-        public string AttestationPhone { get; set; }
-        public string AttestationEmail { get; set; }
-        public string AttestationWWW { get; set; }
-        public string AttestationCountry { get; set; }
-        public string AttestationCity { get; set; }
-        public string AttestationAddress { get; set; }
-        public string AttestationPostcode { get; set; }
+            set
+            {
+                if (productionDate != value)
+                {
+                    productionDate = value;
+                    RaisePropertyChanged("ProductionDate");
+                }
+            }
+        }
 
-        public DateTime ProductionDate { get; set; }
-        public DateTime WarrantyDate { get; set; }
-        public DateTime ReviewDate { get; set; }
-        public DateTime LegalizationDate { get; set; }
-        public DateTime PostingDate { get; set; }
+        private DateTime warrantyDate;
+        public DateTime WarrantyDate
+        {
+            get
+            {
+                return warrantyDate;
+            }
 
-        public int WarrantyAlarm { get; set; }
-        public int ReviewAlarm { get; set; }
+            set
+            {
+                if (warrantyDate != value)
+                {
+                    warrantyDate = value;
+                    RaisePropertyChanged("WarrantyDate");
+                }
+            }
+        }
 
-        private int legalizationAlarm;
-        public int LegalizationAlarm
+        private DateTime reviewDate;
+        public DateTime ReviewDate
+        {
+            get
+            {
+                return reviewDate;
+            }
+
+            set
+            {
+                if (reviewDate != value)
+                {
+                    reviewDate = value;
+                    RaisePropertyChanged("ReviewDate");
+                }
+            }
+        }
+
+        private DateTime legalizationDate;
+        public DateTime LegalizationDate
+        {
+            get
+            {
+                return legalizationDate;
+            }
+
+            set
+            {
+                if (legalizationDate != value)
+                {
+                    legalizationDate = value;
+                    RaisePropertyChanged("LegalizationDate");
+                }
+            }
+        }
+
+        private DateTime postingDate;
+        public DateTime PostingDate
+        {
+            get
+            {
+                return postingDate;
+            }
+
+            set
+            {
+                if (postingDate != value)
+                {
+                    postingDate = value;
+                    RaisePropertyChanged("PostingDate");
+                }
+            }
+        }
+
+        private int? warrantyAlarm;
+        public int? WarrantyAlarm
+        {
+            get
+            {
+                return warrantyAlarm;
+            }
+
+            set
+            {
+                if (warrantyAlarm != value)
+                {
+                    warrantyAlarm = value;
+                    RaisePropertyChanged("WarrantyAlarm");
+                }
+            }
+        }
+
+        private int? reviewAlarm;
+        public int? ReviewAlarm
+        {
+            get
+            {
+                return reviewAlarm;
+            }
+
+            set
+            {
+                if (reviewAlarm != value)
+                {
+                    reviewAlarm = value;
+                    RaisePropertyChanged("ReviewAlarm");
+                }
+            }
+        }
+
+        private int? legalizationAlarm;
+        public int? LegalizationAlarm
         {
             get
             {
@@ -546,6 +397,37 @@ namespace EquipmentList.Model
 
         public DataEquipment()
         {
+            Properties = new Properties();
+
+            Building = new DataBuilding();
+            Producer = new DataContractor();
+            Provider = new DataContractor();
+            Service = new DataContractor();
+            Attestation = new DataContractor();
+            Employee = new DataEmployee();
+
+            ID = String.Empty;
+            Name = String.Empty;
+            SN = String.Empty;
+            Group = String.Empty;
+            Description = String.Empty;
+            Comments = String.Empty;
+            Room = String.Empty;
+            Condition = string.Empty;
+            Norm = string.Empty;
+            CertificationNumber = String.Empty;
+            EmployeeActive = false;
+            employeesName = String.Empty;
+            PostedWorkerName = string.Empty;
+            WarrantyAlarm = 0;
+            ReviewAlarm = 0;
+            LegalizationAlarm = 0;
+            ProductionDate = new DateTime();
+            WarrantyDate = new DateTime();
+            ReviewDate = new DateTime();
+            LegalizationDate = new DateTime();
+            PostingDate = new DateTime();
+
 
         }
     }

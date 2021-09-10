@@ -171,15 +171,21 @@ namespace EquipmentList.ViewModel
                 DataEmployees.Add(new DataEmployee()
                 {
                     ID = row["ID"].ToString(),
-                    Name = row["NAME"].ToString(),
                     Job = row["JOB"].ToString(),
-                    Phone = row["PHONE"].ToString(),
-                    Email = row["Email"].ToString(),
-                    Building = row["BUILDING"].ToString(),
-                    Country = row["COUNTRY"].ToString(),
-                    City = row["CITY"].ToString(),
-                    Postcode = row["POSTCODE"].ToString(),
-                    Address = row["ADDRESS"].ToString(),
+                    Person = new DataPerson()
+                    {
+                        Name = row["NAME"].ToString(),
+                        Phone = row["PHONE"].ToString(),
+                        Email = row["Email"].ToString(),
+                    },
+                    Building = new DataBuilding()
+                    {
+                        Name = row["BUILDING"].ToString(),
+                        Country = row["COUNTRY"].ToString(),
+                        City = row["CITY"].ToString(),
+                        Postcode = row["POSTCODE"].ToString(),
+                        Address = row["ADDRESS"].ToString(),
+                    },
                     Room = row["ROOM"].ToString(),
                     Active = row["ACTIVE"].ToBoolean(),
                     Status = row["ACTIVE"].ToStatus(),

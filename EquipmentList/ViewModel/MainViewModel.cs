@@ -211,7 +211,7 @@ namespace EquipmentList.ViewModel
         {
             string deleteEmployeeSql = "DELETE FROM EMPLOYEE WHERE ID = @ID";
             string id = ((EmployeeViewModel)ViewModel).SelectedEmployee.ID;
-            string name = ((EmployeeViewModel) ViewModel).SelectedEmployee.Name;
+            string name = ((EmployeeViewModel) ViewModel).SelectedEmployee.Person.Name;
 
             WpfMessageBox messageBox;
 
@@ -270,7 +270,7 @@ namespace EquipmentList.ViewModel
                     foreach (DataEmployee employee in ((EmployeeViewModel)ViewModel).SelectedEmployees)
                     {
                         id = employee.ID;
-                        name = employee.Name;
+                        name = employee.Person.Name;
 
                         if (name == "Guest" || name == "Admin")
                         {
@@ -376,12 +376,12 @@ namespace EquipmentList.ViewModel
                     FbTransaction transaction = connection.BeginTransaction();
                     FbCommand command = new FbCommand(addEmployeeSql, connection, transaction);
                     command.Parameters.Add("@Id", FbDbType.VarChar).Value = employeeWindow.Employee.ID;
-                    command.Parameters.Add("@Name", FbDbType.VarChar).Value = employeeWindow.Employee.Name.TrimEndString();
+                    command.Parameters.Add("@Name", FbDbType.VarChar).Value = employeeWindow.Employee.Person.Name.TrimEndString();
                     command.Parameters.Add("@Job", FbDbType.VarChar).Value = employeeWindow.Employee.Job.TrimEndString();
-                    command.Parameters.Add("@Building", FbDbType.VarChar).Value = employeeWindow.Employee.Building.TrimEndString();
+                    command.Parameters.Add("@Building", FbDbType.VarChar).Value = employeeWindow.Employee.Building.Name.TrimEndString();
                     command.Parameters.Add("@Room", FbDbType.VarChar).Value = employeeWindow.Employee.Room.TrimEndString();
-                    command.Parameters.Add("@Phone", FbDbType.VarChar).Value = employeeWindow.Employee.Phone.TrimEndString();
-                    command.Parameters.Add("@Email", FbDbType.VarChar).Value = employeeWindow.Employee.Email.TrimEndString();
+                    command.Parameters.Add("@Phone", FbDbType.VarChar).Value = employeeWindow.Employee.Person.Phone.TrimEndString();
+                    command.Parameters.Add("@Email", FbDbType.VarChar).Value = employeeWindow.Employee.Person.Email.TrimEndString();
                     command.ExecuteNonQuery();
                     transaction.Commit();
                 }
@@ -427,12 +427,12 @@ namespace EquipmentList.ViewModel
                     return;
                 }
 
-                if (String.IsNullOrEmpty(employeeWindow.Employee.Building))
+                if (String.IsNullOrEmpty(employeeWindow.Employee.Building.Name))
                 {
-                    employeeWindow.Employee.Country = String.Empty;
-                    employeeWindow.Employee.City = String.Empty;
-                    employeeWindow.Employee.Postcode = String.Empty;
-                    employeeWindow.Employee.Address = String.Empty;
+                    employeeWindow.Employee.Building.Country = String.Empty;
+                    employeeWindow.Employee.Building.City = String.Empty;
+                    employeeWindow.Employee.Building.Postcode = String.Empty;
+                    employeeWindow.Employee.Building.Address = String.Empty;
                 }
                 else
                 {
@@ -441,12 +441,12 @@ namespace EquipmentList.ViewModel
 
                     foreach(DataRow row in buildingTable.Rows)
                     {
-                        if (row["NAME"].ToString() == employeeWindow.Employee.Building)
+                        if (row["NAME"].ToString() == employeeWindow.Employee.Building.Name)
                         {
-                            employeeWindow.Employee.Country = row["COUNTRY"].ToString();
-                            employeeWindow.Employee.City = row["CITY"].ToString();
-                            employeeWindow.Employee.Postcode = row["POSTCODE"].ToString();
-                            employeeWindow.Employee.Address = row["ADDRESS"].ToString();
+                            employeeWindow.Employee.Building.Country = row["COUNTRY"].ToString();
+                            employeeWindow.Employee.Building.City = row["CITY"].ToString();
+                            employeeWindow.Employee.Building.Postcode = row["POSTCODE"].ToString();
+                            employeeWindow.Employee.Building.Address = row["ADDRESS"].ToString();
 
                             break;
                         }
@@ -601,7 +601,7 @@ namespace EquipmentList.ViewModel
         private void EditEmployee()
         {
             string id = ((EmployeeViewModel)ViewModel).SelectedEmployee.ID;
-            string name = ((EmployeeViewModel)ViewModel).SelectedEmployee.Name;
+            string name = ((EmployeeViewModel)ViewModel).SelectedEmployee.Person.Name;
             string updateEmployeeSql = "UPDATE EMPLOYEE SET NAME=@Name, JOB=@Job, BUILDING=@Building, ROOM=@Room, PHONE=@Phone, EMAIL=@Email WHERE ID = @Id";
             string updateEmployeePermissionsSql = "UPDATE PERMISSIONS SET ACTIVE=@Active, ADD_USER=@AddUser, DELETE_USER=@DeleteUser, EDIT_USER=@EditUser, PRINT_USER=@PrintUser, ADD_OWN_EQUIPMENT=@AddOwnEquipment, DELETE_OWN_EQUIPMENT=@DeleteOwnEquipment, ADD_OTHER_EQUIPMENT=@AddOtherEquipment, DELETE_OTHER_EQUIPMENT=@DeleteOtherEquipment, EDIT_OTHER_EQUIPMENT=@EditOtherEquipment, VIEW_OTHER_EQUIPMENT=@ViewOtherEquipment, PRINT_OTHER_EQUIPMENT=@PrintOtherEquipment WHERE ID = @Id";
 
@@ -621,12 +621,12 @@ namespace EquipmentList.ViewModel
                         FbTransaction transaction = connection.BeginTransaction();
                         FbCommand command = new FbCommand(updateEmployeeSql, connection, transaction);
                         command.Parameters.Add("@Id", FbDbType.VarChar).Value = id;
-                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = employeeWindow.Employee.Name.TrimEndString();
+                        command.Parameters.Add("@Name", FbDbType.VarChar).Value = employeeWindow.Employee.Person.Name.TrimEndString();
                         command.Parameters.Add("@Job", FbDbType.VarChar).Value = employeeWindow.Employee.Job.TrimEndString();
-                        command.Parameters.Add("@Building", FbDbType.VarChar).Value = employeeWindow.Employee.Building.TrimEndString();
+                        command.Parameters.Add("@Building", FbDbType.VarChar).Value = employeeWindow.Employee.Building.Name.TrimEndString();
                         command.Parameters.Add("@Room", FbDbType.VarChar).Value = employeeWindow.Employee.Room.TrimEndString();
-                        command.Parameters.Add("@Phone", FbDbType.VarChar).Value = employeeWindow.Employee.Phone.TrimEndString();
-                        command.Parameters.Add("@Email", FbDbType.VarChar).Value = employeeWindow.Employee.Email.TrimEndString();
+                        command.Parameters.Add("@Phone", FbDbType.VarChar).Value = employeeWindow.Employee.Person.Phone.TrimEndString();
+                        command.Parameters.Add("@Email", FbDbType.VarChar).Value = employeeWindow.Employee.Person.Email.TrimEndString();
                         command.ExecuteNonQuery();
                         transaction.Commit();
                     }
@@ -672,12 +672,12 @@ namespace EquipmentList.ViewModel
                         return;
                     }
 
-                    if (String.IsNullOrEmpty(employeeWindow.Employee.Building))
+                    if (String.IsNullOrEmpty(employeeWindow.Employee.Building.Name))
                     {
-                        employeeWindow.Employee.Country = String.Empty;
-                        employeeWindow.Employee.City = String.Empty;
-                        employeeWindow.Employee.Postcode = String.Empty;
-                        employeeWindow.Employee.Address = String.Empty;
+                        employeeWindow.Employee.Building.Country = String.Empty;
+                        employeeWindow.Employee.Building.City = String.Empty;
+                        employeeWindow.Employee.Building.Postcode = String.Empty;
+                        employeeWindow.Employee.Building.Address = String.Empty;
                     }
                     else
                     {
@@ -686,12 +686,12 @@ namespace EquipmentList.ViewModel
 
                         foreach (DataRow row in buildingTable.Rows)
                         {
-                            if (row["NAME"].ToString() == employeeWindow.Employee.Building)
+                            if (row["NAME"].ToString() == employeeWindow.Employee.Building.Name)
                             {
-                                employeeWindow.Employee.Country = row["COUNTRY"].ToString();
-                                employeeWindow.Employee.City = row["CITY"].ToString();
-                                employeeWindow.Employee.Postcode = row["POSTCODE"].ToString();
-                                employeeWindow.Employee.Address = row["ADDRESS"].ToString();
+                                employeeWindow.Employee.Building.Country = row["COUNTRY"].ToString();
+                                employeeWindow.Employee.Building.City = row["CITY"].ToString();
+                                employeeWindow.Employee.Building.Postcode = row["POSTCODE"].ToString();
+                                employeeWindow.Employee.Building.Address = row["ADDRESS"].ToString();
 
                                 break;
                             }
@@ -704,15 +704,15 @@ namespace EquipmentList.ViewModel
                 {
                     foreach (DataEmployee employee in ((EmployeeViewModel)ViewModel).SelectedEmployees)
                     {
-                        name = employee.Name;
+                        name = employee.Person.Name;
                         id = employee.ID;
 
                         StringBuilder sbEmployee = new StringBuilder("UPDATE EMPLOYEE SET ");
 
-                        if (employeeWindow.Employee.Name != "[...]" && name != "Guest" && name != "Admin")
+                        if (employeeWindow.Employee.Person.Name != "[...]" && name != "Guest" && name != "Admin")
                         {
                             sbEmployee.Append("NAME=@Name, ");
-                            employee.Name = employeeWindow.Employee.Name;
+                            employee.Person.Name = employeeWindow.Employee.Person.Name;
                         }
 
                         if (employeeWindow.Employee.Job != "[...]")
@@ -721,10 +721,10 @@ namespace EquipmentList.ViewModel
                             employee.Job = employeeWindow.Employee.Job;
                         }
 
-                        if (employeeWindow.Employee.Building != "[...]")
+                        if (employeeWindow.Employee.Building.Name != "[...]")
                         {
                             sbEmployee.Append("BUILDING=@Building, ");
-                            employee.Building = employeeWindow.Employee.Building;
+                            employee.Building.Name = employeeWindow.Employee.Building.Name;
                         }
 
                         if (employeeWindow.Employee.Room != "[...]")
@@ -733,16 +733,16 @@ namespace EquipmentList.ViewModel
                             employee.Room = employeeWindow.Employee.Room;
                         }
 
-                        if (employeeWindow.Employee.Phone != "[...]")
+                        if (employeeWindow.Employee.Person.Phone != "[...]")
                         {
                             sbEmployee.Append("PHONE=@Phone, ");
-                            employee.Phone = employeeWindow.Employee.Phone;
+                            employee.Person.Phone = employeeWindow.Employee.Person.Phone;
                         }
 
-                        if (employeeWindow.Employee.Email != "[...]")
+                        if (employeeWindow.Employee.Person.Email != "[...]")
                         {
                             sbEmployee.Append("EMAIL=@Email, ");
-                            employee.Email = employeeWindow.Employee.Email;
+                            employee.Person.Email = employeeWindow.Employee.Person.Email;
                         }
 
                         if (sbEmployee.ToString() != "UPDATE EMPLOYEE SET ")
@@ -757,12 +757,12 @@ namespace EquipmentList.ViewModel
                                 FbTransaction transaction = connection.BeginTransaction();
                                 FbCommand command = new FbCommand(updateEmployeeSql, connection, transaction);
                                 command.Parameters.Add("@Id", FbDbType.VarChar).Value = id;
-                                command.Parameters.Add("@Name", FbDbType.VarChar).Value = employeeWindow.Employee.Name.TrimEndString();
+                                command.Parameters.Add("@Name", FbDbType.VarChar).Value = employeeWindow.Employee.Person.Name.TrimEndString();
                                 command.Parameters.Add("@Job", FbDbType.VarChar).Value = employeeWindow.Employee.Job.TrimEndString();
-                                command.Parameters.Add("@Building", FbDbType.VarChar).Value = employeeWindow.Employee.Building.TrimEndString();
+                                command.Parameters.Add("@Building", FbDbType.VarChar).Value = employeeWindow.Employee.Building.Name.TrimEndString();
                                 command.Parameters.Add("@Room", FbDbType.VarChar).Value = employeeWindow.Employee.Room.TrimEndString();
-                                command.Parameters.Add("@Phone", FbDbType.VarChar).Value = employeeWindow.Employee.Phone.TrimEndString();
-                                command.Parameters.Add("@Email", FbDbType.VarChar).Value = employeeWindow.Employee.Email.TrimEndString();
+                                command.Parameters.Add("@Phone", FbDbType.VarChar).Value = employeeWindow.Employee.Person.Phone.TrimEndString();
+                                command.Parameters.Add("@Email", FbDbType.VarChar).Value = employeeWindow.Employee.Person.Email.TrimEndString();
                                 command.ExecuteNonQuery();
                                 transaction.Commit();
                             }

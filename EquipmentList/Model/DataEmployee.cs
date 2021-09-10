@@ -11,25 +11,10 @@ namespace EquipmentList.Model
     {
         public Properties Properties { get; set; }
 
+        public DataPerson Person { get; set; }
+        public DataBuilding Building { get; set; }
+
         public string ID { get; set; }
-
-        private string name;
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-
-            set
-            {
-                if (name != value)
-                {
-                    name = value.TrimStartString();
-                    RaisePropertyChanged("Name");
-                }
-            }
-        }
 
         private string job;
         public string Job
@@ -45,132 +30,6 @@ namespace EquipmentList.Model
                 {
                     job = value.TrimStartString();
                     RaisePropertyChanged("Job");
-                }
-            }
-        }
-
-        private string phone;
-        public string Phone
-        {
-            get
-            {
-                return phone;
-            }
-
-            set
-            {
-                if (phone != value)
-                {
-                    phone = value.TrimStartString();
-                    RaisePropertyChanged("Phone");
-                }
-            }
-        }
-
-        private string email;
-        public string Email
-        {
-            get
-            {
-                return email;
-            }
-
-            set
-            {
-                if (email != value)
-                {
-                    email = value.TrimStartString();
-                    RaisePropertyChanged("Email");
-                }
-            }
-        }
-
-        private string building;
-        public string Building
-        {
-            get
-            {
-                return building;
-            }
-
-            set
-            {
-                if (building != value)
-                {
-                    building = value.TrimStartString();
-                    RaisePropertyChanged("Building");
-                }
-            }
-        }
-
-        private string country;
-        public string Country
-        {
-            get
-            {
-                return country;
-            }
-
-            set
-            {
-                if (country != value)
-                {
-                    country = value.TrimStartString();
-                    RaisePropertyChanged("Country");
-                }
-            }
-        }
-
-        private string city;
-        public string City
-        {
-            get
-            {
-                return city;
-            }
-
-            set
-            {
-                if (city != value)
-                {
-                    city = value.TrimStartString();
-                    RaisePropertyChanged("City");
-                }
-            }
-        }
-
-        private string address;
-        public string Address
-        {
-            get
-            {
-                return address;
-            }
-
-            set
-            {
-                if (address != value)
-                {
-                    address = value.TrimStartString();
-                    RaisePropertyChanged("Address");
-                }
-            }
-        }
-
-        private string postcode;
-        public string Postcode
-        {
-            get
-            {
-                return postcode;
-            }
-
-            set
-            {
-                if (postcode != value)
-                {
-                    postcode = value.TrimStartString();
-                    RaisePropertyChanged("Postcode");
                 }
             }
         }
@@ -440,18 +299,14 @@ namespace EquipmentList.Model
         {
             Properties = new Properties();
 
-            Name = "New employee";
+            Person = new DataPerson()
+            {
+                Name = "New employee",
+            };
+            Building = new DataBuilding();
             Status = "Enabled";
             Job = String.Empty;
-            Building = String.Empty;
             Room = String.Empty;
-            Phone = String.Empty;
-            Email = String.Empty;
-
-            Postcode = String.Empty;
-            Address = String.Empty;
-            City = String.Empty;
-            Country = String.Empty;
 
             AddUser = false;
             EditUser = false;
@@ -471,7 +326,7 @@ namespace EquipmentList.Model
     {
         public static DataEmployee GetEmployee(this IList<DataEmployee> list, string name)
         {
-            var dataEmployee = list.FirstOrDefault(emmployee => emmployee.Name == name);
+            var dataEmployee = list.FirstOrDefault(emmployee => emmployee.Person.Name == name);
 
             return dataEmployee;
         }
@@ -492,17 +347,16 @@ namespace EquipmentList.Model
             var employeeToUpdate = colection.SingleOrDefault(employee => employee.ID == dataEmployee.ID);
             if (employeeToUpdate != null)
             {
-                employeeToUpdate.Name = dataEmployee.Name.TrimEndString();
+                employeeToUpdate.Person.Name = dataEmployee.Person.Name.TrimEndString();
                 employeeToUpdate.Job = dataEmployee.Job.TrimEndString();
-                employeeToUpdate.Building = dataEmployee.Building.TrimEndString();
+                employeeToUpdate.Building.Name = dataEmployee.Building.Name.TrimEndString();
                 employeeToUpdate.Room = dataEmployee.Room.TrimEndString();
-                employeeToUpdate.Phone = dataEmployee.Phone.TrimEndString();
-                employeeToUpdate.Email = dataEmployee.Email.TrimEndString();
-
-                employeeToUpdate.Address = dataEmployee.Address.TrimEndString();
-                employeeToUpdate.Postcode = dataEmployee.Postcode.TrimEndString();
-                employeeToUpdate.City = dataEmployee.City.TrimEndString();
-                employeeToUpdate.Country = dataEmployee.Country.TrimEndString();
+                employeeToUpdate.Person.Phone = dataEmployee.Person.Phone.TrimEndString();
+                employeeToUpdate.Person.Email = dataEmployee.Person.Email.TrimEndString();
+                employeeToUpdate.Building.Address = dataEmployee.Building.Address.TrimEndString();
+                employeeToUpdate.Building.Postcode = dataEmployee.Building.Postcode.TrimEndString();
+                employeeToUpdate.Building.City = dataEmployee.Building.City.TrimEndString();
+                employeeToUpdate.Building.Country = dataEmployee.Building.Country.TrimEndString();
 
                 employeeToUpdate.AddUser = dataEmployee.AddUser;
                 employeeToUpdate.EditUser = dataEmployee.EditUser;
@@ -533,13 +387,13 @@ namespace EquipmentList.Model
         {
             DataEmployee dataEmployee = new DataEmployee();
 
-            if (colection.IsSameValue(i => i.Name))
+            if (colection.IsSameValue(i => i.Person.Name))
             {
-                dataEmployee.Name = colection[0].Name;
+                dataEmployee.Person.Name = colection[0].Person.Name;
             }
             else
             {
-                dataEmployee.Name = "[...]";
+                dataEmployee.Person.Name = "[...]";
             }
 
             if (colection.IsSameValue(i => i.Status))
@@ -560,13 +414,13 @@ namespace EquipmentList.Model
                 dataEmployee.Job = "[...]";
             }
 
-            if (colection.IsSameValue(i => i.Building))
+            if (colection.IsSameValue(i => i.Building.Name))
             {
-                dataEmployee.Building = colection[0].Building;
+                dataEmployee.Building.Name = colection[0].Building.Name;
             }
             else
             {
-                dataEmployee.Building = "[...]";
+                dataEmployee.Building.Name = "[...]";
             }
 
             if (colection.IsSameValue(i => i.Room))
@@ -578,22 +432,22 @@ namespace EquipmentList.Model
                 dataEmployee.Room = "[...]";
             }
 
-            if (colection.IsSameValue(i => i.Phone))
+            if (colection.IsSameValue(i => i.Person.Phone))
             {
-                dataEmployee.Phone = colection[0].Phone;
+                dataEmployee.Person.Phone = colection[0].Person.Phone;
             }
             else
             {
-                dataEmployee.Phone = "[...]";
+                dataEmployee.Person.Phone = "[...]";
             }
 
-            if (colection.IsSameValue(i => i.Email))
+            if (colection.IsSameValue(i => i.Person.Email))
             {
-                dataEmployee.Email = colection[0].Email;
+                dataEmployee.Person.Email = colection[0].Person.Email;
             }
             else
             {
-                dataEmployee.Email = "[...]";
+                dataEmployee.Person.Email = "[...]";
             }
 
             if (colection.IsSameValue(i => i.Status))

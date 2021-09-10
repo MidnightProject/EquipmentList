@@ -138,27 +138,27 @@
             </CollectionViewSource>
             <CollectionViewSource x:Key="GroupProducers" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
                 <CollectionViewSource.LiveSortingProperties>
-                    <s:String>ProducerName</s:String>
+                    <s:String>Producer.Name</s:String>
                 </CollectionViewSource.LiveSortingProperties>
                 <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="ProducerName"/>
+                    <PropertyGroupDescription PropertyName="Producer.Name"/>
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
             <CollectionViewSource x:Key="GroupEmployees" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
                 <CollectionViewSource.LiveSortingProperties>
-                    <s:String>EmployeeName</s:String>
+                    <s:String>Employee.Person.Name</s:String>
                 </CollectionViewSource.LiveSortingProperties>
                 <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="EmployeeName"/>
+                    <PropertyGroupDescription PropertyName="Employee.Person.Name"/>
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
             <CollectionViewSource x:Key="GroupBuildings" Source="{Binding DataEquipments}" IsLiveGroupingRequested="True">
                 <CollectionViewSource.LiveSortingProperties>
-                    <s:String>Building</s:String>
+                    <s:String>Building.Name</s:String>
                     <s:String>Room</s:String>
                 </CollectionViewSource.LiveSortingProperties>
                 <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="Building"/>
+                    <PropertyGroupDescription PropertyName="Building.Name"/>
                     <PropertyGroupDescription PropertyName="Room"/>
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
@@ -309,7 +309,7 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Indeks" Binding="{Binding ID}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Producer" Binding="{Binding ProducerName}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
+                <DataGridTextColumn Header="Producer" Binding="{Binding Producer.Name}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 <DataGridTextColumn Header="Serial Number" Binding="{Binding SN}"/>
                 <DataGridTextColumn Header="Norm" Binding="{Binding Norm}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 <DataGridTextColumn Header="Group" Binding="{Binding Group}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxNotEditableFilter}"/>
@@ -356,7 +356,7 @@
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource nullEmployeeColorConverter}">
-                                    <Binding Path="EmployeeName"/>
+                                    <Binding Path="Employee.Person.Name"/>
                                     <Binding Path="DataContext.NullEmployeeColor" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}"/>
                                 </MultiBinding>
                             </DataTrigger.Binding>
@@ -427,7 +427,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="Building"></Binding>
+                                                    <Binding Path="Building.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -437,7 +437,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="Postcode"></Binding>
+                                                    <Binding Path="Building.Postcode"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -445,7 +445,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="City"></Binding>
+                                                    <Binding Path="Building.City"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -453,7 +453,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="Address"></Binding>
+                                                    <Binding Path="Building.Address"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -461,7 +461,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="Country"></Binding>
+                                                    <Binding Path="Building.Country"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -472,7 +472,7 @@
                             <Expander Header="Assigned employee:" FontWeight="Bold" Margin="0,5,0,0" IsExpanded="False">
                                 <Expander.Foreground>
                                     <MultiBinding Converter="{StaticResource employeeForegroundConverter}">
-                                        <Binding Path="EmployeeName"></Binding>
+                                        <Binding Path="Employee.Person.Name"></Binding>
                                         <Binding Path="EmployeeActive"></Binding>
                                     </MultiBinding>
                                 </Expander.Foreground>
@@ -481,7 +481,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="EmployeeName"></Binding>
+                                                    <Binding Path="Employee.Person.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -489,7 +489,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0" ToolTip="Room">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="EmployeeRoom"></Binding>
+                                                    <Binding Path="Employee.Room"></Binding>
                                                     <Binding Source="{StaticResource TypeRoom}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -499,7 +499,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0" ToolTip="Phone">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="EmployeePhone"></Binding>
+                                                    <Binding Path="Employee.Person.Phone"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -509,17 +509,17 @@
                                         <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="EmployeeEmail"></Binding>
+                                                    <Binding Path="Employee.Person.Email"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding EmployeeEmail, Converter={StaticResource mailtoConverter}}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding Employee.Person.Email, Converter={StaticResource mailtoConverter}}"/>
                                                 </i:EventTrigger>
                                                 <i:EventTrigger EventName="MouseRightButtonUp">
-                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding EmployeeEmail}"/>
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Employee.Person.Email}"/>
                                                 </i:EventTrigger>
                                              </i:Interaction.Triggers>
                                         </TextBlock>
@@ -528,7 +528,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="EmployeeBuilding"></Binding>
+                                                    <Binding Path="Employee.Building.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -538,7 +538,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="EmployeeBuildingPostcode"></Binding>
+                                                    <Binding Path="Employee.Building.Postcode"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -546,7 +546,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="EmployeeBuildingCity"></Binding>
+                                                    <Binding Path="Employee.Building.City"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -554,7 +554,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="EmployeeBuildingAddress"></Binding>
+                                                    <Binding Path="Employee.Building.Address"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -562,7 +562,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="EmployeeBuildingCountry"></Binding>
+                                                    <Binding Path="Employee.Building.Country"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -576,7 +576,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProducerName"></Binding>
+                                                    <Binding Path="Producer.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -586,7 +586,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProducerPostcode"></Binding>
+                                                    <Binding Path="Producer.Bilding.Postcode"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -594,7 +594,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProducerCity"></Binding>
+                                                    <Binding Path="Producer.Bilding.City"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -602,7 +602,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProducerAddress"></Binding>
+                                                    <Binding Path="Producer.Bilding.Address"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -610,7 +610,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProducerCountry"></Binding>
+                                                    <Binding Path="Producer.Bilding.Country"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -620,14 +620,14 @@
                                         <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProducerWWW"></Binding>
+                                                    <Binding Path="Producer.WWW"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding ProducerWWW}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding Producer.WWW}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
@@ -636,7 +636,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProducerPerson"></Binding>
+                                                    <Binding Path="Producer.Person.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -646,7 +646,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0" ToolTip="Phone">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProducerPhone"></Binding>
+                                                    <Binding Path="Producer.Person.Phone"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -656,17 +656,17 @@
                                         <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProducerEmail"></Binding>
+                                                    <Binding Path="Producer.Person.Email"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding DataContext.ProducersEmail, Converter={StaticResource mailtoConverter}}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding Producer.Person.Email, Converter={StaticResource mailtoConverter}}"/>
                                                 </i:EventTrigger>
                                                 <i:EventTrigger EventName="MouseRightButtonUp">
-                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding ProducerEmail}"/>
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Producer.Person.Email}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
@@ -679,7 +679,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProviderName"></Binding>
+                                                    <Binding Path="Provider.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -689,7 +689,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProviderPostcode"></Binding>
+                                                    <Binding Path="Provider.Building.Postcode"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -697,7 +697,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProviderCity"></Binding>
+                                                    <Binding Path="Provider.Building.City"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -705,7 +705,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProviderAddress"></Binding>
+                                                    <Binding Path="Provider.Building.Address"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -713,7 +713,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProviderCountry"></Binding>
+                                                    <Binding Path="Provider.Building.Country"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -723,14 +723,14 @@
                                         <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProviderWWW"></Binding>
+                                                    <Binding Path="Provider.WWW"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding ProviderWWW}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding Provider.WWW}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
@@ -739,7 +739,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProviderPerson"></Binding>
+                                                    <Binding Path="Provider.Person.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -749,7 +749,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0" ToolTip="Phone">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProviderPhone"></Binding>
+                                                    <Binding Path="Provider.Person.Phone"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -759,17 +759,17 @@
                                         <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ProviderEmail"></Binding>
+                                                    <Binding Path="Provider.Person.Email"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding ProviderEmail, Converter={StaticResource mailtoConverter}}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding Provider.Person.Email, Converter={StaticResource mailtoConverter}}"/>
                                                 </i:EventTrigger>
                                                 <i:EventTrigger EventName="MouseRightButtonUp">
-                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding ProviderEmail}"/>
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Provider.Person.Email}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>  
                                         </TextBlock>
@@ -782,7 +782,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ServiceName"></Binding>
+                                                    <Binding Path="Service.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -792,7 +792,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ServicePostcode"></Binding>
+                                                    <Binding Path="Service.Building.Postcode"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -800,7 +800,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ServiceCity"></Binding>
+                                                    <Binding Path="Service.Building.City"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -808,7 +808,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ServiceAddress"></Binding>
+                                                    <Binding Path="Service.Building.Address"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -816,7 +816,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ServiceCountry"></Binding>
+                                                    <Binding Path="Service.Building.Country"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -826,14 +826,14 @@
                                         <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ServiceWWW"></Binding>
+                                                    <Binding Path="Service.WWW"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                            <i:LaunchUriOrFileAction Path="{Binding ServiceWWW}"/>
+                                            <i:LaunchUriOrFileAction Path="{Binding Service.WWW}"/>
                                             </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
@@ -842,7 +842,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ServicePerson"></Binding>
+                                                    <Binding Path="Service.Person.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -852,7 +852,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0" ToolTip="Phone">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ServicePhone"></Binding>
+                                                    <Binding Path="Service.Person.Phone"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -862,17 +862,17 @@
                                         <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="ServiceEmail"></Binding>
+                                                    <Binding Path="Service.Person.Email"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                   <i:LaunchUriOrFileAction Path="{Binding ServiceEmail, Converter={StaticResource mailtoConverter}}"/>
+                                                   <i:LaunchUriOrFileAction Path="{Binding Service.Person.Email, Converter={StaticResource mailtoConverter}}"/>
                                                 </i:EventTrigger>
                                                 <i:EventTrigger EventName="MouseRightButtonUp">
-                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding ServiceEmail}"/>
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Service.Person.Email}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
@@ -929,7 +929,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="AttestationName"></Binding>
+                                                    <Binding Path="Attestation.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -939,7 +939,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="AttestationPostcode"></Binding>
+                                                    <Binding Path="Attestation.Building.Postcode"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -947,7 +947,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="AttestationCity"></Binding>
+                                                    <Binding Path="Attestation.Building.City"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -955,7 +955,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="AttestationAddress"></Binding>
+                                                    <Binding Path="Attestation.Building.Address"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -963,7 +963,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="AttestationCountry"></Binding>
+                                                    <Binding Path="Attestation.Building.Country"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -973,14 +973,14 @@
                                         <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="AttestationWWW"></Binding>
+                                                    <Binding Path="Attestation.WWW"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding AttestationWWW}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding Attestation.WWW}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>
@@ -989,7 +989,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="AttestationPerson"></Binding>
+                                                    <Binding Path="Attestation.Person.Name"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -999,7 +999,7 @@
                                         <TextBlock Style="{StaticResource EmptyTextBlock}" Margin="10,0,0,0" ToolTip="Phone">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="AttestationPhone"></Binding>
+                                                    <Binding Path="Attestation.Person.Phone"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
@@ -1009,17 +1009,17 @@
                                         <TextBlock Style="{StaticResource ActionLabelStyle}" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding Converter="{StaticResource columnTextConverter}">
-                                                    <Binding Path="AttestationEmail"></Binding>
+                                                    <Binding Path="Attestation.Person.Email"></Binding>
                                                     <Binding Source="{StaticResource TypeString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                     
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseLeftButtonUp">
-                                                    <i:LaunchUriOrFileAction Path="{Binding AttestationEmail, Converter={StaticResource mailtoConverter}}"/>
+                                                    <i:LaunchUriOrFileAction Path="{Binding Attestation.Person.Email, Converter={StaticResource mailtoConverter}}"/>
                                                 </i:EventTrigger>
                                                 <i:EventTrigger EventName="MouseRightButtonUp">
-                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding AttestationEmail}"/>
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.CopyStringCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding Attestation.Person.Email}"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </TextBlock>

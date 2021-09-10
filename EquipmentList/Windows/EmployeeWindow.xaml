@@ -65,7 +65,7 @@
                     <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
                 </TextBox.Resources>
                 <TextBox.Text>
-                    <Binding Path="Employee.Name" UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="Employee.Person.Name" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <validations:NameValidationRule/>
                         </Binding.ValidationRules>
@@ -153,7 +153,7 @@
                         <ComboBox MinWidth="50"
                                   VerticalContentAlignment="Center"
                                   ItemsSource="{Binding BuildingsList, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectedItem="{Binding Employee.Building}"/>
+                                  SelectedItem="{Binding Employee.Building.Name}"/>
                     </WrapPanel>
 
                     <Label Grid.Row="1" Grid.Column="3" Content="Room:"/>
@@ -168,7 +168,7 @@
                              MaxLength="20"
                              VerticalContentAlignment="Center"
                              property:SelectTextOnFocus.Active = "True"
-                             Text="{Binding Employee.Phone, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding Employee.Person.Phone, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Row="3" Grid.Column="0" Content="Email:" Grid.ColumnSpan="2"/>
                     <TextBox x:Name="emailTextBox"
@@ -182,11 +182,11 @@
                             <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
                         </TextBox.Resources>
                         <TextBox.Text>
-                            <Binding Path="Employee.Email" UpdateSourceTrigger="PropertyChanged">
+                            <Binding Path="Employee.Person.Email" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <validations:EmailValidationRule>
                                         <validations:EmailValidationRule.Wrapper>
-                                            <validations:Wrapper EmployeeEmail="{Binding Data.Employee.Email, Source={StaticResource proxy}}"/>
+                                            <validations:Wrapper EmployeeEmail="{Binding Data.Employee.Person.Email, Source={StaticResource proxy}}"/>
                                         </validations:EmailValidationRule.Wrapper>
                                     </validations:EmailValidationRule>
                                 </Binding.ValidationRules>

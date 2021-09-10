@@ -251,10 +251,10 @@ namespace EquipmentList.Windows
         private void CopyEmployee()
         {
             Clipboard.Employee.Job = Employee.Job;
-            Clipboard.Employee.Building = Employee.Building;
+            Clipboard.Employee.Building.Name = Employee.Building.Name;
             Clipboard.Employee.Room = Employee.Room;
-            Clipboard.Employee.Phone = Employee.Phone;
-            Clipboard.Employee.Email = Employee.Email;
+            Clipboard.Employee.Person.Phone = Employee.Person.Phone;
+            Clipboard.Employee.Person.Email = Employee.Person.Email;
         }
 
         private RelayCommand pasteEmployeeCommand;
@@ -268,10 +268,10 @@ namespace EquipmentList.Windows
         private void PasteEmployee()
         {
             Employee.Job = Clipboard.Employee.Job.IsNullGetEmpty();
-            Employee.Building = Clipboard.Employee.Building.IsNullGetEmpty();
+            Employee.Building.Name = Clipboard.Employee.Building.Name.IsNullGetEmpty();
             Employee.Room = Clipboard.Employee.Room.IsNullGetEmpty();
-            Employee.Phone = Clipboard.Employee.Phone.IsNullGetEmpty();
-            Employee.Email = Clipboard.Employee.Email.IsNullGetEmpty();
+            Employee.Person.Phone = Clipboard.Employee.Person.Phone.IsNullGetEmpty();
+            Employee.Person.Email = Clipboard.Employee.Person.Email.IsNullGetEmpty();
         }
 
         private RelayCommand clearEmployeeCommand;
@@ -285,11 +285,11 @@ namespace EquipmentList.Windows
         private void ClearEmployee()
         {
             Employee.Job = String.Empty;
-            Employee.Building = String.Empty;
+            Employee.Building.Name = String.Empty;
             Employee.Room = String.Empty;
-            Employee.Phone = String.Empty;
-            Employee.Email = "empty@empty.empty";
-            Employee.Email = String.Empty;
+            Employee.Person.Phone = String.Empty;
+            Employee.Person.Email = "empty@empty.empty";
+            Employee.Person.Email = String.Empty;
         }
 
         private RelayCommand copyPermissionsCommand;

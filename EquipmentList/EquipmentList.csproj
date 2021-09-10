@@ -159,8 +159,10 @@
     <Compile Include="Messages\SelectedIndexMessage.cs" />
     <Compile Include="Model\Clipboard.cs" />
     <Compile Include="Model\DataBuilding.cs" />
+    <Compile Include="Model\DataContractor.cs" />
     <Compile Include="Model\DataEmployee.cs" />
     <Compile Include="Model\DataEquipment.cs" />
+    <Compile Include="Model\DataPerson.cs" />
     <Compile Include="Model\DataTableExtensions.cs" />
     <Compile Include="Model\EmployeeStatus.cs" />
     <Compile Include="Model\Properties.cs" />
