@@ -150,6 +150,7 @@
     <Compile Include="Converters\BackgroundToForegroundConverter.cs" />
     <Compile Include="Converters\ViewToEnableConverter.cs" />
     <Compile Include="Converters\ViewToTextConverter.cs" />
+    <Compile Include="Converters\ViewToToggleButtonIsVisibilityConverter.cs" />
     <Compile Include="Converters\VisibilityToIsCheckedConverter.cs" />
     <Compile Include="Converters\ActiveEmployeeToColorConverter.cs" />
     <Compile Include="Helpers\IEnumerableExtended.cs" />
@@ -274,6 +275,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\photo.png" />
+    <Resource Include="Images\sub_black_add.png" />
+    <Resource Include="Images\sub_black_remove.png" />
     <Resource Include="Images\block_blue.png" />
     <Resource Include="Images\sub_black_delete.png" />
     <Resource Include="Images\warning_blue.png" />

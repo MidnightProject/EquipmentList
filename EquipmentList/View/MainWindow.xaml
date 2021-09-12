@@ -16,6 +16,7 @@
         <converters:VisibilityToIsCheckedConverter x:Key="checkedConverter"/>
         <converters:ColorToNameConverter x:Key="colorNameConverter"/>
         <converters:DeleteButtonIsEnableConverter x:Key="deleteButtonIsEnableConverter"/>
+        <converters:ViewToToggleButtonIsVisibilityConverter x:Key="toggleButtonIsVisibilityConverter"/>
 
         <DataTemplate DataType="{x:Type vm:BuildingViewModel}">
             <v:Building/>
@@ -61,7 +62,7 @@
                 <MenuItem Header="Employee"
                           Command="{Binding ViewCommand}" CommandParameter="EmployeeView">
                     <MenuItem.Icon>
-                        <Image Source="/Images/user_group.png" Height="20"></Image>
+                        <Image Source="/Images/user.png" Height="20"></Image>
                     </MenuItem.Icon>
                     <MenuItem.IsEnabled>
                         <MultiBinding Converter="{StaticResource enableViewConverter}" ConverterParameter="EmployeeView">
@@ -80,7 +81,20 @@
                         </MultiBinding>
                     </MenuItem.IsEnabled>
                 </MenuItem>
-                <Separator />
+                <MenuItem Header="Contractor"
+                          Command="{Binding ViewCommand}" CommandParameter="ContractorView">
+                    <MenuItem.Icon>
+                        <Image Source="/Images/photo.png" Height="20"></Image>
+                    </MenuItem.Icon>
+                    <MenuItem.IsEnabled>
+                        <MultiBinding Converter="{StaticResource enableViewConverter}" ConverterParameter="ContractorView">
+                            <Binding Path="View"/>
+                        </MultiBinding>
+                    </MenuItem.IsEnabled>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="[ViewAllEquipment]"></MenuItem>
+                <Separator/>
                 <MenuItem Header="Exit">
                     <MenuItem.Icon>
                         <Image Source="/Images/block_black.png" Height="20"></Image>
@@ -258,7 +272,7 @@
                             <Binding Path="View"/>
                         </MultiBinding>
                     </Button.IsEnabled>
-                    <Image Source="/Images/user_group.png" ToolTip="Employee View"></Image>
+                    <Image Source="/Images/user.png" ToolTip="Employee View"></Image>
                 </Button>
                 <Button ToolBar.OverflowMode="Never" Height="48" 
                         Command="{Binding ViewCommand}" CommandParameter="BuildingView">
@@ -269,36 +283,109 @@
                     </Button.IsEnabled>
                     <Image Source="/Images/home.png" ToolTip="Building View"></Image>
                 </Button>
+                <Button ToolBar.OverflowMode="Never" Height="48" 
+                        Command="{Binding ViewCommand}" CommandParameter="ContractorView">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource enableViewConverter}" ConverterParameter="ContractorView">
+                            <Binding Path="View"/>
+                        </MultiBinding>
+                    </Button.IsEnabled>
+                    <Image Source="/Images/photo.png" ToolTip="Contractor View"></Image>
+                </Button>
+                <ComboBox x:Name="comboBoxGroup" IsSynchronizedWithCurrentItem = "True" 
+                          ItemsSource="{Binding Group, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectedIndex="{Binding GroupIndex}" MinWidth="100"
+                          ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Group}"
+                          IsEditable="False" FontSize="16" Height="48"/>
+                <ToggleButton ToolBar.OverflowMode="Never" Height="48"
+                              IsChecked="{Binding ViewAllEquipment, Mode=TwoWay}">
+                    <ToggleButton.Visibility>
+                        <MultiBinding  Converter="{StaticResource toggleButtonIsVisibilityConverter}">
+                            <Binding Path="View"/>
+                        </MultiBinding>
+                    </ToggleButton.Visibility>
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewAllEquipment}" Value="true">
+                                    <Setter Property="ToolTip" Value="All equipment"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ViewAllEquipment}" Value="false">
+                                    <Setter Property="ToolTip" Value="Own equipment"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                    <Grid>
+                        <Image Source="/Images/user_group.png"></Image>
+                        <Image Source="/Images/block_blue.png" Opacity="1">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ViewAllEquipment}" Value="true">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ViewAllEquipment}" Value="false">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Grid>
+                </ToggleButton>
             </ToolBar>
             <ToolBar Band="1" BandIndex="1" Visibility="{Binding EditToolBar}">
                 <Button ToolBar.OverflowMode="Never" Height="48" 
                         Command="{Binding AddCommand}">
-                    <Image Source="/Images/sub_blue_add.png" ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Add }">
-                        <Image.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform/>
-                                <TranslateTransform X="-10" Y="-10"/>
-                            </TransformGroup>
-                        </Image.RenderTransform>
-                    </Image>
+                    <Grid>
+                        <Image Opacity="0.5">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding View}" Value="EquipmentView">
+                                            <Setter Property="Source" Value="/Images/archive.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding View}" Value="EmployeeView">
+                                            <Setter Property="Source" Value="/Images/user.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding View}" Value="BuildingView">
+                                            <Setter Property="Source" Value="/Images/home.png"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <Image Source="/Images/sub_blue_add.png" ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Add }">
+                        </Image>
+                    </Grid>
                 </Button>
                 <Button ToolBar.OverflowMode="Never" Height="48" 
                         Command="{Binding RemoveCommand}">
-                    <Image Source="/Images/sub_blue_remove.png" ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Remove}">
-                        <Image.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform/>
-                                <TranslateTransform X="-10" Y="-10"/>
-                            </TransformGroup>
-                        </Image.RenderTransform>
-                    </Image>
+                    <Grid>
+                        <Image Opacity="0.5">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding View}" Value="EquipmentView">
+                                            <Setter Property="Source" Value="/Images/archive.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding View}" Value="EmployeeView">
+                                            <Setter Property="Source" Value="/Images/user.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding View}" Value="BuildingView">
+                                            <Setter Property="Source" Value="/Images/home.png"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <Image Source="/Images/sub_blue_remove.png" ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Remove}">
+                        </Image>
+                    </Grid>
                     <Button.IsEnabled>
                         <MultiBinding  Converter="{StaticResource deleteButtonIsEnableConverter}">
-                            <Binding Path="SelectedIndex"/>
+                            <Binding Path="SelectedIndexesCounter"/>
                         </MultiBinding>
                     </Button.IsEnabled>
                 </Button>
@@ -307,15 +394,10 @@
                     <Image Source="/Images/pencil.png" ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Edit}"></Image>
                     <Button.IsEnabled>
                         <MultiBinding  Converter="{StaticResource deleteButtonIsEnableConverter}">
-                            <Binding Path="SelectedIndex"/>
+                            <Binding Path="SelectedIndexesCounter"/>
                         </MultiBinding>
                     </Button.IsEnabled>
                 </Button>
-                <ComboBox x:Name="comboBoxGroup" IsSynchronizedWithCurrentItem = "True" 
-                          ItemsSource="{Binding Group, UpdateSourceTrigger=PropertyChanged}" 
-                          SelectedIndex="{Binding GroupIndex}" MinWidth="100"
-                          ToolTip="{Binding View, Converter={StaticResource textViewConverter}, ConverterParameter=Group}"
-                          IsEditable="False" FontSize="16" Height="48"/>
                 <Separator />
                 <Button Height="48" 
                         Command="{Binding CopyCommand}">

@@ -59,17 +59,20 @@ namespace EquipmentList.ViewModel
                 switch (value)
                 {
                     case DefinedViews.EquipmentView:
+                        SelectedIndexesCounter = 0;
                         equipmentTable = new DataTable();
                         equipmentAdapter.Fill(equipmentTable);
                         ViewModel = new EquipmentViewModel(EmployeesStatus, equipmentTable, AlarmColor, PostedWorkerColor, ActiveEmployeeColor, NullEmployeeColor, IncorrectReviewDateColor, IncorrectLegalizationDateColor);
                         break;
                     case DefinedViews.EmployeeView:
+                        SelectedIndexesCounter = 0;
                         employeeTable = new DataTable();
                         employeeAdapter.Fill(employeeTable);
                         ViewModel = new EmployeeViewModel(employeeTable);
                         ((EmployeeViewModel)ViewModel).ColumnStatusFilter = "Enabled";
                         break;
                     case DefinedViews.BuildingView:
+                        SelectedIndexesCounter = 0;
                         buildingTable = new DataTable();
                         buildingAdapter.Fill(buildingTable);
                         ViewModel = new BuildingViewModel(buildingTable);
@@ -168,7 +171,7 @@ namespace EquipmentList.ViewModel
                         messageBox.ShowDialog();
                     }
                 }
-            }  
+            }
             else
             {
                 messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
@@ -211,7 +214,7 @@ namespace EquipmentList.ViewModel
         {
             string deleteEmployeeSql = "DELETE FROM EMPLOYEE WHERE ID = @ID";
             string id = ((EmployeeViewModel)ViewModel).SelectedEmployee.ID;
-            string name = ((EmployeeViewModel) ViewModel).SelectedEmployee.Person.Name;
+            string name = ((EmployeeViewModel)ViewModel).SelectedEmployee.Person.Name;
 
             WpfMessageBox messageBox;
 
@@ -299,7 +302,7 @@ namespace EquipmentList.ViewModel
                         }
                     }
                 }
-            }            
+            }
         }
         #endregion
 
@@ -439,7 +442,7 @@ namespace EquipmentList.ViewModel
                     buildingTable = new DataTable();
                     buildingAdapter.Fill(buildingTable);
 
-                    foreach(DataRow row in buildingTable.Rows)
+                    foreach (DataRow row in buildingTable.Rows)
                     {
                         if (row["NAME"].ToString() == employeeWindow.Employee.Building.Name)
                         {
@@ -595,7 +598,7 @@ namespace EquipmentList.ViewModel
                         }
                     }
                 }
-                
+
             }
         }
         private void EditEmployee()
@@ -1254,14 +1257,7 @@ namespace EquipmentList.ViewModel
                 }
             }
         }
-
-        private void SetSelectedIndex(SelectedIndexMessage message)
-        {
-            if (message.View == View)
-            {
-                SelectedIndex = message.Index;
-            }
-        }
+      
         private int selectedIndex;
         public int SelectedIndex
         {
@@ -1276,6 +1272,31 @@ namespace EquipmentList.ViewModel
                 {
                     selectedIndex = value;
                     RaisePropertyChanged("SelectedIndex");
+                }
+            }
+        }
+
+        private void SetSelectedIndexesCounter(SelectedIndexMessage message)
+        {
+            if (message.View == View)
+            {
+                SelectedIndexesCounter = message.Index;
+            }
+        }
+        private int selectedIndexesCounter;
+        public int SelectedIndexesCounter
+        {
+            get
+            {
+                return selectedIndexesCounter;
+            }
+
+            set
+            {
+                if (selectedIndexesCounter != value)
+                {
+                    selectedIndexesCounter = value;
+                    RaisePropertyChanged("SelectedIndexesCounter");
                 }
             }
         }
@@ -1420,6 +1441,24 @@ namespace EquipmentList.ViewModel
         private FbDataAdapter buildingNameAdapter;
         private DataTable buildingNameTable;
 
+        private Boolean viewAllEquipment;
+        public Boolean ViewAllEquipment
+        {
+            get
+            {
+                return viewAllEquipment;
+            }
+
+            set
+            {
+                if (viewAllEquipment != value)
+                {
+                    viewAllEquipment = value;
+                    RaisePropertyChanged("ViewAllEquipment");
+                }
+            }
+        }
+
         public MainViewModel()
         {
             DatabseToolBar = Visibility.Visible;
@@ -1474,13 +1513,15 @@ namespace EquipmentList.ViewModel
             PostedWorkerColor = Brushes.Transparent;
             AlarmColor = Brushes.MistyRose;
 
-            Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetSelectedIndex);
+            Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetSelectedIndexesCounter);
             Messenger.Default.Register<EditDatabaseMessage>(this, MessageType.NotificationMessageAction, EditDatabase);
 
             Clipboard = new Clipboard();
 
             EquipmentWindow w = new EquipmentWindow();
-            w.ShowDialog();
+            //w.ShowDialog();
+
+            ViewAllEquipment = true;
         }
 
         ObservableCollection<string> GetBuildingsNames()

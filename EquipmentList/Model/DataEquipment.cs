@@ -427,8 +427,6 @@ namespace EquipmentList.Model
             ReviewDate = new DateTime();
             LegalizationDate = new DateTime();
             PostingDate = new DateTime();
-
-
         }
     }
 
