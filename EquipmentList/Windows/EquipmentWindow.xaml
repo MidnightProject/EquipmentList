@@ -9,6 +9,7 @@
         xmlns:property="clr-namespace:EquipmentList.Property"
         xmlns:validations="clr-namespace:EquipmentList.Validations"
         xmlns:converters="clr-namespace:EquipmentList.Converters"
+        xmlns:behaviour="clr-namespace:Helpers.DatePickerWatermark"
         mc:Ignorable="d"
         Title="{Binding TitleText}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" MinWidth="350" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Window.Resources>
@@ -74,102 +75,7 @@
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="CalendarStyle" Value="{StaticResource DefaultCalendar}"/>
             </Style>
-            <Style TargetType="{x:Type DatePickerTextBox}">
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
-                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-                <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
-                <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="DatePickerTextBox">
-                            <Grid>
-                                <Grid.Resources>
-                                    <SolidColorBrush x:Key="WatermarkBrush" Color="#FFAAAAAA"/>
-                                </Grid.Resources>
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup Name="CommonStates">
-                                        <VisualStateGroup.Transitions>
-                                            <VisualTransition GeneratedDuration="0" />
-                                            <VisualTransition To="MouseOver" GeneratedDuration="0:0:0.1" />
-                                        </VisualStateGroup.Transitions>
-                                        <VisualState Name="Normal" />
-                                        <VisualState Name="MouseOver">
-                                            <Storyboard>
-                                                <ColorAnimation Storyboard.TargetName="ContentElement" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="#FF99C1E2" Duration="0"/>
-                                                <ColorAnimation Storyboard.TargetName="watermark_decorator" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="#FF99C1E2" Duration="0"/>
-                                            </Storyboard>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                    <VisualStateGroup Name="WatermarkStates">
-                                        <VisualStateGroup.Transitions>
-                                            <VisualTransition GeneratedDuration="0" />
-                                        </VisualStateGroup.Transitions>
-                                        <VisualState Name="Unwatermarked" />
-                                        <VisualState Name="Watermarked">
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetName="ContentElement" Storyboard.TargetProperty="Opacity" To="0" Duration="0" />
-                                                <DoubleAnimation Storyboard.TargetName="PART_Watermark" Storyboard.TargetProperty="Opacity" To="1" Duration="0" />
-                                            </Storyboard>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                    <VisualStateGroup Name="FocusStates">
-                                        <VisualStateGroup.Transitions>
-                                            <VisualTransition GeneratedDuration="0" />
-                                        </VisualStateGroup.Transitions>
-                                        <VisualState Name="Unfocused" />
-                                        <VisualState Name="Focused">
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetName="FocusVisual" Storyboard.TargetProperty="Opacity" To="1" Duration="0" />
-                                            </Storyboard>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-
-
-                                <Border x:Name="Border" 
-                            Background="{TemplateBinding Background}" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
-                            CornerRadius="1" 
-                            Opacity="1">
-                                    <Grid x:Name="WatermarkContent"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                                        <Border x:Name="ContentElement" BorderThickness="1">
-                                            <Border.BorderBrush>
-                                                <SolidColorBrush Color="#FFFFFFFF"/>
-                                            </Border.BorderBrush>
-                                        </Border>
-                                        <Border x:Name="watermark_decorator" BorderThickness="1">
-                                            <Border.BorderBrush>
-                                                <SolidColorBrush Color="#FFFFFFFF"/>
-                                            </Border.BorderBrush>
-                                            <ContentControl x:Name="PART_Watermark"
-                                                    Opacity="0"
-                                                    Focusable="False"
-                                                    IsHitTestVisible="False"
-                                                    Padding="2">
-                                                <ContentControl.Template>
-                                                    <ControlTemplate>
-                                                        <TextBlock Text="N/A"/>
-                                                    </ControlTemplate>
-                                                </ContentControl.Template>
-                                            </ContentControl>
-                                        </Border>
-                                        <ScrollViewer x:Name="PART_ContentHost" 
-                                          Margin="0"
-                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                        <Border x:Name="FocusVisual" BorderBrush="#FF45D6FA" CornerRadius="1" Opacity="0" IsHitTestVisible="False"/>
-                                    </Grid>
-                                </Border>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
+            
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -506,7 +412,10 @@
                                     <Label Grid.Row="5" Grid.Column="0" Content="Production date:"/>
                                     <DatePicker x:Name="productionDatePicker"
                                                 Grid.Row="5" Grid.Column="2"
-                                                Style="{StaticResource DefaultDatePicker}"/>
+                                                SelectedDate="{Binding ProductionDate, Mode=TwoWay}"
+                                                behaviour:DatePickerWatermarkBehaviour.Watermark="{Binding WatermarkProductionDate, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource DefaultDatePicker}">
+                                    </DatePicker>
 
                                     <Label Grid.Row="6" Grid.Column="0" Content="Warranty expiration date:"/>
                                     <DatePicker x:Name="warrantyDatePicker"

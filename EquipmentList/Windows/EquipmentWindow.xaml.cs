@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using System;
+using System.ComponentModel;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -8,14 +10,55 @@ using System.Windows.Threading;
 
 namespace EquipmentList.Windows
 {
-    public partial class EquipmentWindow : Window
+    public partial class EquipmentWindow : Window, INotifyPropertyChanged
     {
-        private RelayCommand testCommand;
-        public RelayCommand TestCommand
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private string watermarkProductionDate;
+        public string WatermarkProductionDate
         {
             get
             {
-                return testCommand = new RelayCommand(null);
+                return watermarkProductionDate;
+            }
+
+            set
+            {
+                watermarkProductionDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? productionDate;
+        public DateTime? ProductionDate
+        {
+            get
+            {
+                return productionDate;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    WatermarkProductionDate = "[...]";
+                    productionDate = null;
+                }
+                else if (value == new DateTime())
+                {
+                    WatermarkProductionDate = "N/A";
+                    productionDate = null;
+                }
+                else
+                {
+                    WatermarkProductionDate = "N/A";
+                    productionDate = value;
+                }               
             }
         }
 
@@ -26,6 +69,9 @@ namespace EquipmentList.Windows
 
             InitializeComponent();
             DataContext = this;
+
+            //WatermarkProductionDate = "[...]";
+            ProductionDate = null;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -50,8 +96,8 @@ namespace EquipmentList.Windows
         {
             if (productionDatePicker.IsDropDownOpen)
             {
-                //productionDatePicker.SelectedDate = new DateTime();
-                productionDatePicker.Text = string.Empty;
+                productionDatePicker.SelectedDate = new DateTime();
+                //productionDatePicker.Text = string.Empty;
                 productionDatePicker.IsDropDownOpen = false;
 
                 return;
@@ -59,8 +105,8 @@ namespace EquipmentList.Windows
 
             if (warrantyDatePicker.IsDropDownOpen)
             {
-                //productionDatePicker.SelectedDate = new DateTime();
-                warrantyDatePicker.Text = string.Empty;
+                productionDatePicker.SelectedDate = new DateTime();
+                //warrantyDatePicker.Text = string.Empty;
                 warrantyDatePicker.IsDropDownOpen = false;
 
                 return;

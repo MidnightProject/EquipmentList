@@ -1505,6 +1505,7 @@ namespace EquipmentList.ViewModel
             }
 
             View = DefinedViews.EquipmentView;
+            ViewAllEquipment = true;
 
             ActiveEmployeeColor = Brushes.Transparent;
             NullEmployeeColor = Brushes.Transparent;
@@ -1519,9 +1520,9 @@ namespace EquipmentList.ViewModel
             Clipboard = new Clipboard();
 
             EquipmentWindow w = new EquipmentWindow();
-            //w.ShowDialog();
+            w.ShowDialog();
 
-            ViewAllEquipment = true;
+            
         }
 
         ObservableCollection<string> GetBuildingsNames()

@@ -153,6 +153,7 @@
     <Compile Include="Converters\ViewToToggleButtonIsVisibilityConverter.cs" />
     <Compile Include="Converters\VisibilityToIsCheckedConverter.cs" />
     <Compile Include="Converters\ActiveEmployeeToColorConverter.cs" />
+    <Compile Include="Helpers\DatePickerWatermarkBehaviour.cs" />
     <Compile Include="Helpers\IEnumerableExtended.cs" />
     <Compile Include="Helpers\StringExtended.cs" />
     <Compile Include="Messages\EditDatabaseMessage.cs" />
