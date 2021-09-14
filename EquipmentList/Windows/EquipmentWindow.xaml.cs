@@ -1,5 +1,7 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using EquipmentList.Model;
+using GalaSoft.MvvmLight.Command;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -18,6 +20,12 @@ namespace EquipmentList.Windows
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public ObservableCollection<string> EquipmentsNames { get; set; }
+
+        public DataEquipment Equipment { get; set; }
+        public string OldID { get; set; }
+        public Boolean IDIsEnabled { get; set; }
 
         private string watermarkProductionDate;
         public string WatermarkProductionDate
@@ -62,16 +70,25 @@ namespace EquipmentList.Windows
             }
         }
 
-        public EquipmentWindow()
+        public EquipmentWindow(DataEquipment equipment)
         {
             Thread.CurrentThread.CurrentCulture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
             Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+                        
+            Equipment = equipment;
+            OldID = Equipment.ID;
 
             InitializeComponent();
             DataContext = this;
 
-            //WatermarkProductionDate = "[...]";
-            ProductionDate = null;
+            if (Equipment.ID == "[...]")
+            {
+                IDIsEnabled = false;
+            }
+            else
+            {
+                IDIsEnabled = true;
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

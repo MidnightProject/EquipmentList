@@ -1519,7 +1519,7 @@ namespace EquipmentList.ViewModel
 
             Clipboard = new Clipboard();
 
-            EquipmentWindow w = new EquipmentWindow();
+            EquipmentWindow w = new EquipmentWindow(new DataEquipment());
             w.ShowDialog();
 
             

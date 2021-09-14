@@ -322,10 +322,10 @@
                             <Image.Style>
                                 <Style TargetType="{x:Type Image}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ViewAllEquipment}" Value="true">
+                                        <DataTrigger Binding="{Binding ViewAllEquipment}" Value="false">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding ViewAllEquipment}" Value="false">
+                                        <DataTrigger Binding="{Binding ViewAllEquipment}" Value="true">
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>

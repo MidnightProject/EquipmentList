@@ -107,7 +107,7 @@
                      Grid.Row="0" Grid.Column="2" MinWidth="50"
                      MaxLength="25"
                      VerticalContentAlignment="Center"
-                     IsEnabled="{Binding NameIsEnabled}"
+                     IsEnabled="{Binding IDIsEnabled}"
                      property:SelectTextOnFocus.Active = "True"
                      Validation.ErrorTemplate="{StaticResource validationTemplate}"
                      Style="{StaticResource ErrorTextBoxStyle}">
@@ -119,7 +119,7 @@
                             <Binding.ValidationRules>
                                 <validations:NameValidationRule>
                                     <validations:NameValidationRule.Wrapper>
-                                        <validations:Wrapper Names="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
+                                        <validations:Wrapper Names="{Binding Data.EquipmentsNames, Source={StaticResource proxy}}"/>
                                     </validations:NameValidationRule.Wrapper>
                                 </validations:NameValidationRule>
                             </Binding.ValidationRules>
@@ -129,27 +129,12 @@
 
                 <Label Grid.Row="1" Grid.Column="0" Content="Name:"/>
                 <TextBox x:Name="nameTextBox" 
-                     Grid.Row="1" Grid.Column="2" MinWidth="50"
-                     MaxLength="25"
-                     VerticalContentAlignment="Center"
-                     IsEnabled="{Binding NameIsEnabled}"
-                     property:SelectTextOnFocus.Active = "True"
-                     Validation.ErrorTemplate="{StaticResource validationTemplate}"
-                     Style="{StaticResource ErrorTextBoxStyle}">
-                    <TextBox.Resources>
-                        <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
-                    </TextBox.Resources>
-                    <TextBox.Text>
-                        <Binding Path="Equipment.Name" UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validations:NameValidationRule>
-                                    <validations:NameValidationRule.Wrapper>
-                                        <validations:Wrapper Names="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
-                                    </validations:NameValidationRule.Wrapper>
-                                </validations:NameValidationRule>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
+                         Grid.Row="1" Grid.Column="2" MinWidth="50"
+                         MaxLength="25"
+                         VerticalContentAlignment="Center"
+                         IsEnabled="{Binding NameIsEnabled}"
+                         property:SelectTextOnFocus.Active = "True"
+                         Text="{Binding Equipment.Name, UpdateSourceTrigger=PropertyChanged}">
                 </TextBox>
 
                 <Label Grid.Row="2" Grid.Column="0" Content="Description:"/>
@@ -158,27 +143,11 @@
                     <TextBox x:Name="descriptionTextBox" 
                              MaxLength="250"
                              VerticalContentAlignment="Center"
-                             IsEnabled="{Binding NameIsEnabled}"
                              TextWrapping="Wrap"
                              AcceptsReturn="True"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              property:SelectTextOnFocus.Active = "True"
-                             Validation.ErrorTemplate="{StaticResource validationTemplate}"
-                             Style="{StaticResource ErrorTextBoxStyle}">
-                        <TextBox.Resources>
-                            <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
-                        </TextBox.Resources>
-                        <TextBox.Text>
-                            <Binding Path="Equipment.Name" UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validations:NameValidationRule>
-                                        <validations:NameValidationRule.Wrapper>
-                                            <validations:Wrapper Names="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
-                                        </validations:NameValidationRule.Wrapper>
-                                    </validations:NameValidationRule>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
+                             Text="{Binding Equipment.Description, UpdateSourceTrigger=PropertyChanged}">
                     </TextBox>
                 </ScrollViewer>
 
@@ -188,8 +157,8 @@
                     <ComboBox 
                                 MinWidth="50"
                                 VerticalContentAlignment="Center"
-                                ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
-                                SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
+                                ItemsSource="{Binding ConditionList, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding Equipment.Condition, UpdateSourceTrigger=PropertyChanged}"/>
                     <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
                         <Image.RenderTransform>
                             <TransformGroup>
@@ -201,7 +170,7 @@
                         </Image.RenderTransform>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDown">
-                                <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Add"/>
+                                <i:InvokeCommandAction Command="{Binding ConditionCommand}" CommandParameter="Add"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Image>
@@ -216,14 +185,14 @@
                         </Image.RenderTransform>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDown">
-                                <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Remove"/>
+                                <i:InvokeCommandAction Command="{Binding ConditionCommand}" CommandParameter="Remove"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Image>
                     <Image Source="/Images/pencil.png" ToolTip="Edit" MaxHeight="16" Margin="5,0,0,0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDown">
-                                <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Edit"/>
+                                <i:InvokeCommandAction Command="{Binding ConditionCommand}" CommandParameter="Edit"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Image>

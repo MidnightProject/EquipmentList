@@ -406,7 +406,7 @@ namespace EquipmentList.Model
             Attestation = new DataContractor();
             Employee = new DataEmployee();
 
-            ID = String.Empty;
+            ID = "New ID";
             Name = String.Empty;
             SN = String.Empty;
             Group = String.Empty;
@@ -432,9 +432,57 @@ namespace EquipmentList.Model
 
     public static class DataEquipmentExtensions
     {
-        public static DataEquipment GetEquipment(this IList<DataEquipment> list, string name)
+        public static DataEquipment GetEquipment(this IList<DataEquipment> list, string id)
         {
-            var dataEquipment = list.FirstOrDefault(equipment => equipment.Name == name);
+            var dataEquipment = list.FirstOrDefault(equipment => equipment.ID == id);
+
+            return dataEquipment;
+        }
+
+        public static DataEquipment Values(this List<DataEquipment> colection)
+        {
+            DataEquipment dataEquipment = new DataEquipment();
+
+            if (colection.IsSameValue(i => i.ID))
+            {
+                dataEquipment.ID = colection[0].ID;
+            }
+            else
+            {
+                dataEquipment.ID = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Name))
+            {
+                dataEquipment.Name = colection[0].Name;
+            }
+            else
+            {
+                dataEquipment.Name = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Description))
+            {
+                dataEquipment.Description = colection[0].Description;
+            }
+            else
+            {
+                dataEquipment.Description = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Condition))
+            {
+                dataEquipment.Condition = colection[0].Condition;
+            }
+            else
+            {
+                dataEquipment.Condition = "[...]";
+            }
+
+            
+
+
+
 
             return dataEquipment;
         }
