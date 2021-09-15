@@ -22,6 +22,11 @@ namespace EquipmentList.Validations
 
             if (Wrapper != null)
             {
+                if (Wrapper.Names == null)
+                {
+                    return ValidationResult.ValidResult;
+                }
+
                 foreach (string s in Wrapper.Names)
                 {
                     if (name.ToUpper() == s.ToUpper())

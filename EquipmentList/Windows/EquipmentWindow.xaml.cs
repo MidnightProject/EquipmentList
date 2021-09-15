@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Clipboard = EquipmentList.Model.Clipboard;
 
 namespace EquipmentList.Windows
 {
@@ -21,11 +22,19 @@ namespace EquipmentList.Windows
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ObservableCollection<string> EquipmentsNames { get; set; }
+        public ObservableCollection<string> EquipmentsIDList { get; set; }
+        public ObservableCollection<string> ConditionList { get; set; }
 
         public DataEquipment Equipment { get; set; }
         public string OldID { get; set; }
         public Boolean IDIsEnabled { get; set; }
+
+        public MessageBoxResult Result { get; set; }
+
+        public string TitleText { get; set; }
+        public string ButtonOKText { get; set; }
+
+        public Clipboard Clipboard { get; set; }
 
         private string watermarkProductionDate;
         public string WatermarkProductionDate
@@ -70,7 +79,7 @@ namespace EquipmentList.Windows
             }
         }
 
-        public EquipmentWindow(DataEquipment equipment)
+        public EquipmentWindow(DataEquipment equipment, ObservableCollection<string> equipmentsID, ObservableCollection<string> condition, Clipboard clipboard, string title, string buttonOKText)
         {
             Thread.CurrentThread.CurrentCulture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
             Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
@@ -81,6 +90,11 @@ namespace EquipmentList.Windows
             InitializeComponent();
             DataContext = this;
 
+            Clipboard = clipboard;
+
+            TitleText = title;
+            ButtonOKText = buttonOKText;
+
             if (Equipment.ID == "[...]")
             {
                 IDIsEnabled = false;
@@ -89,6 +103,9 @@ namespace EquipmentList.Windows
             {
                 IDIsEnabled = true;
             }
+
+            EquipmentsIDList = equipmentsID;
+            ConditionList = condition;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -99,6 +116,34 @@ namespace EquipmentList.Windows
             {
                 indexTextBox.SelectAll();
             }));
+        }
+
+        private RelayCommand button_OK;
+        public RelayCommand Button_OK
+        {
+            get
+            {
+                return button_OK = new RelayCommand(() => Click_OK());
+            }
+        }
+        private void Click_OK()
+        {
+            Result = MessageBoxResult.OK;
+            this.Close();
+        }
+
+        private RelayCommand button_Cancel;
+        public RelayCommand Button_Cancel
+        {
+            get
+            {
+                return button_Cancel = new RelayCommand(() => Click_Cancel());
+            }
+        }
+        private void Click_Cancel()
+        {
+            Result = MessageBoxResult.Cancel;
+            this.Close();
         }
 
         private RelayCommand naDateCommand;

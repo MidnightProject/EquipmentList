@@ -1441,6 +1441,12 @@ namespace EquipmentList.ViewModel
         private FbDataAdapter buildingNameAdapter;
         private DataTable buildingNameTable;
 
+        private FbDataAdapter equipmentIDAdapter;
+        private DataTable equipmentIDTable;
+
+        private FbDataAdapter conditionAdapter;
+        private DataTable conditionTable;
+
         private Boolean viewAllEquipment;
         public Boolean ViewAllEquipment
         {
@@ -1482,6 +1488,9 @@ namespace EquipmentList.ViewModel
             connection.Open();
 
             equipmentAdapter = new FbDataAdapter("SELECT * FROM EQUIPMENTVIEW", connection);
+            equipmentIDAdapter = new FbDataAdapter("SELECT ID FROM EQUIPMENT", connection);
+            conditionAdapter = new FbDataAdapter("SELECT STATE FROM CONDITION", connection);
+
             employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEEVIEW", connection);
             employeeNameAdapter = new FbDataAdapter("SELECT NAME FROM EMPLOYEE", connection);
             employeeJobAdapter = new FbDataAdapter("SELECT TITLE FROM JOB", connection);
@@ -1519,7 +1528,7 @@ namespace EquipmentList.ViewModel
 
             Clipboard = new Clipboard();
 
-            EquipmentWindow w = new EquipmentWindow(new DataEquipment());
+            EquipmentWindow w = new EquipmentWindow(new DataEquipment(), GetEquipmentID(), GetCondition(), Clipboard, "title", "add");
             w.ShowDialog();
 
             
@@ -1568,6 +1577,36 @@ namespace EquipmentList.ViewModel
             }
 
             return EmployeesNames;
+        }
+
+        ObservableCollection<string> GetEquipmentID()
+        {
+            ObservableCollection<string> EquipmentID = new ObservableCollection<string>();
+
+            equipmentIDTable = new DataTable();
+            equipmentIDAdapter.Fill(equipmentIDTable);
+
+            foreach (DataRow row in equipmentIDTable.Rows)
+            {
+                EquipmentID.Add(row["ID"].ToString());
+            }
+
+            return EquipmentID;
+        }
+
+        ObservableCollection<string> GetCondition()
+        {
+            ObservableCollection<string> Condition = new ObservableCollection<string>();
+
+            conditionTable = new DataTable();
+            conditionAdapter.Fill(conditionTable);
+
+            foreach (DataRow row in conditionTable.Rows)
+            {
+                Condition.Add(row["STATE"].ToString());
+            }
+
+            return Condition;
         }
     }
 }

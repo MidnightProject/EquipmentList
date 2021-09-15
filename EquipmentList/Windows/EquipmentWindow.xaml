@@ -119,7 +119,7 @@
                             <Binding.ValidationRules>
                                 <validations:NameValidationRule>
                                     <validations:NameValidationRule.Wrapper>
-                                        <validations:Wrapper Names="{Binding Data.EquipmentsNames, Source={StaticResource proxy}}"/>
+                                        <validations:Wrapper Names="{Binding Data.EquipmentsIDList, Source={StaticResource proxy}}"/>
                                     </validations:NameValidationRule.Wrapper>
                                 </validations:NameValidationRule>
                             </Binding.ValidationRules>
