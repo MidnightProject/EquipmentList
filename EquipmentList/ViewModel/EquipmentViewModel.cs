@@ -300,11 +300,20 @@ namespace EquipmentList.ViewModel
                         Postcode = row["EQUIPMENT_BUILDING_POSTCODE"].ToString(),
                     },
                     Group = row["SUBGROUP"].ToString(),
-                    PostedWorkerName = row["REPLACEMENT_EMPLOYEE_NAME"].ToString(),
+                    PostedWorker = new DataEmployee()
+                    {
+                        ID = row["REPLACEMENT_EMPLOYEE_ID"].ToString(),
+
+                        Person = new DataPerson()
+                        {
+                            Name = row["REPLACEMENT_EMPLOYEE_NAME"].ToString(),
+                        }
+                    },
                     EmployeesName = employeeName + "#" + replacementEmployeeName,
                     Employee = new DataEmployee()
                     {
                         Room = row["EMPLOYEE_ROOM"].ToString(),
+                        ID = row["EMPLOYEE"].ToString(),
 
                         Person = new DataPerson()
                         {

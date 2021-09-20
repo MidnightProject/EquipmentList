@@ -12,6 +12,7 @@ namespace EquipmentList.Model
 
         public DataBuilding Building { get; set; }
         public DataEmployee Employee { get; set; }
+        public DataEmployee PostedWorker { get; set; }
         public DataContractor Producer { get; set; }
         public DataContractor Provider { get; set; }
         public DataContractor Service { get; set; }
@@ -233,26 +234,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private string postedWorkerName;
-        public string PostedWorkerName
-        {
-            get
-            {
-                return postedWorkerName;
-            }
-
-            set
-            {
-                if (postedWorkerName != value)
-                {
-                    postedWorkerName = value.TrimStartString();
-                    RaisePropertyChanged("PostedWorkerName");
-                }
-            }
-        }
-
-        private DateTime productionDate;
-        public DateTime ProductionDate
+        private DateTime? productionDate;
+        public DateTime? ProductionDate
         {
             get
             {
@@ -269,8 +252,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private DateTime warrantyDate;
-        public DateTime WarrantyDate
+        private DateTime? warrantyDate;
+        public DateTime? WarrantyDate
         {
             get
             {
@@ -405,6 +388,7 @@ namespace EquipmentList.Model
             Service = new DataContractor();
             Attestation = new DataContractor();
             Employee = new DataEmployee();
+            PostedWorker = new DataEmployee();
 
             ID = "New ID";
             Name = String.Empty;
@@ -417,8 +401,7 @@ namespace EquipmentList.Model
             Norm = string.Empty;
             CertificationNumber = String.Empty;
             EmployeeActive = false;
-            employeesName = String.Empty;
-            PostedWorkerName = string.Empty;
+            EmployeesName = String.Empty;
             WarrantyAlarm = 0;
             ReviewAlarm = 0;
             LegalizationAlarm = 0;

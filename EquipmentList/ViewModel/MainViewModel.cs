@@ -1432,20 +1432,11 @@ namespace EquipmentList.ViewModel
         private FbDataAdapter employeeAdapter;
         private DataTable employeeTable;
 
-        private FbDataAdapter employeeNameAdapter;
-        private DataTable employeeNameTable;
-
         private FbDataAdapter employeeJobAdapter;
         private DataTable employeeJobTable;
 
-        private FbDataAdapter buildingNameAdapter;
-        private DataTable buildingNameTable;
-
         private FbDataAdapter equipmentIDAdapter;
         private DataTable equipmentIDTable;
-
-        private FbDataAdapter conditionAdapter;
-        private DataTable conditionTable;
 
         private Boolean viewAllEquipment;
         public Boolean ViewAllEquipment
@@ -1489,17 +1480,12 @@ namespace EquipmentList.ViewModel
 
             equipmentAdapter = new FbDataAdapter("SELECT * FROM EQUIPMENTVIEW", connection);
             equipmentIDAdapter = new FbDataAdapter("SELECT ID FROM EQUIPMENT", connection);
-            conditionAdapter = new FbDataAdapter("SELECT STATE FROM CONDITION", connection);
+            //conditionAdapter = new FbDataAdapter("SELECT STATE FROM CONDITION", connection);
 
             employeeAdapter = new FbDataAdapter("SELECT * FROM EMPLOYEEVIEW", connection);
-            employeeNameAdapter = new FbDataAdapter("SELECT NAME FROM EMPLOYEE", connection);
             employeeJobAdapter = new FbDataAdapter("SELECT TITLE FROM JOB", connection);
 
             buildingAdapter = new FbDataAdapter("SELECT * FROM BUILDING", connection);
-            buildingNameAdapter = new FbDataAdapter("SELECT NAME FROM BUILDING", connection);
-
-            employeeNameTable = new DataTable();
-            employeeAdapter.Fill(employeeNameTable);
 
             employeeTable = new DataTable();
             employeeAdapter.Fill(employeeTable);
@@ -1528,7 +1514,7 @@ namespace EquipmentList.ViewModel
 
             Clipboard = new Clipboard();
 
-            EquipmentWindow w = new EquipmentWindow(new DataEquipment(), GetEquipmentID(), GetCondition(), Clipboard, "title", "add");
+            EquipmentWindow w = new EquipmentWindow(new DataEquipment(), GetEquipmentID(), GetCondition(), GetContractor(), GetGroup(), GetNorm(), GetBuildingsNames(), GetEmployees(), Clipboard, "title", "add");
             w.ShowDialog();
 
             
@@ -1536,17 +1522,18 @@ namespace EquipmentList.ViewModel
 
         ObservableCollection<string> GetBuildingsNames()
         {
-            ObservableCollection<string> BuildingsNames = new ObservableCollection<string>();
+            ObservableCollection<string> buildingsNames = new ObservableCollection<string>();
+            FbDataAdapter adapter = new FbDataAdapter("SELECT NAME FROM BUILDING", connection);
+            DataTable table = new DataTable();
 
-            buildingNameTable = new DataTable();
-            buildingAdapter.Fill(buildingNameTable);
-            
-            foreach (DataRow row in buildingNameTable.Rows)
+            adapter.Fill(table);
+
+            foreach (DataRow row in table.Rows)
             {
-                BuildingsNames.Add(row["Name"].ToString());
+                buildingsNames.Add(row["NAME"].ToString());
             }
 
-            return BuildingsNames;
+            return buildingsNames;
         }
 
         ObservableCollection<string> GetJobTitles()
@@ -1566,17 +1553,39 @@ namespace EquipmentList.ViewModel
 
         ObservableCollection<string> GetEmployeesNames()
         {
-            ObservableCollection<string> EmployeesNames = new ObservableCollection<string>();
+            ObservableCollection<string> employeesNames = new ObservableCollection<string>();
+            FbDataAdapter adapter = new FbDataAdapter("SELECT NAME FROM EMPLOYEE", connection);
+            DataTable table = new DataTable();
 
-            employeeNameTable = new DataTable();
-            employeeNameAdapter.Fill(employeeNameTable);
+            adapter.Fill(table);
 
-            foreach (DataRow row in employeeNameTable.Rows)
+            foreach (DataRow row in table.Rows)
             {
-                EmployeesNames.Add(row["Name"].ToString());
+                employeesNames.Add(row["NAME"].ToString());
             }
 
-            return EmployeesNames;
+            return employeesNames;
+        }
+
+        Model.Employee GetEmployees()
+        {
+            FbDataAdapter adapter = new FbDataAdapter("SELECT ID, NAME FROM EMPLOYEE", connection);
+            DataTable table = new DataTable();
+
+            adapter.Fill(table);
+
+            List<string> name = new List<string>();
+            List<string> id = new List<string>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                name.Add(row["NAME"].ToString());
+                id.Add(row["ID"].ToString());
+            }
+
+            Model.Employee employees = new Model.Employee(id, name);
+
+            return employees;
         }
 
         ObservableCollection<string> GetEquipmentID()
@@ -1596,17 +1605,66 @@ namespace EquipmentList.ViewModel
 
         ObservableCollection<string> GetCondition()
         {
-            ObservableCollection<string> Condition = new ObservableCollection<string>();
+            ObservableCollection<string> condition = new ObservableCollection<string>();
+            FbDataAdapter adapter = new FbDataAdapter("SELECT STATE FROM CONDITION", connection);
+            DataTable table = new DataTable();
 
-            conditionTable = new DataTable();
-            conditionAdapter.Fill(conditionTable);
+            adapter.Fill(table);
 
-            foreach (DataRow row in conditionTable.Rows)
+            foreach (DataRow row in table.Rows)
             {
-                Condition.Add(row["STATE"].ToString());
+                condition.Add(row["STATE"].ToString());
             }
 
-            return Condition;
+            return condition;
+        }
+
+        ObservableCollection<string> GetContractor()
+        {
+            ObservableCollection<string> contractor = new ObservableCollection<string>();
+            FbDataAdapter adapter = new FbDataAdapter("SELECT NAME FROM CONTRACTOR", connection);
+            DataTable table = new DataTable();
+
+            adapter.Fill(table);
+
+            foreach (DataRow row in table.Rows)
+            {
+                contractor.Add(row["NAME"].ToString());
+            }
+
+            return contractor;
+        }
+
+        ObservableCollection<string> GetGroup()
+        {
+            ObservableCollection<string> group = new ObservableCollection<string>();
+            FbDataAdapter adapter = new FbDataAdapter("SELECT NAME FROM SUBGROUP", connection);
+            DataTable table = new DataTable();
+
+            adapter.Fill(table);
+
+            foreach (DataRow row in table.Rows)
+            {
+                group.Add(row["NAME"].ToString());
+            }
+
+            return group;
+        }
+
+        ObservableCollection<string> GetNorm()
+        {
+            ObservableCollection<string> norm = new ObservableCollection<string>();
+            FbDataAdapter adapter = new FbDataAdapter("SELECT NAME FROM NORM", connection);
+            DataTable table = new DataTable();
+
+            adapter.Fill(table);
+
+            foreach (DataRow row in table.Rows)
+            {
+                norm.Add(row["NAME"].ToString());
+            }
+
+            return norm;
         }
     }
 }

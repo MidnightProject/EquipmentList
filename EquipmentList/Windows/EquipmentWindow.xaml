@@ -157,7 +157,7 @@
                     <ComboBox 
                                 MinWidth="50"
                                 VerticalContentAlignment="Center"
-                                ItemsSource="{Binding ConditionList, UpdateSourceTrigger=PropertyChanged}"
+                                ItemsSource="{Binding ConditionsList, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedItem="{Binding Equipment.Condition, UpdateSourceTrigger=PropertyChanged}"/>
                     <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
                         <Image.RenderTransform>
@@ -240,8 +240,8 @@
                                         <ComboBox 
                                                 MinWidth="50"
                                                 VerticalContentAlignment="Center"
-                                                ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
+                                                ItemsSource="{Binding ContractorsList, UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedItem="{Binding Equipment.Producer.Name, UpdateSourceTrigger=PropertyChanged}"/>
                                     </WrapPanel>
 
                                     <Label Grid.Row="1" Grid.Column="0" Content="Serial Number:"/>
@@ -250,22 +250,7 @@
                                                 MaxLength="25"
                                                 VerticalContentAlignment="Center"
                                                 property:SelectTextOnFocus.Active = "True"
-                                                Validation.ErrorTemplate="{StaticResource validationTemplate}"
-                                                Style="{StaticResource ErrorTextBoxStyle}">
-                                        <TextBox.Resources>
-                                            <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
-                                        </TextBox.Resources>
-                                        <TextBox.Text>
-                                            <Binding Path="Employee.Email" UpdateSourceTrigger="PropertyChanged">
-                                                <Binding.ValidationRules>
-                                                    <validations:EmailValidationRule>
-                                                        <validations:EmailValidationRule.Wrapper>
-                                                            <validations:Wrapper EmployeeEmail="{Binding Data.Employee.Email, Source={StaticResource proxy}}"/>
-                                                        </validations:EmailValidationRule.Wrapper>
-                                                    </validations:EmailValidationRule>
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
+                                                Text="{Binding Equipment.SN, UpdateSourceTrigger=PropertyChanged}">
                                     </TextBox>
 
                                     <Label  Grid.Row="2" Grid.Column="0" Content="Group:"/>
@@ -274,8 +259,8 @@
                                         <ComboBox 
                                                 MinWidth="50"
                                                 VerticalContentAlignment="Center"
-                                                ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
+                                                ItemsSource="{Binding GroupsList, UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedItem="{Binding Equipment.Group, UpdateSourceTrigger=PropertyChanged}"/>
                                         <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
                                             <Image.RenderTransform>
                                                 <TransformGroup>
@@ -321,8 +306,8 @@
                                         <ComboBox 
                                                 MinWidth="50"
                                                 VerticalContentAlignment="Center"
-                                                ItemsSource="{Binding JobTitleList, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedItem="{Binding Employee.Job, UpdateSourceTrigger=PropertyChanged}"/>
+                                                ItemsSource="{Binding NormsList, UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedItem="{Binding Equipment.Norm, UpdateSourceTrigger=PropertyChanged}"/>
                                         <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
                                             <Image.RenderTransform>
                                                 <TransformGroup>
@@ -368,7 +353,7 @@
                                         <ComboBox   MinWidth="50"
                                                     VerticalContentAlignment="Center"
                                                     ItemsSource="{Binding BuildingsList, UpdateSourceTrigger=PropertyChanged}"
-                                                    SelectedItem="{Binding Employee.Building}"/>
+                                                    SelectedItem="{Binding Equipment.Building.Name}"/>
                                     </WrapPanel>
 
                                     <Label Grid.Row="4" Grid.Column="3" Content="Room:"/>
@@ -376,7 +361,7 @@
                                                 MaxLength="10"
                                                 VerticalContentAlignment="Center"
                                                 property:SelectTextOnFocus.Active = "True"
-                                                Text="{Binding Employee.Room, UpdateSourceTrigger=PropertyChanged}"/>
+                                                Text="{Binding Equipment.Room, UpdateSourceTrigger=PropertyChanged}"/>
 
                                     <Label Grid.Row="5" Grid.Column="0" Content="Production date:"/>
                                     <DatePicker x:Name="productionDatePicker"
@@ -389,6 +374,8 @@
                                     <Label Grid.Row="6" Grid.Column="0" Content="Warranty expiration date:"/>
                                     <DatePicker x:Name="warrantyDatePicker"
                                                 Grid.Row="6" Grid.Column="2"
+                                                SelectedDate="{Binding WarrantyDate, Mode=TwoWay}"
+                                                behaviour:DatePickerWatermarkBehaviour.Watermark="{Binding WatermarkWarrantyDate, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource DefaultDatePicker}"/>
 
                                     <Label Grid.Row="7" Grid.Column="0" Content="Comment:"/>
@@ -401,24 +388,9 @@
                                                         IsEnabled="{Binding NameIsEnabled}"
                                                         TextWrapping="Wrap"
                                                         AcceptsReturn="True"
+                                                        Text="{Binding Equipment.Comments, UpdateSourceTrigger=PropertyChanged}"
                                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                        property:SelectTextOnFocus.Active = "True"
-                                                        Validation.ErrorTemplate="{StaticResource validationTemplate}"
-                                                        Style="{StaticResource ErrorTextBoxStyle}">
-                                                <TextBox.Resources>
-                                                    <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
-                                                </TextBox.Resources>
-                                                <TextBox.Text>
-                                                    <Binding Path="Equipment.Name" UpdateSourceTrigger="PropertyChanged">
-                                                        <Binding.ValidationRules>
-                                                            <validations:NameValidationRule>
-                                                                <validations:NameValidationRule.Wrapper>
-                                                                    <validations:Wrapper Names="{Binding Data.BuildingsNames, Source={StaticResource proxy}}"/>
-                                                                </validations:NameValidationRule.Wrapper>
-                                                            </validations:NameValidationRule>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
+                                                        property:SelectTextOnFocus.Active = "True">
                                             </TextBox>
                                         </Grid>
                                     </ScrollViewer>
@@ -497,9 +469,10 @@
                                 <WrapPanel  Grid.Row="0" Grid.Column="2" Orientation="Horizontal"
                                             VerticalAlignment="Center" Margin="0,2">
                                     <ComboBox   MinWidth="50"
-                                                    VerticalContentAlignment="Center"
-                                                    ItemsSource="{Binding BuildingsList, UpdateSourceTrigger=PropertyChanged}"
-                                                    SelectedItem="{Binding Employee.Building}"/>
+                                                VerticalContentAlignment="Center"
+                                                ItemsSource="{Binding EmployeesList.Name, UpdateSourceTrigger=PropertyChanged}"
+                                                SelectedItem="{Binding AssignedEmployee}">
+                                    </ComboBox>
                                 </WrapPanel>
 
                                 <Label  Grid.Row="1" Grid.Column="0" Content="Posted worker:"/>
@@ -507,8 +480,8 @@
                                             VerticalAlignment="Center" Margin="0,2">
                                     <ComboBox   MinWidth="50"
                                                     VerticalContentAlignment="Center"
-                                                    ItemsSource="{Binding BuildingsList, UpdateSourceTrigger=PropertyChanged}"
-                                                    SelectedItem="{Binding Employee.Building}"/>
+                                                    ItemsSource="{Binding EmployeesList.Name, UpdateSourceTrigger=PropertyChanged}"
+                                                    SelectedItem="{Binding Equipment.Employee.Person.Name}"/>
                                 </WrapPanel>
 
                                 <Label  Grid.Row="1" Grid.Column="3" Margin="0,0,10,0" Content="End date of posting:"/>
