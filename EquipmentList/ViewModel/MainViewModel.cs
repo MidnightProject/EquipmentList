@@ -364,7 +364,7 @@ namespace EquipmentList.ViewModel
         }
         private void AddEmployee()
         {
-            EmployeeWindow employeeWindow = new EmployeeWindow(new DataEmployee(), GetJobTitles(), GetBuildingsNames(), Clipboard, "Add employee", "Add");
+            EmployeeWindow employeeWindow = new EmployeeWindow(new DataEmployee(){ Building = new DataBuilding() { Name = String.Empty} }, GetJobTitles(), GetBuildingsNames(), Clipboard, "Add employee", "Add");
             employeeWindow.ShowDialog();
 
             if (employeeWindow.Result == MessageBoxResult.OK)

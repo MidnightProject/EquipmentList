@@ -17,7 +17,7 @@ namespace EquipmentList.Validations
 
             if (String.IsNullOrEmpty(name))
             {
-                return new ValidationResult(false, $"Name cannot be empty");
+                return new ValidationResult(false, $"Property cannot be empty");
             }
 
             if (Wrapper != null)

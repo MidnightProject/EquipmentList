@@ -64,6 +64,29 @@ namespace EquipmentList.Windows
                 Equipment.Employee.ID = EmployeesList.ID[index];
             }
         }
+
+        public string PostedWorker
+        {
+            get
+            {
+                int index = EmployeesList.ID.IndexOf(Equipment.PostedWorker.ID);
+
+                if (index != -1)
+                {
+                    return EmployeesList.Name[index];
+                }
+
+                return String.Empty;
+            }
+
+            set
+            {
+                int index = EmployeesList.Name.IndexOf(value);
+
+                Equipment.PostedWorker.ID = EmployeesList.ID[index];
+            }
+        }
+
         private string watermarkProductionDate;
         public string WatermarkProductionDate
         {
@@ -156,6 +179,144 @@ namespace EquipmentList.Windows
             }
         }
 
+        private string watermarkPostingDate;
+        public string WatermarkPostingDate
+        {
+            get
+            {
+                return watermarkPostingDate;
+            }
+
+            set
+            {
+                watermarkPostingDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? postingDate;
+        public DateTime? PostingDate
+        {
+            get
+            {
+                return postingDate;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    WatermarkPostingDate = "[...]";
+                    postingDate = null;
+                    Equipment.PostingDate = null;
+                }
+                else if (value == new DateTime())
+                {
+                    WatermarkPostingDate = "N/A";
+                    postingDate = null;
+                    Equipment.PostingDate = new DateTime();
+                }
+                else
+                {
+                    WatermarkPostingDate = "N/A";
+                    postingDate = value;
+                    Equipment.PostingDate = value;
+                }
+            }
+        }
+
+        private string watermarkReviewDate;
+        public string WatermarkReviewDate
+        {
+            get
+            {
+                return watermarkReviewDate;
+            }
+
+            set
+            {
+                watermarkReviewDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? reviewDate;
+        public DateTime? ReviewDate
+        {
+            get
+            {
+                return reviewDate;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    WatermarkReviewDate = "[...]";
+                    reviewDate = null;
+                    Equipment.ReviewDate = null;
+                }
+                else if (value == new DateTime())
+                {
+                    WatermarkReviewDate = "N/A";
+                    reviewDate = null;
+                    Equipment.ReviewDate = new DateTime();
+                }
+                else
+                {
+                    WatermarkReviewDate = "N/A";
+                    reviewDate = value;
+                    Equipment.ReviewDate = value;
+                }
+            }
+        }
+
+        private string watermarkLegalizationDate;
+        public string WatermarkLegalizationDate
+        {
+            get
+            {
+                return watermarkLegalizationDate;
+            }
+
+            set
+            {
+                watermarkLegalizationDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? legalizationDate;
+        public DateTime? LegalizationDate
+        {
+            get
+            {
+                return legalizationDate;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    WatermarkLegalizationDate = "[...]";
+                    legalizationDate = null;
+                    Equipment.LegalizationDate = null;
+                }
+                else if (value == new DateTime())
+                {
+                    WatermarkLegalizationDate = "N/A";
+                    legalizationDate = null;
+                    Equipment.LegalizationDate = new DateTime();
+                }
+                else
+                {
+                    WatermarkLegalizationDate = "N/A";
+                    legalizationDate = value;
+                    Equipment.LegalizationDate = value;
+                }
+            }
+        }
+
         public EquipmentWindow(DataEquipment equipment, ObservableCollection<string> equipmentsID, ObservableCollection<string> condition,
                                 ObservableCollection<string> contractor, ObservableCollection<string> group, ObservableCollection<string> norm,
                                 ObservableCollection<string> building, Model.Employee employee, Clipboard clipboard, string title, string buttonOKText)
@@ -202,11 +363,13 @@ namespace EquipmentList.Windows
 
             ProductionDate = Equipment.ProductionDate;
             WarrantyDate = Equipment.WarrantyDate;
+            PostingDate = Equipment.PostingDate;
+            ReviewDate = Equipment.ReviewDate;
+            LegalizationDate = Equipment.LegalizationDate;
 
             EmployeesList = employee;
-            //EmployeesList.Insert(0, new Model.Employee() { Name = String.Empty } );
 
-            //Equipment.Employee.ID = "00000000-0000-0000-0000-000000000000";
+            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -260,7 +423,6 @@ namespace EquipmentList.Windows
             if (productionDatePicker.IsDropDownOpen)
             {
                 productionDatePicker.SelectedDate = new DateTime();
-                //productionDatePicker.Text = string.Empty;
                 productionDatePicker.IsDropDownOpen = false;
 
                 return;
@@ -268,9 +430,32 @@ namespace EquipmentList.Windows
 
             if (warrantyDatePicker.IsDropDownOpen)
             {
-                productionDatePicker.SelectedDate = new DateTime();
-                //warrantyDatePicker.Text = string.Empty;
+                warrantyDatePicker.SelectedDate = new DateTime();
                 warrantyDatePicker.IsDropDownOpen = false;
+
+                return;
+            }
+
+            if (postingDatePicker.IsDropDownOpen)
+            {
+                postingDatePicker.SelectedDate = new DateTime();
+                postingDatePicker.IsDropDownOpen = false;
+
+                return;
+            }
+
+            if (reviewDatePicker.IsDropDownOpen)
+            {
+                reviewDatePicker.SelectedDate = new DateTime();
+                reviewDatePicker.IsDropDownOpen = false;
+
+                return;
+            }
+
+            if (legalizationDatePicker.IsDropDownOpen)
+            {
+                legalizationDatePicker.SelectedDate = new DateTime();
+                legalizationDatePicker.IsDropDownOpen = false;
 
                 return;
             }
@@ -298,6 +483,30 @@ namespace EquipmentList.Windows
             {
                 warrantyDatePicker.SelectedDate = DateTime.Today;
                 warrantyDatePicker.IsDropDownOpen = false;
+
+                return;
+            }
+
+            if (postingDatePicker.IsDropDownOpen)
+            {
+                postingDatePicker.SelectedDate = DateTime.Today;
+                postingDatePicker.IsDropDownOpen = false;
+
+                return;
+            }
+
+            if (reviewDatePicker.IsDropDownOpen)
+            {
+                reviewDatePicker.SelectedDate = DateTime.Today;
+                reviewDatePicker.IsDropDownOpen = false;
+
+                return;
+            }
+
+            if (legalizationDatePicker.IsDropDownOpen)
+            {
+                legalizationDatePicker.SelectedDate = DateTime.Today;
+                legalizationDatePicker.IsDropDownOpen = false;
 
                 return;
             }

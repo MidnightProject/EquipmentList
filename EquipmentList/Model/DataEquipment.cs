@@ -270,8 +270,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private DateTime reviewDate;
-        public DateTime ReviewDate
+        private DateTime? reviewDate;
+        public DateTime? ReviewDate
         {
             get
             {
@@ -288,8 +288,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private DateTime legalizationDate;
-        public DateTime LegalizationDate
+        private DateTime? legalizationDate;
+        public DateTime? LegalizationDate
         {
             get
             {
@@ -306,8 +306,8 @@ namespace EquipmentList.Model
             }
         }
 
-        private DateTime postingDate;
-        public DateTime PostingDate
+        private DateTime? postingDate;
+        public DateTime? PostingDate
         {
             get
             {
@@ -462,7 +462,14 @@ namespace EquipmentList.Model
                 dataEquipment.Condition = "[...]";
             }
 
-            
+            if (colection.IsSameValue(i => i.Producer))
+            {
+                dataEquipment.Producer = colection[0].Producer;
+            }
+            else
+            {
+                dataEquipment.Producer.Name = "[...]";
+            }
 
 
 

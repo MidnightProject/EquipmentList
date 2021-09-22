@@ -201,10 +201,10 @@
                     <Image.Visibility>
                         <MultiBinding Converter="{StaticResource visibilityClearConverter}">
                             <Binding Path="Employee.Job"/>
-                            <Binding Path="Employee.Building"/>
+                            <Binding Path="Employee.Building.Name"/>
                             <Binding Path="Employee.Room"/>
-                            <Binding Path="Employee.Phone"/>
-                            <Binding Path="Employee.Email"/>
+                            <Binding Path="Employee.Person.Phone"/>
+                            <Binding Path="Employee.Person.Email"/>
                         </MultiBinding>
                     </Image.Visibility>
                     <i:Interaction.Triggers>
@@ -217,10 +217,10 @@
                     <Image.Visibility>
                         <MultiBinding Converter="{StaticResource visibilityCopyConverter}">
                             <Binding Path="Employee.Job"/>
-                            <Binding Path="Employee.Building"/>
+                            <Binding Path="Employee.Building.Name"/>
                             <Binding Path="Employee.Room"/>
-                            <Binding Path="Employee.Phone"/>
-                            <Binding Path="Employee.Email"/>
+                            <Binding Path="Employee.Person.Phone"/>
+                            <Binding Path="Employee.Person.Email"/>
                         </MultiBinding>
                     </Image.Visibility>
                     <i:Interaction.Triggers>
