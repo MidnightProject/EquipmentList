@@ -41,6 +41,7 @@
             <converters:PostedWorkerToColorConverter x:Key="postedWorkerColorConverter"/>
             <converters:AlarmToWarningVisibilityConverter x:Key="alarmWarningConverter"/>
             <converters:DateToShortDateStringConverter x:Key="shortDateStringConverter"/>
+            <converters:SelectedIndexesToRowDetailsVisibilityConverter x:Key="rowDetailsVisibilityConverter"/>
 
             <ControlTemplate x:Key="ComboboxFilter">
                 <Grid d:DataContext="{d:DesignInstance dgx:DataGridFilterColumnControl}">
@@ -206,14 +207,17 @@
         </Grid.ColumnDefinitions>
         <DataGrid Name="DataGrid"
                   dgx:DataGridFilter.IsAutoFilterEnabled="True" 
-                  IsReadOnly="True" SelectionMode="Single" 
+                  IsReadOnly="True" 
+                  SelectionMode="Extended" 
                   AlternationCount="2"
                   AutoGenerateColumns="False" 
+                  RowDetailsVisibilityMode="{Binding Path=SelectedItems.Count, RelativeSource={RelativeSource Self}, Converter={StaticResource rowDetailsVisibilityConverter} }"
                   SelectedIndex="{Binding SelectedIndex}"
                   FontSize="16"
                   ColumnWidth="Auto"
                   Grid.Column="0"
-                  BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" UnloadingRow="DataGrid_UnloadingRow">
+                  BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" UnloadingRow="DataGrid_UnloadingRow"
+                  SelectedItem="{Binding SelectedEquipment}">
             <DataGrid.Style>
                 <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
                     <Setter Property="ItemsSource" Value="{Binding DataEquipments}"/>
@@ -321,6 +325,7 @@
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
+                    <Setter Property="IsSelected" Value="{Binding Path=Properties.IsSelected, Mode=TwoWay}"/>
                     <Style.Triggers>
                         <Trigger Property="ItemsControl.AlternationIndex" Value="0">
                             <Setter Property="Background" Value="WhiteSmoke" />
@@ -1064,6 +1069,11 @@
                     </Border>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonUp">
+                    <i:InvokeCommandAction Command="{Binding DataContext.SelectedIndexCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </DataGrid>
         <Rectangle Grid.Column="1" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"></Rectangle>
     </Grid>

@@ -1,20 +1,23 @@
-﻿using Dsafa.WpfColorPicker;
+﻿using EquipmentList.Messages;
 using EquipmentList.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using static EquipmentList.View.Views;
 
 namespace EquipmentList.ViewModel
 {
     public class EquipmentViewModel : ViewModelBase
     {
-        private Collection<DataEquipment> dataEquipments;
-        public Collection<DataEquipment> DataEquipments
+        private ObservableCollection<DataEquipment> dataEquipments;
+        public ObservableCollection<DataEquipment> DataEquipments
         {
             get
             {
@@ -84,6 +87,37 @@ namespace EquipmentList.ViewModel
             {
                 selectedIndex = value;
                 RaisePropertyChanged("SelectedIndex");
+            }
+        }
+
+        public int SelectedIndexes { get; set; }
+
+        private RelayCommand selectedIndexCommand;
+        public RelayCommand SelectedIndexCommand
+        {
+            get
+            {
+                return selectedIndexCommand = new RelayCommand(() => GetSelectedIndexes());
+            }
+        }
+        private void GetSelectedIndexes()
+        {
+            SelectedIndexes = DataEquipments.Where(i => i.Properties.IsSelected).Count();
+
+            Messenger.Default.Send<SelectedIndexMessage>(new SelectedIndexMessage
+            {
+                View = DefinedViews.EquipmentView,
+                Index = SelectedIndexes,
+
+            }, MessageType.PropertyChangedMessage);
+        }
+
+        public DataEquipment SelectedEquipment { get; set; }
+        public List<DataEquipment> SelectedEquipments
+        {
+            get
+            {
+                return DataEquipments.Where(i => i.Properties.IsSelected).ToList();
             }
         }
 
@@ -244,7 +278,7 @@ namespace EquipmentList.ViewModel
             IncorrectReviewDateColor = incorrectReviewDateColor;
             IncorrectLegalizationDateColor = incorrectLegalizationDateColor;
 
-            DataEquipments = new Collection<DataEquipment>();
+            DataEquipments = new ObservableCollection<DataEquipment>();
             EmployeesStatus = employeeStatus;
       
             foreach (DataRow row in equipment.Rows)
@@ -422,6 +456,11 @@ namespace EquipmentList.ViewModel
                     PostingDate = postingDate,
                 });
             }
+        }
+
+        public void RemoveEquipment(string id)
+        {
+            DataEquipments.Remove(id);
         }
     }
 }

@@ -130,6 +130,7 @@ namespace EquipmentList.ViewModel
                     RemoveEmployee();
                     break;
                 case DefinedViews.EquipmentView:
+                    RemoveEquipment();
                     break;
             }
         }
@@ -249,7 +250,7 @@ namespace EquipmentList.ViewModel
                         }
                         catch (Exception e)
                         {
-                            messageBox = new WpfMessageBox("Error #0003", "Error removing employee from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                            messageBox = new WpfMessageBox("Error #0004", "Error removing employee from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
                             {
                                 Details = "Error #0004" + '\n' + '\n' + e.ToString(),
                             });
@@ -293,12 +294,90 @@ namespace EquipmentList.ViewModel
                             }
                             catch (Exception e)
                             {
-                                messageBox = new WpfMessageBox("Error #0003", "Error removing employee from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                                messageBox = new WpfMessageBox("Error #0004", "Error removing employee from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
                                 {
                                     Details = "Error #0004" + '\n' + '\n' + e.ToString(),
                                 });
                                 messageBox.ShowDialog();
                             }
+                        }
+                    }
+                }
+            }
+        }
+        private void RemoveEquipment()
+        {
+            string deleteEquipmentSql = "DELETE FROM EQUIPMENT WHERE ID = @ID";
+            string id = ((EquipmentViewModel)ViewModel).SelectedEquipment.ID;
+            string name = ((EquipmentViewModel)ViewModel).SelectedEquipment.Name;
+
+            WpfMessageBox messageBox;
+
+            if (((EquipmentViewModel)ViewModel).SelectedIndexes == 1)
+            {
+                messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
+                {
+                    Header = "Remove '" + name + "' equipment ?",
+                    ButtonYesText = "Yes, remove equipment",
+                    ButtonNoText = "Cancel, keep equipment",
+                });
+                messageBox.ShowDialog();
+
+                if (messageBox.Result == WpfMessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        FbTransaction transaction = connection.BeginTransaction();
+                        FbCommand command = new FbCommand(deleteEquipmentSql, connection, transaction);
+                        command.Parameters.Add("@ID", FbDbType.VarChar).Value = id;
+                        command.ExecuteNonQuery();
+                        transaction.Commit();
+
+                        ((EquipmentViewModel)ViewModel).RemoveEquipment(id);
+                    }
+                    catch (Exception e)
+                    {
+                        messageBox = new WpfMessageBox("Error #0010", "Error removing equipment from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                        {
+                            Details = "Error #0010" + '\n' + '\n' + e.ToString(),
+                        });
+                        messageBox.ShowDialog();
+                    }
+                }
+            }
+            else
+            {
+                messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
+                {
+                    Header = "Remove equipments ?",
+                    ButtonYesText = "Yes, remove equipments",
+                    ButtonNoText = "Cancel, keep equipments",
+                });
+                messageBox.ShowDialog();
+
+                if (messageBox.Result == WpfMessageBoxResult.Yes)
+                {
+                    foreach (DataEquipment equipment in ((EquipmentViewModel)ViewModel).SelectedEquipments)
+                    {
+                        id = equipment.ID;
+
+                        try
+                        {
+                            FbTransaction transaction = connection.BeginTransaction();
+                            FbCommand command = new FbCommand(deleteEquipmentSql, connection, transaction);
+                            command.Parameters.Add("@ID", FbDbType.VarChar).Value = id;
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+
+                            ((EquipmentViewModel)ViewModel).RemoveEquipment(id);
+                        }
+                        catch (Exception e)
+                        {
+                            messageBox = new WpfMessageBox("Error #0010", "Error removing equipment from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                            {
+                                Details = "Error #0010" + '\n' + '\n' + e.ToString(),
+                            });
+                            messageBox.ShowDialog();
                         }
                     }
                 }
@@ -1370,7 +1449,7 @@ namespace EquipmentList.ViewModel
             }
             catch (Exception e)
             {
-                WpfMessageBox messageBox = new WpfMessageBox("Error #0007", "Error removing job title from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0008", "Error removing job title from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
                 {
                     Details = "Error #0008" + '\n' + '\n' + e.ToString(),
                 });
@@ -1402,7 +1481,7 @@ namespace EquipmentList.ViewModel
             }
             catch (Exception e)
             {
-                WpfMessageBox messageBox = new WpfMessageBox("Error #0007", "Error removing job title from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0009", "Error removing job title from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
                 {
                     Details = "Error #0009" + '\n' + '\n' + e.ToString(),
                 });

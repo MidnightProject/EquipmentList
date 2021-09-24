@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EquipmentList.Helpers;
 using GalaSoft.MvvmLight;
+using System.Collections.ObjectModel;
 
 namespace EquipmentList.Model 
 {
@@ -475,6 +476,17 @@ namespace EquipmentList.Model
 
 
             return dataEquipment;
+        }
+
+        public static Collection<DataEquipment> Remove(this Collection<DataEquipment> colection, string id)
+        {
+            var equipmentToRemove = colection.SingleOrDefault(equipment => equipment.ID == id);
+            if (equipmentToRemove != null)
+            {
+                colection.Remove(equipmentToRemove);
+            }
+
+            return colection;
         }
     }
 }

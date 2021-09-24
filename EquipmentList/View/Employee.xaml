@@ -102,7 +102,8 @@
                       dgx:DataGridFilter.IsAutoFilterEnabled="True" 
                       AlternatingRowBackground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" 
                       SelectedIndex="{Binding SelectedIndex}" 
-                      IsReadOnly="True" SelectionMode="Extended" 
+                      IsReadOnly="True" 
+                      SelectionMode="Extended" 
                       AutoGenerateColumns="False" 
                       RowDetailsVisibilityMode="{Binding Path=SelectedItems.Count, RelativeSource={RelativeSource Self}, Converter={StaticResource rowDetailsVisibilityConverter} }"
                       FontSize="16"
@@ -145,7 +146,6 @@
                         </Setter>
                     </Style>
                 </DataGrid.RowStyle>
-
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="columnName" Header="Name" Binding="{Binding Person.Name}"/>
                     <DataGridTextColumn Header="Job Title" Binding="{Binding Job}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
@@ -155,13 +155,6 @@
                     <DataGridTextColumn Header="Room" Binding="{Binding Room}" dgx:DataGridFilterColumn.IsFilterVisible="False"/>
                     <DataGridTextColumn x:Name="columnStatus" Header="Status" Binding="{Binding Status}" dgx:DataGridFilterColumn.Filter="{Binding ColumnStatusFilter}" dgx:DataGridFilterColumn.Template="{StaticResource ComboboxFilter}"/>
                 </DataGrid.Columns>
-
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding DataContext.SelectedIndexCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
                         <Border BorderThickness="0" Background="White" >
@@ -355,6 +348,11 @@
                         </Border>
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{Binding DataContext.SelectedIndexCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </DataGrid>
         </StackPanel>
     </Grid>
