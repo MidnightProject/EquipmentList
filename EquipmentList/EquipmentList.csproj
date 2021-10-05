@@ -133,6 +133,7 @@
     <Compile Include="Converters\EditButtonIsEnableConverter.cs" />
     <Compile Include="Converters\EmailToMailtoConverter.cs" />
     <Compile Include="Converters\EmployeesToEmployeeConverter.cs" />
+    <Compile Include="Converters\IntToVisibleUpDownConverter.cs" />
     <Compile Include="Converters\ListToCheckConverter.cs" />
     <Compile Include="Converters\ListToTextConverter.cs" />
     <Compile Include="Converters\NullEmployeeToColorConverter.cs" />

@@ -19,6 +19,11 @@ namespace EquipmentList.Validations
             {
                 return new ValidationResult(false, $"Property cannot be empty");
             }
+             
+            if (name == "[...]")
+            {
+                return new ValidationResult(false, $"Property cannot be '[...]'");
+            }
 
             if (Wrapper != null)
             {

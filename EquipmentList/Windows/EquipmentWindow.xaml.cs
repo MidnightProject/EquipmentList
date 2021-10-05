@@ -32,7 +32,6 @@ namespace EquipmentList.Windows
         public ObservableCollection<string> EmployeesNamesList { get; set; }
 
         public DataEquipment Equipment { get; set; }
-        public string OldID { get; set; }
         public Boolean IDIsEnabled { get; set; }
 
         public MessageBoxResult Result { get; set; }
@@ -325,7 +324,6 @@ namespace EquipmentList.Windows
             Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
 
             Equipment = equipment;
-            OldID = Equipment.ID;
 
             InitializeComponent();
             DataContext = this;
@@ -368,8 +366,6 @@ namespace EquipmentList.Windows
             LegalizationDate = Equipment.LegalizationDate;
 
             EmployeesList = employee;
-
-            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -510,6 +506,39 @@ namespace EquipmentList.Windows
 
                 return;
             }
+        }
+
+        private void reviewAlarmText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            reviewAlarmText.Visibility = Visibility.Collapsed;
+            FocusManager.SetFocusedElement(main, reviewAlarmUpDonw); 
+        }
+
+        private void reviewAlarm_GotFocus(object sender, RoutedEventArgs e)
+        {
+            reviewAlarmText.Visibility = Visibility.Collapsed;
+        }
+
+        private void legalizationAlarmText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            legalizationAlarmText.Visibility = Visibility.Collapsed;
+            FocusManager.SetFocusedElement(main, legalizationAlarmUpDonw);
+        }
+
+        private void legalizationAlarm_GotFocus(object sender, RoutedEventArgs e)
+        {
+            legalizationAlarmText.Visibility = Visibility.Collapsed;
+        }
+
+        private void warrantyAlarmText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            warrantyAlarmText.Visibility = Visibility.Collapsed;
+            FocusManager.SetFocusedElement(main, warrantyAlarmUpDonw);
+        }
+
+        private void warrantyAlarm_GotFocus(object sender, RoutedEventArgs e)
+        {
+            warrantyAlarmText.Visibility = Visibility.Collapsed;
         }
     }
 }

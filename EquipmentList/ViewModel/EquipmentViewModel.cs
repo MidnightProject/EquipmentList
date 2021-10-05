@@ -462,5 +462,10 @@ namespace EquipmentList.ViewModel
         {
             DataEquipments.Remove(id);
         }
+
+        public void UpdateEquipment(DataEquipment equipment, string id)
+        {
+            DataEquipments.Update(equipment, id);
+        }
     }
 }

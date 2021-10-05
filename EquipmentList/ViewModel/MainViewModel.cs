@@ -559,6 +559,9 @@ namespace EquipmentList.ViewModel
                 case DefinedViews.EmployeeView:
                     EditEmployee();
                     break;
+                case DefinedViews.EquipmentView:
+                    EditEquipment();
+                    break;
             }
         }
         private void EditBuilding()
@@ -578,9 +581,10 @@ namespace EquipmentList.ViewModel
                 {
                     try
                     {
-                        if (name == buildingWindow.OldName)
+                        FbTransaction transaction = connection.BeginTransaction();
+
+                        if (buildingWindow.Building.Name == name)
                         {
-                            FbTransaction transaction = connection.BeginTransaction();
                             FbCommand command = new FbCommand(updateBuildingSql, connection, transaction);
                             command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimEndString();
                             command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimEndString();
@@ -588,21 +592,20 @@ namespace EquipmentList.ViewModel
                             command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimEndString();
                             command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
                             command.ExecuteNonQuery();
-                            transaction.Commit();
                         }
                         else
                         {
-                            FbTransaction transaction = connection.BeginTransaction();
                             FbCommand command = new FbCommand(updateBuildingNewNameSql, connection, transaction);
-                            command.Parameters.Add("@OldName", FbDbType.VarChar).Value = buildingWindow.OldName;
+                            command.Parameters.Add("@OldName", FbDbType.VarChar).Value = name;
                             command.Parameters.Add("@Name", FbDbType.VarChar).Value = buildingWindow.Building.Name.TrimEndString();
                             command.Parameters.Add("@Address", FbDbType.VarChar).Value = buildingWindow.Building.Address.TrimEndString();
                             command.Parameters.Add("@City", FbDbType.VarChar).Value = buildingWindow.Building.City.TrimEndString();
                             command.Parameters.Add("@Postcode", FbDbType.VarChar).Value = buildingWindow.Building.Postcode.TrimEndString();
                             command.Parameters.Add("@Country", FbDbType.VarChar).Value = buildingWindow.Building.Country.TrimEndString();
                             command.ExecuteNonQuery();
-                            transaction.Commit();
                         }
+
+                        transaction.Commit();
 
                         ((BuildingViewModel)ViewModel).UpdateBuilding(buildingWindow.Building, name);
                     }
@@ -982,6 +985,106 @@ namespace EquipmentList.ViewModel
                     }
                 }
 
+            }
+        }
+        private void EditEquipment()
+        {
+            string id = ((EquipmentViewModel)ViewModel).SelectedEquipment.ID;
+            string updateEquipmentSql = "UPDATE EQUIPMENT SET NAME=@Name, DESCRIPTION=@Description, CONDITION=@Condition, PRODUCER=@Producer, SN=@sn, SUBGROUP=@Subgroup, NORM=@Norm, BUILDING=@Building, ROOM=@Room, COMMENTS=@Comments, PRODUCTION_DATE=@ProductionDate, WARRANTY_DATE=@WarrantyDate, WARRANTY_ALARM=@WarrantyAlarm, EMPLOYEE=@Employee, REPLACEMENT_EMPLOYEE=@ReplacementEmployee, REPLACEMENT_DATE=@ReplacementDate, REVIEW_DATE_REMINDER=@ReviewDate, REVIEW_ALARM=@ReviewAlarm, LEGALIZATION_DATE_REMINDER=@LegalizationDate, LEGALIZATION_ALARM=@LegalizationAlarm, CERTIFICATE_NUMBER=@CertificateNumber, PROVIDER=@Provider, SERVICE=@Service, ATTESTATION=@Attestation WHERE ID = @id";
+            string updateEquipmentNewIDSql = "UPDATE EQUIPMENT SET ID=@id, NAME=@Name, DESCRIPTION=@Description, CONDITION=@Condition, PRODUCER=@Producer, SN=@sn, SUBGROUP=@Subgroup, NORM=@Norm, BUILDING=@Building, ROOM=@Room, COMMENTS=@Comments, PRODUCTION_DATE=@ProductionDate, WARRANTY_DATE=@WarrantyDate, WARRANTY_ALARM=@WarrantyAlarm, EMPLOYEE=@Employee, REPLACEMENT_EMPLOYEE=@ReplacementEmployee, REPLACEMENT_DATE=@ReplacementDate, REVIEW_DATE_REMINDER=@ReviewDate, REVIEW_ALARM=@ReviewAlarm, LEGALIZATION_DATE_REMINDER=@LegalizationDate, LEGALIZATION_ALARM=@LegalizationAlarm, CERTIFICATE_NUMBER=@CertificateNumber, PROVIDER=@Provider, SERVICE=@Service, ATTESTATION=@Attestation WHERE ID = @OldID";
+
+            DataEquipment equipmentToEdit = (((EquipmentViewModel)ViewModel).SelectedEquipments).Values();
+
+            EquipmentWindow equipmentWindow = new EquipmentWindow(equipmentToEdit, GetEquipmentID(), GetCondition(), GetContractor(), GetGroup(), GetNorm(), GetBuildingsNames(), GetEmployees(), Clipboard, "Edit equipment", "Edit");
+            equipmentWindow.ShowDialog();
+
+            if (equipmentWindow.Result == MessageBoxResult.OK)
+            {
+                if (((EquipmentViewModel)ViewModel).SelectedIndexes == 1)
+                {
+                    try
+                    {
+                        FbTransaction transaction = connection.BeginTransaction();
+
+                        if (equipmentWindow.Equipment.ID == id)
+                        {
+                            FbCommand command = new FbCommand(updateEquipmentSql, connection, transaction);
+                            command.Parameters.Add("@id", FbDbType.VarChar).Value = equipmentWindow.Equipment.ID.TrimEndString();
+                            command.Parameters.Add("@Name", FbDbType.VarChar).Value = equipmentWindow.Equipment.Name.TrimEndString();
+                            command.Parameters.Add("@Description", FbDbType.VarChar).Value = equipmentWindow.Equipment.Description.TrimEndString();
+                            command.Parameters.Add("@Condition", FbDbType.VarChar).Value = equipmentWindow.Equipment.Condition.TrimEndString();
+                            command.Parameters.Add("@Producer", FbDbType.VarChar).Value = equipmentWindow.Equipment.Producer.Name.TrimEndString();
+                            command.Parameters.Add("@sn", FbDbType.VarChar).Value = equipmentWindow.Equipment.SN.TrimEndString();
+                            command.Parameters.Add("@Subgroup", FbDbType.VarChar).Value = equipmentWindow.Equipment.Group.TrimEndString();
+                            command.Parameters.Add("@Norm", FbDbType.VarChar).Value = equipmentWindow.Equipment.Norm.TrimEndString();
+                            command.Parameters.Add("@Building", FbDbType.VarChar).Value = equipmentWindow.Equipment.Building.Name.TrimEndString();
+                            command.Parameters.Add("@Room", FbDbType.VarChar).Value = equipmentWindow.Equipment.Room.TrimEndString();
+                            command.Parameters.Add("@Comments", FbDbType.VarChar).Value = equipmentWindow.Equipment.Comments.TrimEndString();
+                            command.Parameters.Add("@ProductionDate", FbDbType.Date).Value = equipmentWindow.Equipment.ProductionDate;
+                            command.Parameters.Add("@WarrantyDate", FbDbType.Date).Value = equipmentWindow.Equipment.WarrantyDate;
+                            command.Parameters.Add("@WarrantyAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.WarrantyAlarm;
+                            command.Parameters.Add("@Employee", FbDbType.VarChar).Value = equipmentWindow.Equipment.Employee.ID.TrimEndString();
+                            command.Parameters.Add("@ReplacementEmployee", FbDbType.VarChar).Value = equipmentWindow.Equipment.PostedWorker.ID.TrimEndString();
+                            command.Parameters.Add("@ReplacementDate", FbDbType.Date).Value = equipmentWindow.Equipment.WarrantyDate;
+                            command.Parameters.Add("@ReviewDate", FbDbType.Date).Value = equipmentWindow.Equipment.ReviewDate;
+                            command.Parameters.Add("@ReviewAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.ReviewAlarm;
+                            command.Parameters.Add("@LegalizationDate", FbDbType.Date).Value = equipmentWindow.Equipment.LegalizationDate;
+                            command.Parameters.Add("@LegalizationAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.LegalizationAlarm;
+                            command.Parameters.Add("@CertificateNumber", FbDbType.VarChar).Value = equipmentWindow.Equipment.CertificationNumber.TrimEndString();
+                            command.Parameters.Add("@Provider", FbDbType.VarChar).Value = equipmentWindow.Equipment.Provider.Name.TrimEndString();
+                            command.Parameters.Add("@Service", FbDbType.VarChar).Value = equipmentWindow.Equipment.Service.Name.TrimEndString();
+                            command.Parameters.Add("@Attestation", FbDbType.VarChar).Value = equipmentWindow.Equipment.Attestation.Name.TrimEndString();
+                            command.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            FbCommand command = new FbCommand(updateEquipmentNewIDSql, connection, transaction);
+                            command.Parameters.Add("@OldID", FbDbType.VarChar).Value = id;
+                            command.Parameters.Add("@id", FbDbType.VarChar).Value = equipmentWindow.Equipment.ID.TrimEndString();
+                            command.Parameters.Add("@Name", FbDbType.VarChar).Value = equipmentWindow.Equipment.Name.TrimEndString();
+                            command.Parameters.Add("@Description", FbDbType.VarChar).Value = equipmentWindow.Equipment.Description.TrimEndString();
+                            command.Parameters.Add("@Condition", FbDbType.VarChar).Value = equipmentWindow.Equipment.Condition.TrimEndString();
+                            command.Parameters.Add("@Producer", FbDbType.VarChar).Value = equipmentWindow.Equipment.Producer.Name.TrimEndString();
+                            command.Parameters.Add("@sn", FbDbType.VarChar).Value = equipmentWindow.Equipment.SN.TrimEndString();
+                            command.Parameters.Add("@Subgroup", FbDbType.VarChar).Value = equipmentWindow.Equipment.Group.TrimEndString();
+                            command.Parameters.Add("@Norm", FbDbType.VarChar).Value = equipmentWindow.Equipment.Norm.TrimEndString();
+                            command.Parameters.Add("@Building", FbDbType.VarChar).Value = equipmentWindow.Equipment.Building.Name.TrimEndString();
+                            command.Parameters.Add("@Room", FbDbType.VarChar).Value = equipmentWindow.Equipment.Room.TrimEndString();
+                            command.Parameters.Add("@Comments", FbDbType.VarChar).Value = equipmentWindow.Equipment.Comments.TrimEndString();
+                            command.Parameters.Add("@ProductionDate", FbDbType.Date).Value = equipmentWindow.Equipment.ProductionDate;
+                            command.Parameters.Add("@WarrantyDate", FbDbType.Date).Value = equipmentWindow.Equipment.WarrantyDate;
+                            command.Parameters.Add("@WarrantyAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.WarrantyAlarm;
+                            command.Parameters.Add("@Employee", FbDbType.VarChar).Value = equipmentWindow.Equipment.Employee.ID.TrimEndString();
+                            command.Parameters.Add("@ReplacementEmployee", FbDbType.VarChar).Value = equipmentWindow.Equipment.PostedWorker.ID.TrimEndString();
+                            command.Parameters.Add("@ReplacementDate", FbDbType.Date).Value = equipmentWindow.Equipment.WarrantyDate;
+                            command.Parameters.Add("@ReviewDate", FbDbType.Date).Value = equipmentWindow.Equipment.ReviewDate;
+                            command.Parameters.Add("@ReviewAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.ReviewAlarm;
+                            command.Parameters.Add("@LegalizationDate", FbDbType.Date).Value = equipmentWindow.Equipment.LegalizationDate;
+                            command.Parameters.Add("@LegalizationAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.LegalizationAlarm;
+                            command.Parameters.Add("@CertificateNumber", FbDbType.VarChar).Value = equipmentWindow.Equipment.CertificationNumber.TrimEndString();
+                            command.Parameters.Add("@Provider", FbDbType.VarChar).Value = equipmentWindow.Equipment.Provider.Name.TrimEndString();
+                            command.Parameters.Add("@Service", FbDbType.VarChar).Value = equipmentWindow.Equipment.Service.Name.TrimEndString();
+                            command.Parameters.Add("@Attestation", FbDbType.VarChar).Value = equipmentWindow.Equipment.Attestation.Name.TrimEndString();
+                            command.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception e)
+                    {
+                        WpfMessageBox messageBox = new WpfMessageBox("Error #0011", "Error editing equipment.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                        {
+                            Details = "Error #0011" + '\n' + '\n' + e.ToString(),
+                        });
+                        messageBox.ShowDialog();
+                    }
+
+                    ((EquipmentViewModel)ViewModel).UpdateEquipment(equipmentWindow.Equipment, id);
+                }
+                else
+                {
+
+                }
             }
         }
         #endregion
@@ -1591,12 +1694,7 @@ namespace EquipmentList.ViewModel
             Messenger.Default.Register<SelectedIndexMessage>(this, MessageType.PropertyChangedMessage, SetSelectedIndexesCounter);
             Messenger.Default.Register<EditDatabaseMessage>(this, MessageType.NotificationMessageAction, EditDatabase);
 
-            Clipboard = new Clipboard();
-
-            EquipmentWindow w = new EquipmentWindow(new DataEquipment(), GetEquipmentID(), GetCondition(), GetContractor(), GetGroup(), GetNorm(), GetBuildingsNames(), GetEmployees(), Clipboard, "title", "add");
-            w.ShowDialog();
-
-            
+            Clipboard = new Clipboard();  
         }
 
         ObservableCollection<string> GetBuildingsNames()

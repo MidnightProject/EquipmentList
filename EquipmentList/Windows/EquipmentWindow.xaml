@@ -23,6 +23,7 @@
             <converters:ObjectToVisibilityPasteConverter x:Key="visibilityPasteConverter"/>
             <converters:ObjectToVisibilityCopyConverter x:Key="visibilityCopyConverter"/>
             <converters:ObjectToVisibilityClearConverter x:Key="visibilityClearConverter"/>
+            <converters:IntToVisibleUpDownConverter x:Key="visibleUpDownConverter"/>
 
             <ControlTemplate x:Key="validationTemplate">
                 <DockPanel>
@@ -78,7 +79,7 @@
             
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="main">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -134,7 +135,7 @@
                          VerticalContentAlignment="Center"
                          IsEnabled="{Binding NameIsEnabled}"
                          property:SelectTextOnFocus.Active = "True"
-                         Text="{Binding Equipment.Name, UpdateSourceTrigger=PropertyChanged}">
+                         Text="{Binding Equipment.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 </TextBox>
 
                 <Label Grid.Row="2" Grid.Column="0" Content="Description:"/>
@@ -260,7 +261,7 @@
                                                 MinWidth="50"
                                                 VerticalContentAlignment="Center"
                                                 ItemsSource="{Binding GroupsList, UpdateSourceTrigger=PropertyChanged}"
-                                                SelectedItem="{Binding Equipment.Group, UpdateSourceTrigger=PropertyChanged}"/>
+                                                SelectedItem="{Binding Equipment.Group, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         <Image Source="/Images/sub_blue_add.png" ToolTip="Add" MaxHeight="16" Margin="5,0,0,0">
                                             <Image.RenderTransform>
                                                 <TransformGroup>
@@ -378,10 +379,24 @@
                                                 behaviour:DatePickerWatermarkBehaviour.Watermark="{Binding WatermarkWarrantyDate, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource DefaultDatePicker}"/>
 
-                                    <Label  Grid.Row="6" Grid.Column="3" Margin="0,0,10,0" Content="Alarm:"/>
-                                    <talex:NumericUpDown Grid.Row="6" Grid.Column="4" 
-                                                     MinWidth="50" Minimum="-100" Maximum="100"
-                                                     Value="{Binding Equipment.WarrantyAlarm}"/>
+                                    <Label  Grid.Row="6" Grid.Column="3" Margin="0,0,10,0" Content="Alarm:"
+                                            Visibility="Collapsed"/>
+                                    <talex:NumericUpDown    x:Name="warrantyAlarmUpDonw"
+                                                            Grid.Row="6" Grid.Column="4" 
+                                                            MinWidth="50" Minimum="-100" Maximum="100"
+                                                            Value="{Binding Equipment.WarrantyAlarm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                            GotFocus="warrantyAlarm_GotFocus"
+                                                            Visibility="Collapsed"/>
+                                    <TextBox x:Name="warrantyAlarmText"
+                                             Grid.Row="6" Grid.Column="4" 
+                                             MaxWidth="{Binding ElementName=warrantyAlarmUpDonw, Path=ActualWidth}"
+                                             Margin="0,0,15,0"
+                                             FontSize="16"
+                                             Background="Gray"
+                                             Text="[...]" 
+                                             Visibility="{Binding Equipment.WarrantyAlarm, Converter={StaticResource visibleUpDownConverter}}"
+                                             GotFocus="warrantyAlarmText_GotFocus">
+                                    </TextBox>
 
                                     <Label Grid.Row="7" Grid.Column="0" Content="Comment:"/>
                                     <ScrollViewer   Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="3" MaxHeight="100"
@@ -575,10 +590,23 @@
                                 </DatePicker>
 
                                 <Label  Grid.Row="0" Grid.Column="3" Margin="0,0,10,0" Content="Alarm:"/>
-                                <talex:NumericUpDown Grid.Row="0" Grid.Column="4" 
-                                                     MinWidth="50" Minimum="-100" Maximum="100"
-                                                     Value="{Binding Equipment.ReviewAlarm}"/>
-
+                                <talex:NumericUpDown x:Name="reviewAlarmUpDonw"
+                                                     Grid.Row="0" Grid.Column="4" 
+                                                     MinWidth="50" 
+                                                     Minimum="-100" Maximum="100"
+                                                     Value="{Binding Equipment.ReviewAlarm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                     GotFocus="reviewAlarm_GotFocus"/>
+                                <TextBox x:Name="reviewAlarmText"
+                                         Grid.Row="0" Grid.Column="4" 
+                                         MaxWidth="{Binding ElementName=reviewAlarmUpDonw, Path=ActualWidth}"
+                                         Margin="0,0,15,0"
+                                         FontSize="16"
+                                         Background="Gray"
+                                         Text="[...]" 
+                                         Visibility="{Binding Equipment.ReviewAlarm, Converter={StaticResource visibleUpDownConverter}}"
+                                         GotFocus="reviewAlarmText_GotFocus">
+                                </TextBox>
+                                
                                 <Label  Grid.Row="1" Grid.Column="0" Content="Date of next legalization:"/>
                                 <DatePicker x:Name="legalizationDatePicker"
                                             Grid.Row="1" Grid.Column="2"
@@ -588,9 +616,21 @@
                                 </DatePicker>
 
                                 <Label  Grid.Row="1" Grid.Column="3" Margin="0,0,10,0" Content="Alarm:"/>
-                                <talex:NumericUpDown Grid.Row="1" Grid.Column="4" 
+                                <talex:NumericUpDown x:Name="legalizationAlarmUpDonw"
+                                                     Grid.Row="1" Grid.Column="4" 
                                                      MinWidth="50" Minimum="-100" Maximum="100"
-                                                     Value="{Binding Equipment.LegalizationAlarm}"/>
+                                                     Value="{Binding Equipment.LegalizationAlarm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                     GotFocus="legalizationAlarm_GotFocus"/>
+                                <TextBox x:Name="legalizationAlarmText"
+                                         Grid.Row="1" Grid.Column="4" 
+                                         MaxWidth="{Binding ElementName=legalizationAlarmUpDonw, Path=ActualWidth}"
+                                         Margin="0,0,15,0"
+                                         FontSize="16"
+                                         Background="Gray"
+                                         Text="[...]" 
+                                         Visibility="{Binding Equipment.LegalizationAlarm, Converter={StaticResource visibleUpDownConverter}}"
+                                         GotFocus="legalizationAlarmText_GotFocus">
+                                </TextBox>
 
                                 <Label  Grid.Row="2" Grid.Column="0" Content="Certificate number:"/>
                                 <TextBox    Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" MinWidth="100"

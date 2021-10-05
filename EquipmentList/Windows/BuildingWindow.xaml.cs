@@ -20,7 +20,6 @@ namespace EquipmentList.Windows
         public string ButtonOKText { get; set; }
 
         public DataBuilding Building { get; set; }
-        public string OldName { get; set; }
         public Boolean NameIsEnabled { get; set; }
 
         public Clipboard Clipboard { get; set; }
@@ -28,7 +27,6 @@ namespace EquipmentList.Windows
         public BuildingWindow(DataBuilding building, ObservableCollection<string> buildingsNames, Clipboard clipboard, string title, string buttonOKText)
         {
             Building = building;
-            OldName = Building.Name;
 
             InitializeComponent();
             DataContext = this;

@@ -472,8 +472,185 @@ namespace EquipmentList.Model
                 dataEquipment.Producer.Name = "[...]";
             }
 
+            if (colection.IsSameValue(i => i.Provider))
+            {
+                dataEquipment.Provider = colection[0].Provider;
+            }
+            else
+            {
+                dataEquipment.Provider.Name = "[...]";
+            }
 
+            if (colection.IsSameValue(i => i.Service))
+            {
+                dataEquipment.Service = colection[0].Service;
+            }
+            else
+            {
+                dataEquipment.Service.Name = "[...]";
+            }
 
+            if (colection.IsSameValue(i => i.Attestation))
+            {
+                dataEquipment.Attestation = colection[0].Attestation;
+            }
+            else
+            {
+                dataEquipment.Attestation.Name = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.SN))
+            {
+                dataEquipment.SN = colection[0].SN;
+            }
+            else
+            {
+                dataEquipment.SN = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Group))
+            {
+                dataEquipment.Group = colection[0].Group;
+            }
+            else
+            {
+                dataEquipment.Group = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Norm))
+            {
+                dataEquipment.Norm = colection[0].Norm;
+            }
+            else
+            {
+                dataEquipment.Norm = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Building))
+            {
+                dataEquipment.Building = colection[0].Building;
+            }
+            else
+            {
+                dataEquipment.Building.Name = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Room))
+            {
+                dataEquipment.Room = colection[0].Room;
+            }
+            else
+            {
+                dataEquipment.Room = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Comments))
+            {
+                dataEquipment.Comments = colection[0].Comments;
+            }
+            else
+            {
+                dataEquipment.Comments = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.ProductionDate))
+            {
+                dataEquipment.ProductionDate = colection[0].ProductionDate;
+            }
+            else
+            {
+                dataEquipment.ProductionDate = null;
+            }
+
+            if (colection.IsSameValue(i => i.WarrantyDate))
+            {
+                dataEquipment.WarrantyDate = colection[0].WarrantyDate;
+            }
+            else
+            {
+                dataEquipment.WarrantyDate = null;
+            }
+
+            if (colection.IsSameValue(i => i.ReviewDate))
+            {
+                dataEquipment.ReviewDate = colection[0].ReviewDate;
+            }
+            else
+            {
+                dataEquipment.ReviewDate = null;
+            }
+
+            if (colection.IsSameValue(i => i.LegalizationDate))
+            {
+                dataEquipment.LegalizationDate = colection[0].LegalizationDate;
+            }
+            else
+            {
+                dataEquipment.LegalizationDate = null;
+            }
+
+            if (colection.IsSameValue(i => i.PostingDate))
+            {
+                dataEquipment.PostingDate = colection[0].PostingDate;
+            }
+            else
+            {
+                dataEquipment.PostingDate = null;
+            }
+
+            if (colection.IsSameValue(i => i.WarrantyAlarm))
+            {
+                dataEquipment.WarrantyAlarm = colection[0].WarrantyAlarm;
+            }
+            else
+            {
+                dataEquipment.WarrantyAlarm = null;
+            }
+
+            if (colection.IsSameValue(i => i.ReviewAlarm))
+            {
+                dataEquipment.ReviewAlarm = colection[0].ReviewAlarm;
+            }
+            else
+            {
+                dataEquipment.ReviewAlarm = null;
+            }
+
+            if (colection.IsSameValue(i => i.LegalizationAlarm))
+            {
+                dataEquipment.LegalizationAlarm = colection[0].LegalizationAlarm;
+            }
+            else
+            {
+                dataEquipment.LegalizationAlarm = null;
+            }
+
+            if (colection.IsSameValue(i => i.CertificationNumber))
+            {
+                dataEquipment.CertificationNumber = colection[0].CertificationNumber;
+            }
+            else
+            {
+                dataEquipment.CertificationNumber = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.Employee))
+            {
+                dataEquipment.Employee = colection[0].Employee;
+            }
+            else
+            {
+                dataEquipment.Employee.Person.Name = "[...]";
+            }
+
+            if (colection.IsSameValue(i => i.PostedWorker))
+            {
+                dataEquipment.PostedWorker = colection[0].PostedWorker;
+            }
+            else
+            {
+                dataEquipment.PostedWorker.Person.Name = "[...]";
+            }
 
             return dataEquipment;
         }
@@ -484,6 +661,40 @@ namespace EquipmentList.Model
             if (equipmentToRemove != null)
             {
                 colection.Remove(equipmentToRemove);
+            }
+
+            return colection;
+        }
+
+        public static Collection<DataEquipment> Update(this Collection<DataEquipment> colection, DataEquipment dataEquipment, string id)
+        {
+            var equipmentToUpdate = colection.SingleOrDefault(equipment => equipment.ID == id);
+            if (equipmentToUpdate != null)
+            {
+                equipmentToUpdate.ID = dataEquipment.ID.TrimEndString();
+                equipmentToUpdate.Name = dataEquipment.Name.TrimEndString();
+                equipmentToUpdate.Description = dataEquipment.Description.TrimEndString();
+                equipmentToUpdate.Condition = dataEquipment.Condition.TrimEndString();
+                equipmentToUpdate.Producer.Name = dataEquipment.Producer.Name.TrimEndString();
+                equipmentToUpdate.Provider.Name = dataEquipment.Provider.Name.TrimEndString();
+                equipmentToUpdate.Service.Name = dataEquipment.Service.Name.TrimEndString();
+                equipmentToUpdate.Attestation.Name = dataEquipment.Attestation.Name.TrimEndString();
+                equipmentToUpdate.SN = dataEquipment.SN.TrimEndString();
+                equipmentToUpdate.Group = dataEquipment.Group.TrimEndString();
+                equipmentToUpdate.Norm = dataEquipment.Norm.TrimEndString();
+                equipmentToUpdate.Building.Name = dataEquipment.Building.Name.TrimEndString();
+                equipmentToUpdate.Room = dataEquipment.Room.TrimEndString();
+                equipmentToUpdate.Comments = dataEquipment.Comments.TrimEndString();
+                equipmentToUpdate.ProductionDate = dataEquipment.ProductionDate;
+                equipmentToUpdate.WarrantyDate = dataEquipment.WarrantyDate;
+                equipmentToUpdate.ReviewDate = dataEquipment.ReviewDate;
+                equipmentToUpdate.LegalizationDate = dataEquipment.LegalizationDate;
+                equipmentToUpdate.PostingDate = dataEquipment.PostingDate;
+                equipmentToUpdate.WarrantyAlarm = dataEquipment.WarrantyAlarm;
+                equipmentToUpdate.ReviewAlarm = dataEquipment.ReviewAlarm;
+                equipmentToUpdate.LegalizationAlarm = dataEquipment.LegalizationAlarm;
+                equipmentToUpdate.Employee.ID = dataEquipment.Employee.ID.TrimEndString();
+                equipmentToUpdate.PostedWorker.ID = dataEquipment.PostedWorker.ID.TrimEndString();
             }
 
             return colection;
