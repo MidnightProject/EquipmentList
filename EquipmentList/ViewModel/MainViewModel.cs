@@ -947,7 +947,7 @@ namespace EquipmentList.ViewModel
                         if (sbEmployeePermissions.ToString() != "UPDATE PERMISSIONS SET ")
                         {
                             sbEmployeePermissions.Remove(sbEmployeePermissions.Length - 2, 1);
-                            sbEmployeePermissions.Append("WHERE ID = @Id");
+                            sbEmployeePermissions.Append("WHERE ID=@Id");
 
                             updateEmployeePermissionsSql = sbEmployeePermissions.ToString();
 
@@ -980,8 +980,8 @@ namespace EquipmentList.ViewModel
                                 messageBox.ShowDialog();
                             }
                         }
-
-                        ((EmployeeViewModel)ViewModel).UpdateEmployee(employee);
+                        
+                        //((EmployeeViewModel)ViewModel).UpdateEmployee(employee);
                     }
                 }
 
@@ -990,8 +990,8 @@ namespace EquipmentList.ViewModel
         private void EditEquipment()
         {
             string id = ((EquipmentViewModel)ViewModel).SelectedEquipment.ID;
-            string updateEquipmentSql = "UPDATE EQUIPMENT SET NAME=@Name, DESCRIPTION=@Description, CONDITION=@Condition, PRODUCER=@Producer, SN=@sn, SUBGROUP=@Subgroup, NORM=@Norm, BUILDING=@Building, ROOM=@Room, COMMENTS=@Comments, PRODUCTION_DATE=@ProductionDate, WARRANTY_DATE=@WarrantyDate, WARRANTY_ALARM=@WarrantyAlarm, EMPLOYEE=@Employee, REPLACEMENT_EMPLOYEE=@ReplacementEmployee, REPLACEMENT_DATE=@ReplacementDate, REVIEW_DATE_REMINDER=@ReviewDate, REVIEW_ALARM=@ReviewAlarm, LEGALIZATION_DATE_REMINDER=@LegalizationDate, LEGALIZATION_ALARM=@LegalizationAlarm, CERTIFICATE_NUMBER=@CertificateNumber, PROVIDER=@Provider, SERVICE=@Service, ATTESTATION=@Attestation WHERE ID = @id";
-            string updateEquipmentNewIDSql = "UPDATE EQUIPMENT SET ID=@id, NAME=@Name, DESCRIPTION=@Description, CONDITION=@Condition, PRODUCER=@Producer, SN=@sn, SUBGROUP=@Subgroup, NORM=@Norm, BUILDING=@Building, ROOM=@Room, COMMENTS=@Comments, PRODUCTION_DATE=@ProductionDate, WARRANTY_DATE=@WarrantyDate, WARRANTY_ALARM=@WarrantyAlarm, EMPLOYEE=@Employee, REPLACEMENT_EMPLOYEE=@ReplacementEmployee, REPLACEMENT_DATE=@ReplacementDate, REVIEW_DATE_REMINDER=@ReviewDate, REVIEW_ALARM=@ReviewAlarm, LEGALIZATION_DATE_REMINDER=@LegalizationDate, LEGALIZATION_ALARM=@LegalizationAlarm, CERTIFICATE_NUMBER=@CertificateNumber, PROVIDER=@Provider, SERVICE=@Service, ATTESTATION=@Attestation WHERE ID = @OldID";
+            string updateEquipmentSql = "UPDATE EQUIPMENT SET NAME=@Name, DESCRIPTION=@Description, CONDITION=@Condition, PRODUCER=@Producer, SN=@sn, SUBGROUP=@Subgroup, NORM=@Norm, BUILDING=@Building, ROOM=@Room, COMMENTS=@Comments, PRODUCTION_DATE=@ProductionDate, WARRANTY_DATE=@WarrantyDate, WARRANTY_ALARM=@WarrantyAlarm, EMPLOYEE=@Employee, REPLACEMENT_EMPLOYEE=@ReplacementEmployee, REPLACEMENT_DATE=@ReplacementDate, REVIEW_DATE_REMINDER=@ReviewDate, REVIEW_ALARM=@ReviewAlarm, LEGALIZATION_DATE_REMINDER=@LegalizationDate, LEGALIZATION_ALARM=@LegalizationAlarm, CERTIFICATE_NUMBER=@CertificateNumber, PROVIDER=@Provider, SERVICE=@Service, ATTESTATION=@Attestation WHERE ID=@id";
+            string updateEquipmentNewIDSql = "UPDATE EQUIPMENT SET ID=@id, NAME=@Name, DESCRIPTION=@Description, CONDITION=@Condition, PRODUCER=@Producer, SN=@sn, SUBGROUP=@Subgroup, NORM=@Norm, BUILDING=@Building, ROOM=@Room, COMMENTS=@Comments, PRODUCTION_DATE=@ProductionDate, WARRANTY_DATE=@WarrantyDate, WARRANTY_ALARM=@WarrantyAlarm, EMPLOYEE=@Employee, REPLACEMENT_EMPLOYEE=@ReplacementEmployee, REPLACEMENT_DATE=@ReplacementDate, REVIEW_DATE_REMINDER=@ReviewDate, REVIEW_ALARM=@ReviewAlarm, LEGALIZATION_DATE_REMINDER=@LegalizationDate, LEGALIZATION_ALARM=@LegalizationAlarm, CERTIFICATE_NUMBER=@CertificateNumber, PROVIDER=@Provider, SERVICE=@Service, ATTESTATION=@Attestation WHERE ID=@OldID";
 
             DataEquipment equipmentToEdit = (((EquipmentViewModel)ViewModel).SelectedEquipments).Values();
 
@@ -1056,7 +1056,7 @@ namespace EquipmentList.ViewModel
                             command.Parameters.Add("@WarrantyAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.WarrantyAlarm;
                             command.Parameters.Add("@Employee", FbDbType.VarChar).Value = equipmentWindow.Equipment.Employee.ID.TrimEndString();
                             command.Parameters.Add("@ReplacementEmployee", FbDbType.VarChar).Value = equipmentWindow.Equipment.PostedWorker.ID.TrimEndString();
-                            command.Parameters.Add("@ReplacementDate", FbDbType.Date).Value = equipmentWindow.Equipment.WarrantyDate;
+                            command.Parameters.Add("@ReplacementDate", FbDbType.Date).Value = equipmentWindow.Equipment.PostingDate;
                             command.Parameters.Add("@ReviewDate", FbDbType.Date).Value = equipmentWindow.Equipment.ReviewDate;
                             command.Parameters.Add("@ReviewAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.ReviewAlarm;
                             command.Parameters.Add("@LegalizationDate", FbDbType.Date).Value = equipmentWindow.Equipment.LegalizationDate;
@@ -1083,7 +1083,209 @@ namespace EquipmentList.ViewModel
                 }
                 else
                 {
+                    foreach (DataEquipment equipment in ((EquipmentViewModel)ViewModel).SelectedEquipments)
+                    {
+                        id = equipment.ID;
 
+                        StringBuilder sbEquipment = new StringBuilder("UPDATE EQUIPMENT SET ");
+
+                        if (equipmentWindow.Equipment.Name != "[...]")
+                        {
+                            sbEquipment.Append("NAME=@Name, ");
+                            equipment.Name = equipmentWindow.Equipment.Name;  
+                        }
+
+                        if (equipmentWindow.Equipment.Description != "[...]")
+                        {
+                            sbEquipment.Append("DESCRIPTION=@Description, ");
+                            equipment.Description = equipmentWindow.Equipment.Description;
+                        }
+
+                        if (equipmentWindow.Equipment.Condition != "[...]")
+                        {
+                            sbEquipment.Append("CONDITION=@Condition, ");
+                            equipment.Condition = equipmentWindow.Equipment.Condition;
+                        }
+
+                        if (equipmentWindow.Equipment.Producer.Name != "[...]")
+                        {
+                            sbEquipment.Append("PRODUCER=@Producer, ");
+                            equipment.Producer.Name = equipmentWindow.Equipment.Producer.Name;
+                        }
+
+                        if (equipmentWindow.Equipment.SN != "[...]")
+                        {
+                            sbEquipment.Append("SN=@sn, ");
+                            equipment.SN = equipmentWindow.Equipment.SN;
+                        }
+
+                        if (equipmentWindow.Equipment.Group != "[...]")
+                        {
+                            sbEquipment.Append("SUBGROUP=@Subgroup, ");
+                            equipment.Group = equipmentWindow.Equipment.Group;
+                        }
+
+                        if (equipmentWindow.Equipment.Norm != "[...]")
+                        {
+                            sbEquipment.Append("NORM=@Norm, ");
+                            equipment.Norm = equipmentWindow.Equipment.Norm;
+                        }
+
+                        if (equipmentWindow.Equipment.Building.Name != "[...]")
+                        {
+                            sbEquipment.Append("BUILDING=@Building, ");
+                            equipment.Building.Name = equipmentWindow.Equipment.Building.Name;
+                        }
+
+                        if (equipmentWindow.Equipment.Room != "[...]")
+                        {
+                            sbEquipment.Append("ROOM=@Room, ");
+                            equipment.Room = equipmentWindow.Equipment.Room;
+                        }
+
+                        if (equipmentWindow.Equipment.Comments != "[...]")
+                        {
+                            sbEquipment.Append("COMMENTS=@Comments, ");
+                            equipment.Comments = equipmentWindow.Equipment.Comments;
+                        }
+                        
+                        if (equipmentWindow.Equipment.ProductionDate != null)
+                        {
+                            sbEquipment.Append("PRODUCTION_DATE=@ProductionDate, ");
+                            equipment.ProductionDate = equipmentWindow.Equipment.ProductionDate;
+                        }
+                        
+                        if (equipmentWindow.Equipment.WarrantyDate != null)
+                        {
+                            sbEquipment.Append("WARRANTY_DATE=@WarrantyDate, ");
+                            equipment.WarrantyDate = equipmentWindow.Equipment.WarrantyDate;
+                        }
+                        
+                        if (equipmentWindow.Equipment.WarrantyAlarm != null)
+                        {
+                            sbEquipment.Append("WARRANTY_ALARM=@WarrantyAlarm, ");
+                            equipment.WarrantyAlarm = equipmentWindow.Equipment.WarrantyAlarm;
+                        }
+                       
+                        if (equipmentWindow.Equipment.Employee.ID != "[...]")
+                        {
+                            sbEquipment.Append("EMPLOYEE=@Employee, ");
+                            equipment.Employee.ID = equipmentWindow.Equipment.Employee.ID;
+                        }
+
+                        if (equipmentWindow.Equipment.PostedWorker.ID != "[...]")
+                        {
+                            sbEquipment.Append("REPLACEMENT_EMPLOYEE=@ReplacementEmployee, ");
+                            equipment.PostedWorker.ID = equipmentWindow.Equipment.PostedWorker.ID;
+                        }
+
+                        if (equipmentWindow.Equipment.PostingDate != null)
+                        {
+                            sbEquipment.Append("REPLACEMENT_DATE=@ReplacementDate, ");
+                            equipment.PostingDate = equipmentWindow.Equipment.PostingDate;
+                        }
+
+                        if (equipmentWindow.Equipment.ReviewDate != null)
+                        {
+                            sbEquipment.Append("REVIEW_DATE_REMINDER=@ReviewDate, ");
+                            equipment.ReviewDate = equipmentWindow.Equipment.ReviewDate;
+                        }
+
+                        if (equipmentWindow.Equipment.ReviewAlarm != null)
+                        {
+                            sbEquipment.Append("REVIEW_ALARM=@ReviewAlarm, ");
+                            equipment.ReviewAlarm = equipmentWindow.Equipment.ReviewAlarm;
+                        }
+
+                        if (equipmentWindow.Equipment.LegalizationDate != null)
+                        {
+                            sbEquipment.Append("LEGALIZATION_DATE_REMINDER=@LegalizationDate, ");
+                            equipment.LegalizationDate = equipmentWindow.Equipment.LegalizationDate;
+                        }
+
+                        if (equipmentWindow.Equipment.LegalizationAlarm != null)
+                        {
+                            sbEquipment.Append("LEGALIZATION_ALARM=@LegalizationAlarm, ");
+                            equipment.LegalizationAlarm = equipmentWindow.Equipment.LegalizationAlarm;
+                        }
+
+                        if (equipmentWindow.Equipment.CertificationNumber != "[...]")
+                        {
+                            sbEquipment.Append("CERTIFICATE_NUMBER=@CertificateNumber, ");
+                            equipment.CertificationNumber = equipmentWindow.Equipment.CertificationNumber;
+                        }
+
+                        if (equipmentWindow.Equipment.Provider.Name != "[...]")
+                        {
+                            sbEquipment.Append("PROVIDER=@Provider, ");
+                            equipment.Provider.Name = equipmentWindow.Equipment.Provider.Name;
+                        }
+
+                        if (equipmentWindow.Equipment.Service.Name != "[...]")
+                        {
+                            sbEquipment.Append("SERVICE=@Service, ");
+                            equipment.Service.Name = equipmentWindow.Equipment.Service.Name;
+                        }
+
+                        if (equipmentWindow.Equipment.Attestation.Name != "[...]")
+                        {
+                            sbEquipment.Append("ATTESTATION=@Attestation, ");
+                            equipment.Attestation.Name = equipmentWindow.Equipment.Attestation.Name;
+                        }
+                                              
+                        if (sbEquipment.ToString() != "UPDATE EQUIPMENT SET ")
+                        {
+                            sbEquipment.Remove(sbEquipment.Length - 2, 1);
+                            sbEquipment.Append("WHERE ID=@Id");
+
+                            updateEquipmentSql = sbEquipment.ToString();
+
+                            try
+                            {
+                                FbTransaction transaction = connection.BeginTransaction();
+                                FbCommand command = new FbCommand(updateEquipmentSql, connection, transaction);
+                                command.Parameters.Add("@Id", FbDbType.VarChar).Value = id;
+                                command.Parameters.Add("@Name", FbDbType.VarChar).Value = equipmentWindow.Equipment.Name.TrimEndString();
+                                command.Parameters.Add("@Description", FbDbType.VarChar).Value = equipmentWindow.Equipment.Description.TrimEndString();
+                                command.Parameters.Add("@Condition", FbDbType.VarChar).Value = equipmentWindow.Equipment.Condition.TrimEndString();
+                                command.Parameters.Add("@Producer", FbDbType.VarChar).Value = equipmentWindow.Equipment.Producer.Name.TrimEndString();
+                                command.Parameters.Add("@sn", FbDbType.VarChar).Value = equipmentWindow.Equipment.SN.TrimEndString();
+                                command.Parameters.Add("@Subgroup", FbDbType.VarChar).Value = equipmentWindow.Equipment.Group.TrimEndString();
+                                command.Parameters.Add("@Norm", FbDbType.VarChar).Value = equipmentWindow.Equipment.Norm.TrimEndString();
+                                command.Parameters.Add("@Building", FbDbType.VarChar).Value = equipmentWindow.Equipment.Building.Name.TrimEndString();
+                                command.Parameters.Add("@Room", FbDbType.VarChar).Value = equipmentWindow.Equipment.Room.TrimEndString();
+                                command.Parameters.Add("@Comments", FbDbType.VarChar).Value = equipmentWindow.Equipment.Comments.TrimEndString();
+                                command.Parameters.Add("@ProductionDate", FbDbType.Date).Value = equipmentWindow.Equipment.ProductionDate;
+                                command.Parameters.Add("@WarrantyDate", FbDbType.Date).Value = equipmentWindow.Equipment.WarrantyDate;
+                                command.Parameters.Add("@WarrantyAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.WarrantyAlarm;
+                                command.Parameters.Add("@Employee", FbDbType.VarChar).Value = equipmentWindow.Equipment.Employee.ID.TrimEndString();
+                                command.Parameters.Add("@ReplacementEmployee", FbDbType.VarChar).Value = equipmentWindow.Equipment.PostedWorker.ID.TrimEndString();
+                                command.Parameters.Add("@ReplacementDate", FbDbType.Date).Value = equipmentWindow.Equipment.PostingDate;
+                                command.Parameters.Add("@ReviewDate", FbDbType.Date).Value = equipmentWindow.Equipment.ReviewDate;
+                                command.Parameters.Add("@ReviewAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.ReviewAlarm;
+                                command.Parameters.Add("@LegalizationDate", FbDbType.Date).Value = equipmentWindow.Equipment.LegalizationDate;
+                                command.Parameters.Add("@LegalizationAlarm", FbDbType.Integer).Value = equipmentWindow.Equipment.LegalizationAlarm;
+                                command.Parameters.Add("@CertificateNumber", FbDbType.VarChar).Value = equipmentWindow.Equipment.CertificationNumber.TrimEndString();
+                                command.Parameters.Add("@Provider", FbDbType.VarChar).Value = equipmentWindow.Equipment.Provider.Name.TrimEndString();
+                                command.Parameters.Add("@Service", FbDbType.VarChar).Value = equipmentWindow.Equipment.Service.Name.TrimEndString();
+                                command.Parameters.Add("@Attestation", FbDbType.VarChar).Value = equipmentWindow.Equipment.Attestation.Name.TrimEndString();
+                                command.ExecuteNonQuery();
+                                transaction.Commit();
+                            }
+                            catch (Exception e)
+                            {
+                                WpfMessageBox messageBox = new WpfMessageBox("Error #0011", "Error editing equipment.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                                {
+                                    Details = "Error #0011" + '\n' + '\n' + e.ToString(),
+                                });
+                                messageBox.ShowDialog();
+
+                                return;
+                            }
+
+                            //((EquipmentViewModel)ViewModel).UpdateEquipment(equipmentWindow.Equipment, id);
+                        }
+                    }
                 }
             }
         }
