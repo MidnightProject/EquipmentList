@@ -1692,6 +1692,9 @@ namespace EquipmentList.ViewModel
                 case TableType.Job:
                     JobAction(message);
                     break;
+                case TableType.Group:
+                    GroupAction(message);
+                    break;
             }
         }
         private void JobAction(EditDatabaseMessage message)
@@ -1804,6 +1807,64 @@ namespace EquipmentList.ViewModel
 
             }, MessageType.PropertyChangedMessage);
         }
+        private void GroupAction(EditDatabaseMessage message)
+        {
+            switch (message.Command)
+            {
+                case Messages.CommandType.Insert:
+                    AddGroup(message);
+                    break;
+                case Messages.CommandType.Delete:
+                    RemoveGroup(message);
+                    break;
+                case Messages.CommandType.Update:
+                    EditGroup(message);
+                    break;
+            }
+        }
+        private void AddGroup(EditDatabaseMessage message)
+        {
+            string addGroupSql = "INSERT INTO SUBGROUP(NAME) VALUES(@Name)";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(addGroupSql, connection, transaction);
+                command.Parameters.Add("@Name", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0012", "Error adding group name to list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0012" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Group,
+                Command = Messages.CommandType.Insert,
+                Value = message.Value.TrimEndString(),
+
+            }, MessageType.PropertyChangedMessage);
+        }
+        private void RemoveGroup(EditDatabaseMessage message)
+        {
+            throw new NotImplementedException();
+        }
+        private void EditGroup(EditDatabaseMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
+        
 
         private Clipboard Clipboard { get; set; }
 

@@ -18,5 +18,6 @@
     public enum TableType
     {
         Job,
+        Group,
     }
 }

@@ -1,14 +1,18 @@
-﻿using EquipmentList.Model;
+﻿using EquipmentList.Messages;
+using EquipmentList.Model;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using WpfMessageBoxLibrary;
 using Clipboard = EquipmentList.Model.Clipboard;
 
 namespace EquipmentList.Windows
@@ -366,6 +370,8 @@ namespace EquipmentList.Windows
             LegalizationDate = Equipment.LegalizationDate;
 
             EmployeesList = employee;
+
+            Messenger.Default.Register<EditDatabaseMessage>(this, MessageType.PropertyChangedMessage, DatabasePropertyChanged);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -505,6 +511,163 @@ namespace EquipmentList.Windows
                 legalizationDatePicker.IsDropDownOpen = false;
 
                 return;
+            }
+        }
+
+        private RelayCommand<string> groupCommand;
+        public RelayCommand<string> GroupCommand
+        {
+            get
+            {
+                return groupCommand = new RelayCommand<string>((pararameters) => GroupAction(pararameters));
+            }
+        }
+        private void GroupAction(string pararameters)
+        {
+            switch (pararameters)
+            {
+                case "Add":
+                    AddGroup();
+                    break;
+                case "Remove":
+                    RemoveGroup();
+                    break;
+                case "Edit":
+                    EditGroup();
+                    break;
+            }
+        }
+        private void AddGroup()
+        {
+            WpfMessageBox messageBox = new WpfMessageBox("Add group title", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
+            {
+                TextBoxText = "New group title",
+                IsTextBoxVisible = true,
+                TextBoxMaxLength = 25,
+                TextValidationRule = new Validation()
+                {
+                    TextExclusionList = GroupsList.ToList(),
+
+                    Rule = new Rule()
+                    {
+                        StringIsEmpty = true,
+                        StringIsExcluded = true,
+                        StringIsWhiteSpace = true,
+                        IgnoreCase = true,
+                    },
+                },
+
+                ButtonOkText = "Add",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.OK)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Group,
+                    Command = CommandType.Insert,
+                    Value = messageBox.TextBoxText,
+
+                }, MessageType.NotificationMessageAction);
+            }
+        }
+        private void RemoveGroup()
+        {
+            /*
+            if (Employee.Job == String.Empty)
+            {
+                return;
+            }
+
+            WpfMessageBox messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
+            {
+                Header = "Remove '" + Employee.Job + "' job title ?",
+                ButtonYesText = "Yes, remove job title",
+                ButtonNoText = "Cancel, keep job title",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.Yes)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Job,
+                    Command = CommandType.Delete,
+                    Value = Employee.Job,
+
+                }, MessageType.NotificationMessageAction);
+            }
+            */
+        }
+        private void EditGroup()
+        {
+            /*
+            if (Employee.Job == String.Empty)
+            {
+                return;
+            }
+
+            WpfMessageBox messageBox = new WpfMessageBox("Edit job title", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
+            {
+                TextBoxText = Employee.Job,
+                IsTextBoxVisible = true,
+                TextBoxMaxLength = 25,
+                TextValidationRule = new Validation()
+                {
+                    TextExclusionList = JobTitleList.ToList(),
+
+                    Rule = new Rule()
+                    {
+                        StringIsEmpty = true,
+                        StringIsExcluded = true,
+                        StringIsWhiteSpace = true,
+                        IgnoreCase = true,
+                    },
+                },
+
+                ButtonOkText = "Edit",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.OK)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Job,
+                    Command = CommandType.Update,
+                    Value = messageBox.TextBoxText,
+                    OldValue = Employee.Job,
+
+                }, MessageType.NotificationMessageAction);
+            }
+            */
+        }
+
+        private void DatabasePropertyChanged(EditDatabaseMessage message)
+        {
+            
+            if (message.Table == TableType.Group)
+            {
+                switch (message.Command)
+                {
+                    case CommandType.Insert:
+                        GroupsList.Add(message.Value);
+                        Equipment.Group = message.Value;
+                        break;
+                    case CommandType.Delete:
+                        GroupsList.Remove(message.Value);
+                        Equipment.Group = String.Empty;
+                        break;
+                    case CommandType.Update:
+                        GroupsList.Remove(message.OldValue);
+                        GroupsList.Add(message.Value);
+                        Equipment.Group = message.Value;
+                        break;
+                }
+
+                return;
+                
             }
         }
 

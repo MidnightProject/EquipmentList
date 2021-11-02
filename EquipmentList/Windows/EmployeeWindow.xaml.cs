@@ -48,7 +48,7 @@ namespace EquipmentList.Windows
 
             Clipboard = clipboard;
 
-            Messenger.Default.Register<EditDatabaseMessage>(this, MessageType.PropertyChangedMessage, PropertyChanged);
+            Messenger.Default.Register<EditDatabaseMessage>(this, MessageType.PropertyChangedMessage, DatabasePropertyChanged);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -201,7 +201,7 @@ namespace EquipmentList.Windows
             }
         }
 
-        private void PropertyChanged(EditDatabaseMessage message)
+        private void DatabasePropertyChanged(EditDatabaseMessage message)
         {
             if (message.Table == TableType.Job)
             {
