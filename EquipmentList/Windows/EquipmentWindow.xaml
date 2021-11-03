@@ -288,14 +288,14 @@
                                             </Image.RenderTransform>
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseDown">
-                                                    <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Remove"/>
+                                                    <i:InvokeCommandAction Command="{Binding GroupCommand}" CommandParameter="Remove"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </Image>
                                         <Image Source="/Images/pencil.png" ToolTip="Edit" MaxHeight="16" Margin="5,0,0,0">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="MouseDown">
-                                                    <i:InvokeCommandAction Command="{Binding JobCommand}" CommandParameter="Edit"/>
+                                                    <i:InvokeCommandAction Command="{Binding GroupCommand}" CommandParameter="Edit"/>
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                         </Image>

@@ -1789,7 +1789,7 @@ namespace EquipmentList.ViewModel
             }
             catch (Exception e)
             {
-                WpfMessageBox messageBox = new WpfMessageBox("Error #0009", "Error removing job title from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0009", "Error editing job title.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
                 {
                     Details = "Error #0009" + '\n' + '\n' + e.ToString(),
                 });
@@ -1855,11 +1855,67 @@ namespace EquipmentList.ViewModel
         }
         private void RemoveGroup(EditDatabaseMessage message)
         {
-            throw new NotImplementedException();
+            string deleteJobSql = "DELETE FROM SUBGROUP WHERE NAME = @Name";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(deleteJobSql, connection, transaction);
+                command.Parameters.Add("@Name", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0013", "Error removing group name from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0013" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Group,
+                Command = Messages.CommandType.Delete,
+                Value = message.Value.TrimEndString(),
+
+            }, MessageType.PropertyChangedMessage);
         }
         private void EditGroup(EditDatabaseMessage message)
         {
-            throw new NotImplementedException();
+            string updateGroupSql = "UPDATE SUBGROUP SET NAME=@Name WHERE NAME=@OldName";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(updateGroupSql, connection, transaction);
+                command.Parameters.Add("@Name", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.Parameters.Add("@OldName", FbDbType.VarChar).Value = message.OldValue;
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0014", "Error editing group name.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0014" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Group,
+                Command = Messages.CommandType.Update,
+                Value = message.Value.TrimEndString(),
+                OldValue = message.OldValue,
+
+            }, MessageType.PropertyChangedMessage);
         }
 
         

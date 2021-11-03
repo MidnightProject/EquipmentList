@@ -539,9 +539,9 @@ namespace EquipmentList.Windows
         }
         private void AddGroup()
         {
-            WpfMessageBox messageBox = new WpfMessageBox("Add group title", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
+            WpfMessageBox messageBox = new WpfMessageBox("Add group name", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
             {
-                TextBoxText = "New group title",
+                TextBoxText = "New group name",
                 IsTextBoxVisible = true,
                 TextBoxMaxLength = 25,
                 TextValidationRule = new Validation()
@@ -574,17 +574,16 @@ namespace EquipmentList.Windows
         }
         private void RemoveGroup()
         {
-            /*
-            if (Employee.Job == String.Empty)
+            if (Equipment.Group == String.Empty)
             {
                 return;
             }
 
             WpfMessageBox messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
             {
-                Header = "Remove '" + Employee.Job + "' job title ?",
-                ButtonYesText = "Yes, remove job title",
-                ButtonNoText = "Cancel, keep job title",
+                Header = "Remove '" + Equipment.Group + "' group name ?",
+                ButtonYesText = "Yes, remove group name",
+                ButtonNoText = "Cancel, keep group name",
             });
             messageBox.ShowDialog();
 
@@ -592,30 +591,28 @@ namespace EquipmentList.Windows
             {
                 Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
                 {
-                    Table = TableType.Job,
+                    Table = TableType.Group,
                     Command = CommandType.Delete,
-                    Value = Employee.Job,
+                    Value = Equipment.Group,
 
                 }, MessageType.NotificationMessageAction);
             }
-            */
         }
         private void EditGroup()
         {
-            /*
-            if (Employee.Job == String.Empty)
+            if (Equipment.Group == String.Empty)
             {
                 return;
             }
 
-            WpfMessageBox messageBox = new WpfMessageBox("Edit job title", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
+            WpfMessageBox messageBox = new WpfMessageBox("Edit group name", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
             {
-                TextBoxText = Employee.Job,
+                TextBoxText = Equipment.Group,
                 IsTextBoxVisible = true,
                 TextBoxMaxLength = 25,
                 TextValidationRule = new Validation()
                 {
-                    TextExclusionList = JobTitleList.ToList(),
+                    TextExclusionList = GroupsList.ToList(),
 
                     Rule = new Rule()
                     {
@@ -634,19 +631,17 @@ namespace EquipmentList.Windows
             {
                 Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
                 {
-                    Table = TableType.Job,
+                    Table = TableType.Group,
                     Command = CommandType.Update,
                     Value = messageBox.TextBoxText,
-                    OldValue = Employee.Job,
+                    OldValue = Equipment.Group,
 
                 }, MessageType.NotificationMessageAction);
             }
-            */
         }
 
         private void DatabasePropertyChanged(EditDatabaseMessage message)
         {
-            
             if (message.Table == TableType.Group)
             {
                 switch (message.Command)
