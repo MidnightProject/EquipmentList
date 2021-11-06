@@ -1695,8 +1695,12 @@ namespace EquipmentList.ViewModel
                 case TableType.Group:
                     GroupAction(message);
                     break;
+                case TableType.Condition:
+                    ConditionAction(message);
+                    break;
             }
         }
+
         private void JobAction(EditDatabaseMessage message)
         {
             switch (message.Command)
@@ -1712,6 +1716,7 @@ namespace EquipmentList.ViewModel
                     break;
             }
         }
+
         private void AddJob(EditDatabaseMessage message)
         {
             string addJobSql = "INSERT INTO JOB(TITLE) VALUES(@Title)";
@@ -1743,6 +1748,7 @@ namespace EquipmentList.ViewModel
 
             }, MessageType.PropertyChangedMessage);
         }
+
         private void RemoveJob(EditDatabaseMessage message)
         {
             string deleteJobSql = "DELETE FROM JOB WHERE TITLE = @Title";
@@ -1774,6 +1780,7 @@ namespace EquipmentList.ViewModel
 
             }, MessageType.PropertyChangedMessage);
         }
+
         private void EditJob(EditDatabaseMessage message)
         {
             string updateJobSql = "UPDATE JOB SET TITLE=@Title WHERE Title=@OldTitle";
@@ -1807,6 +1814,7 @@ namespace EquipmentList.ViewModel
 
             }, MessageType.PropertyChangedMessage);
         }
+
         private void GroupAction(EditDatabaseMessage message)
         {
             switch (message.Command)
@@ -1822,6 +1830,7 @@ namespace EquipmentList.ViewModel
                     break;
             }
         }
+
         private void AddGroup(EditDatabaseMessage message)
         {
             string addGroupSql = "INSERT INTO SUBGROUP(NAME) VALUES(@Name)";
@@ -1853,6 +1862,7 @@ namespace EquipmentList.ViewModel
 
             }, MessageType.PropertyChangedMessage);
         }
+
         private void RemoveGroup(EditDatabaseMessage message)
         {
             string deleteJobSql = "DELETE FROM SUBGROUP WHERE NAME = @Name";
@@ -1884,6 +1894,7 @@ namespace EquipmentList.ViewModel
 
             }, MessageType.PropertyChangedMessage);
         }
+
         private void EditGroup(EditDatabaseMessage message)
         {
             string updateGroupSql = "UPDATE SUBGROUP SET NAME=@Name WHERE NAME=@OldName";
@@ -1918,9 +1929,119 @@ namespace EquipmentList.ViewModel
             }, MessageType.PropertyChangedMessage);
         }
 
-        
+        private void ConditionAction(EditDatabaseMessage message)
+        {
+            switch (message.Command)
+            {
+                case Messages.CommandType.Insert:
+                    AddCondition(message);
+                    break;
+                case Messages.CommandType.Delete:
+                    RemoveCondition(message);
+                    break;
+                case Messages.CommandType.Update:
+                    EditCondition(message);
+                    break;
+            }
+        }
 
-        
+        private void AddCondition(EditDatabaseMessage message)
+        {
+            string addConditionSql = "INSERT INTO CONDITION(STATE) VALUES(@State)";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(addConditionSql, connection, transaction);
+                command.Parameters.Add("@State", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0015", "Error adding condition to list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0015" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Condition,
+                Command = Messages.CommandType.Insert,
+                Value = message.Value.TrimEndString(),
+
+            }, MessageType.PropertyChangedMessage);
+        }
+
+        private void RemoveCondition(EditDatabaseMessage message)
+        {
+            string deleteConditionSql = "DELETE FROM CONDITION WHERE STATE = @State";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(deleteConditionSql, connection, transaction);
+                command.Parameters.Add("@State", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0016", "Error removing condition from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0016" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Condition,
+                Command = Messages.CommandType.Delete,
+                Value = message.Value.TrimEndString(),
+
+            }, MessageType.PropertyChangedMessage);
+        }
+
+        private void EditCondition(EditDatabaseMessage message)
+        {
+            string updateConditionSql = "UPDATE CONDITION SET STATE=@State WHERE STATE=@OldState";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(updateConditionSql, connection, transaction);
+                command.Parameters.Add("@State", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.Parameters.Add("@OldState", FbDbType.VarChar).Value = message.OldValue;
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0017", "Error editing condition.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0017" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Condition,
+                Command = Messages.CommandType.Update,
+                Value = message.Value.TrimEndString(),
+                OldValue = message.OldValue,
+
+            }, MessageType.PropertyChangedMessage);
+        }
 
         private Clipboard Clipboard { get; set; }
 

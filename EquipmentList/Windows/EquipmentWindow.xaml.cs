@@ -640,6 +640,132 @@ namespace EquipmentList.Windows
             }
         }
 
+        private RelayCommand<string> conditionCommand;
+        public RelayCommand<string> ConditionCommand
+        {
+            get
+            {
+                return conditionCommand = new RelayCommand<string>((pararameters) => ConditionAction(pararameters));
+            }
+        }
+        private void ConditionAction(string pararameters)
+        {
+            switch (pararameters)
+            {
+                case "Add":
+                    AddCondition();
+                    break;
+                case "Remove":
+                    RemoveCondition();
+                    break;
+                case "Edit":
+                    EditCondition();
+                    break;
+            }
+        }
+        private void AddCondition()
+        {
+            WpfMessageBox messageBox = new WpfMessageBox("Add condition", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
+            {
+                TextBoxText = "New condition",
+                IsTextBoxVisible = true,
+                TextBoxMaxLength = 25,
+                TextValidationRule = new Validation()
+                {
+                    TextExclusionList = ConditionsList.ToList(),
+
+                    Rule = new Rule()
+                    {
+                        StringIsEmpty = true,
+                        StringIsExcluded = true,
+                        StringIsWhiteSpace = true,
+                        IgnoreCase = true,
+                    },
+                },
+
+                ButtonOkText = "Add",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.OK)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Condition,
+                    Command = CommandType.Insert,
+                    Value = messageBox.TextBoxText,
+
+                }, MessageType.NotificationMessageAction);
+            }
+        }
+        private void RemoveCondition()
+        {
+            if (Equipment.Condition == String.Empty)
+            {
+                return;
+            }
+
+            WpfMessageBox messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
+            {
+                Header = "Remove '" + Equipment.Condition + "' condition ?",
+                ButtonYesText = "Yes, remove condition",
+                ButtonNoText = "Cancel, keep condition",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.Yes)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Condition,
+                    Command = CommandType.Delete,
+                    Value = Equipment.Condition,
+
+                }, MessageType.NotificationMessageAction);
+            }
+        }
+        private void EditCondition()
+        {
+            if (Equipment.Condition == String.Empty)
+            {
+                return;
+            }
+
+            WpfMessageBox messageBox = new WpfMessageBox("Edit condition", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
+            {
+                TextBoxText = Equipment.Condition,
+                IsTextBoxVisible = true,
+                TextBoxMaxLength = 25,
+                TextValidationRule = new Validation()
+                {
+                    TextExclusionList = GroupsList.ToList(),
+
+                    Rule = new Rule()
+                    {
+                        StringIsEmpty = true,
+                        StringIsExcluded = true,
+                        StringIsWhiteSpace = true,
+                        IgnoreCase = true,
+                    },
+                },
+
+                ButtonOkText = "Edit",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.OK)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Condition,
+                    Command = CommandType.Update,
+                    Value = messageBox.TextBoxText,
+                    OldValue = Equipment.Condition,
+
+                }, MessageType.NotificationMessageAction);
+            }
+        }
+
         private void DatabasePropertyChanged(EditDatabaseMessage message)
         {
             if (message.Table == TableType.Group)
@@ -661,8 +787,29 @@ namespace EquipmentList.Windows
                         break;
                 }
 
+                return;  
+            }
+
+            if (message.Table == TableType.Condition)
+            {
+                switch (message.Command)
+                {
+                    case CommandType.Insert:
+                        ConditionsList.Add(message.Value);
+                        Equipment.Condition = message.Value;
+                        break;
+                    case CommandType.Delete:
+                        ConditionsList.Remove(message.Value);
+                        Equipment.Condition = String.Empty;
+                        break;
+                    case CommandType.Update:
+                        ConditionsList.Remove(message.OldValue);
+                        ConditionsList.Add(message.Value);
+                        Equipment.Condition = message.Value;
+                        break;
+                }
+
                 return;
-                
             }
         }
 

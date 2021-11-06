@@ -19,5 +19,6 @@
     {
         Job,
         Group,
+        Condition,
     }
 }
