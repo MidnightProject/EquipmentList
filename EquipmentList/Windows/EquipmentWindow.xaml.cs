@@ -514,6 +514,7 @@ namespace EquipmentList.Windows
             }
         }
 
+        #region Group Command
         private RelayCommand<string> groupCommand;
         public RelayCommand<string> GroupCommand
         {
@@ -522,6 +523,7 @@ namespace EquipmentList.Windows
                 return groupCommand = new RelayCommand<string>((pararameters) => GroupAction(pararameters));
             }
         }
+
         private void GroupAction(string pararameters)
         {
             switch (pararameters)
@@ -537,6 +539,7 @@ namespace EquipmentList.Windows
                     break;
             }
         }
+
         private void AddGroup()
         {
             WpfMessageBox messageBox = new WpfMessageBox("Add group name", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
@@ -572,6 +575,7 @@ namespace EquipmentList.Windows
                 }, MessageType.NotificationMessageAction);
             }
         }
+
         private void RemoveGroup()
         {
             if (Equipment.Group == String.Empty)
@@ -598,6 +602,7 @@ namespace EquipmentList.Windows
                 }, MessageType.NotificationMessageAction);
             }
         }
+
         private void EditGroup()
         {
             if (Equipment.Group == String.Empty)
@@ -639,7 +644,9 @@ namespace EquipmentList.Windows
                 }, MessageType.NotificationMessageAction);
             }
         }
+        #endregion
 
+        #region Condition Command
         private RelayCommand<string> conditionCommand;
         public RelayCommand<string> ConditionCommand
         {
@@ -648,6 +655,7 @@ namespace EquipmentList.Windows
                 return conditionCommand = new RelayCommand<string>((pararameters) => ConditionAction(pararameters));
             }
         }
+
         private void ConditionAction(string pararameters)
         {
             switch (pararameters)
@@ -663,6 +671,7 @@ namespace EquipmentList.Windows
                     break;
             }
         }
+
         private void AddCondition()
         {
             WpfMessageBox messageBox = new WpfMessageBox("Add condition", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
@@ -698,6 +707,7 @@ namespace EquipmentList.Windows
                 }, MessageType.NotificationMessageAction);
             }
         }
+
         private void RemoveCondition()
         {
             if (Equipment.Condition == String.Empty)
@@ -724,6 +734,7 @@ namespace EquipmentList.Windows
                 }, MessageType.NotificationMessageAction);
             }
         }
+
         private void EditCondition()
         {
             if (Equipment.Condition == String.Empty)
@@ -738,7 +749,7 @@ namespace EquipmentList.Windows
                 TextBoxMaxLength = 25,
                 TextValidationRule = new Validation()
                 {
-                    TextExclusionList = GroupsList.ToList(),
+                    TextExclusionList = ConditionsList.ToList(),
 
                     Rule = new Rule()
                     {
@@ -765,6 +776,140 @@ namespace EquipmentList.Windows
                 }, MessageType.NotificationMessageAction);
             }
         }
+        #endregion
+
+        #region Norm Command
+        private RelayCommand<string> normCommand;
+        public RelayCommand<string> NormCommand
+        {
+            get
+            {
+                return normCommand = new RelayCommand<string>((pararameters) => NormAction(pararameters));
+            }
+        }
+
+        private void NormAction(string pararameters)
+        {
+            switch (pararameters)
+            {
+                case "Add":
+                    AddNorm();
+                    break;
+                case "Remove":
+                    RemoveNorm();
+                    break;
+                case "Edit":
+                    EditNorm();
+                    break;
+            }
+        }
+
+        private void AddNorm()
+        {
+            
+            WpfMessageBox messageBox = new WpfMessageBox("Add norm", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
+            {
+                TextBoxText = "New norm",
+                IsTextBoxVisible = true,
+                TextBoxMaxLength = 25,
+                TextValidationRule = new Validation()
+                {
+                    TextExclusionList = NormsList.ToList(),
+
+                    Rule = new Rule()
+                    {
+                        StringIsEmpty = true,
+                        StringIsExcluded = true,
+                        StringIsWhiteSpace = true,
+                        IgnoreCase = true,
+                    },
+                },
+
+                ButtonOkText = "Add",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.OK)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Norm,
+                    Command = CommandType.Insert,
+                    Value = messageBox.TextBoxText,
+
+                }, MessageType.NotificationMessageAction);
+            }
+        }
+
+        private void RemoveNorm()
+        {
+            if (Equipment.Norm == String.Empty)
+            {
+                return;
+            }
+
+            WpfMessageBox messageBox = new WpfMessageBox("Information", "Warning: this cannot be undone.", MessageBoxButton.YesNo, MessageBoxImage.Information, new WpfMessageBoxProperties()
+            {
+                Header = "Remove '" + Equipment.Condition + "' norm ?",
+                ButtonYesText = "Yes, remove norm",
+                ButtonNoText = "Cancel, keep norm",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.Yes)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Norm,
+                    Command = CommandType.Delete,
+                    Value = Equipment.Norm,
+
+                }, MessageType.NotificationMessageAction);
+            }
+        }
+
+        private void EditNorm()
+        {
+            if (Equipment.Norm == String.Empty)
+            {
+                return;
+            }
+
+            WpfMessageBox messageBox = new WpfMessageBox("Edit norm", String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.None, new WpfMessageBoxProperties()
+            {
+                TextBoxText = Equipment.Norm,
+                IsTextBoxVisible = true,
+                TextBoxMaxLength = 25,
+                TextValidationRule = new Validation()
+                {
+                    TextExclusionList = NormsList.ToList(),
+
+                    Rule = new Rule()
+                    {
+                        StringIsEmpty = true,
+                        StringIsExcluded = true,
+                        StringIsWhiteSpace = true,
+                        IgnoreCase = true,
+                    },
+                },
+
+                ButtonOkText = "Edit",
+            });
+            messageBox.ShowDialog();
+
+            if (messageBox.Result == WpfMessageBoxResult.OK)
+            {
+                Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+                {
+                    Table = TableType.Norm,
+                    Command = CommandType.Update,
+                    Value = messageBox.TextBoxText,
+                    OldValue = Equipment.Norm,
+
+                }, MessageType.NotificationMessageAction);
+            }
+        }
+        #endregion
 
         private void DatabasePropertyChanged(EditDatabaseMessage message)
         {
@@ -806,6 +951,28 @@ namespace EquipmentList.Windows
                         ConditionsList.Remove(message.OldValue);
                         ConditionsList.Add(message.Value);
                         Equipment.Condition = message.Value;
+                        break;
+                }
+
+                return;
+            }
+
+            if (message.Table == TableType.Norm)
+            {
+                switch (message.Command)
+                {
+                    case CommandType.Insert:
+                        NormsList.Add(message.Value);
+                        Equipment.Norm = message.Value;
+                        break;
+                    case CommandType.Delete:
+                        NormsList.Remove(message.Value);
+                        Equipment.Norm = String.Empty;
+                        break;
+                    case CommandType.Update:
+                        NormsList.Remove(message.OldValue);
+                        NormsList.Add(message.Value);
+                        Equipment.Norm = message.Value;
                         break;
                 }
 

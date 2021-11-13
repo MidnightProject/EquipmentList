@@ -1698,6 +1698,9 @@ namespace EquipmentList.ViewModel
                 case TableType.Condition:
                     ConditionAction(message);
                     break;
+                case TableType.Norm:
+                    NormAction(message);
+                    break;
             }
         }
 
@@ -1815,6 +1818,7 @@ namespace EquipmentList.ViewModel
             }, MessageType.PropertyChangedMessage);
         }
 
+        #region Group Action
         private void GroupAction(EditDatabaseMessage message)
         {
             switch (message.Command)
@@ -1928,7 +1932,9 @@ namespace EquipmentList.ViewModel
 
             }, MessageType.PropertyChangedMessage);
         }
+        #endregion
 
+        #region Condition Action
         private void ConditionAction(EditDatabaseMessage message)
         {
             switch (message.Command)
@@ -2042,6 +2048,123 @@ namespace EquipmentList.ViewModel
 
             }, MessageType.PropertyChangedMessage);
         }
+        #endregion
+
+        #region Norm Action
+        private void NormAction(EditDatabaseMessage message)
+        {
+            switch (message.Command)
+            {
+                case Messages.CommandType.Insert:
+                    AddNorm(message);
+                    break;
+                case Messages.CommandType.Delete:
+                    RemoveNorm(message);
+                    break;
+                case Messages.CommandType.Update:
+                    EditNorm(message);
+                    break;
+            }
+        }
+
+        private void AddNorm(EditDatabaseMessage message)
+        {
+            string addNormSql = "INSERT INTO NORM(NAME) VALUES(@Name)";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(addNormSql, connection, transaction);
+                command.Parameters.Add("@Name", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0018", "Error adding norm to list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0018" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Norm,
+                Command = Messages.CommandType.Insert,
+                Value = message.Value.TrimEndString(),
+
+            }, MessageType.PropertyChangedMessage);
+        }
+
+        private void RemoveNorm(EditDatabaseMessage message)
+        {
+            string deleteNormSql = "DELETE FROM NORM WHERE NAME = @Name";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(deleteNormSql, connection, transaction);
+                command.Parameters.Add("@Name", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0019", "Error removing norm from list.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0019" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Norm,
+                Command = Messages.CommandType.Delete,
+                Value = message.Value.TrimEndString(),
+
+            }, MessageType.PropertyChangedMessage);
+        }
+
+        private void EditNorm(EditDatabaseMessage message)
+        {
+            string updateNormSql = "UPDATE NORM SET NAME=@Name WHERE NAME=@OldName";
+
+            try
+            {
+                FbTransaction transaction = connection.BeginTransaction();
+                FbCommand command = new FbCommand(updateNormSql, connection, transaction);
+                command.Parameters.Add("@Name", FbDbType.VarChar).Value = message.Value.TrimEndString();
+                command.Parameters.Add("@OldName", FbDbType.VarChar).Value = message.OldValue;
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (Exception e)
+            {
+                WpfMessageBox messageBox = new WpfMessageBox("Error #0020", "Error editing norm.", MessageBoxButton.OK, MessageBoxImage.Error, new WpfMessageBoxProperties()
+                {
+                    Details = "Error #0020" + '\n' + '\n' + e.ToString(),
+                });
+                messageBox.ShowDialog();
+
+                return;
+            }
+
+            Messenger.Default.Send<EditDatabaseMessage>(new EditDatabaseMessage
+            {
+                Table = TableType.Norm,
+                Command = Messages.CommandType.Update,
+                Value = message.Value.TrimEndString(),
+                OldValue = message.OldValue,
+
+            }, MessageType.PropertyChangedMessage);
+        }
+        #endregion
 
         private Clipboard Clipboard { get; set; }
 

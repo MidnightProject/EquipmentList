@@ -20,5 +20,6 @@
         Job,
         Group,
         Condition,
+        Norm,
     }
 }
